@@ -345,9 +345,12 @@ nav {
     width: 100%;
     height: 6px;
     border-radius: 3px;
-    background: #e2e8f0;
+    /* Filled gradient (sized by --fill) + unfilled base color */
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e2e8f0;
     outline: none;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
 }
 
@@ -355,7 +358,7 @@ nav {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
+    background: transparent;
     border-radius: 3px;
     border: none;
 }
@@ -380,9 +383,16 @@ nav {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
+    background: #e2e8f0; /* Unfilled track */
     border-radius: 3px;
     border: none;
+}
+
+/* Firefox: filled portion of the track */
+.custom-slider::-moz-range-progress {
+    height: 6px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    border-radius: 3px;
 }
 
 .custom-slider::-moz-range-thumb {

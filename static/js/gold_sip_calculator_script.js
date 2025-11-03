@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSliders();
     addEventListeners();
     initialSyncValues();
+    initRangeFills();
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
@@ -110,11 +111,28 @@ function addEventListeners() {
 
     // Add input listeners for sliders
     [targetGoldAmountSlider, currentGoldPriceSlider, expectedReturnSlider, timePeriodSlider].forEach(slider => {
-        slider.addEventListener('input', calculateAndUpdateResults);
+        slider.addEventListener('input', function() {
+            updateRangeFill(slider);
+            calculateAndUpdateResults();
+        });
     });
 
     // Add frequency change listener
     investmentFrequencySelect.addEventListener('change', calculateAndUpdateResults);
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function calculateAndUpdateResults() {

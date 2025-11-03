@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -45,7 +53,7 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -54,7 +62,6 @@ nav {
     border-radius: 6px;
     text-decoration: none;
     transition: all 0.2s ease;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
     display: inline-flex;
     align-items: center;
@@ -64,31 +71,32 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
     transition: all 0.2s ease;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
     min-height: 44px;
     box-sizing: border-box;
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -352,18 +360,20 @@ nav {
     appearance: none;
     width: 100%;
     height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
     outline: none;
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .custom-slider::-webkit-slider-track {
     -webkit-appearance: none;
     appearance: none;
-    background: #e2e8f0;
+    background: transparent;
     height: 6px;
-    border-radius: 3px;
+    border-radius: 9999px;
 }
 
 .custom-slider::-webkit-slider-thumb {
@@ -372,38 +382,38 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .custom-slider::-moz-range-track {
-    background: #e2e8f0;
+    background: #e6edf5;
     height: 6px;
-    border-radius: 3px;
+    border-radius: 9999px;
     border: none;
     outline: none;
+}
+
+.custom-slider::-moz-range-progress {
+    height: 6px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    border-radius: 9999px;
 }
 
 .custom-slider::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .slider-labels {
@@ -460,21 +470,26 @@ nav {
     transition: all 0.3s ease;
 }
 
+.initial-investment-card,
 .initial-investment-card::before {
-    background: linear-gradient(135deg, #10B981, #059669);
+    background: #3c83f6;
 }
+.initial-investment-card { border: 1px solid #3c83f6; }
+.initial-investment-card .card-label,
+.initial-investment-card .card-value { color: #ffffff; }
 
-.total-withdrawals-card::before {
-    background: linear-gradient(135deg, #F59E0B, #D97706);
-}
-
-.final-balance-card::before {
-    background: linear-gradient(135deg, #3B82F6, #2563EB);
-}
-
-.total-return-card::before {
-    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-}
+.total-withdrawals-card,
+.final-balance-card,
+.total-return-card { background: #16a249; border: 1px solid #16a249; }
+.total-withdrawals-card::before,
+.final-balance-card::before,
+.total-return-card::before { background: #16a249; }
+.total-withdrawals-card .card-label,
+.final-balance-card .card-label,
+.total-return-card .card-label,
+.total-withdrawals-card .card-value,
+.final-balance-card .card-value,
+.total-return-card .card-value { color: #ffffff; }
 
 .card-icon {
     font-size: 24px;
@@ -548,16 +563,16 @@ nav {
     border-radius: 3px;
 }
 
-.color-indicator.initial-investment {
-    background: #10B981;
-}
+.color-indicator.initial-investment { background: #3c83f6; }
+.color-indicator.withdrawals-made { background: #16a249; }
+.color-indicator.remaining-balance { background: #16a249; }
 
-.color-indicator.withdrawals-made {
-    background: #F59E0B;
-}
-
-.color-indicator.remaining-balance {
-    background: #3B82F6;
+/* Ensure white text on green cards, including bold titles */
+.final-balance-card .card-label,
+.final-balance-card .card-label.bold-title,
+.total-withdrawals-card .card-label,
+.total-withdrawals-card .card-label.bold-title {
+    color: #ffffff;
 }
 
 .summary-label {

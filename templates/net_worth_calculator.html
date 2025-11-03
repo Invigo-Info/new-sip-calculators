@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Worth Calculator | Calculate Your Financial Net Worth</title>
+    <meta name="description" content="Calculate your net worth with our comprehensive calculator. Track your assets and liabilities to understand your financial position.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/net_worth_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Net Worth Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+
+            <div class="input-sections">
+                <!-- Assets Section -->
+                <div class="section">
+                    <h2>📈 Assets</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label class="input-label">Cash & Bank Balances</label>
+                            <div class="input-field-container">
+                                <input type="number" id="cashBankAmount" value="0" min="0" step="1000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Investment Value</label>
+                            <div class="input-field-container">
+                                <input type="number" id="investmentAmount" value="0" min="0" step="1000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Real Estate Value</label>
+                            <div class="input-field-container">
+                                <input type="number" id="realEstateAmount" value="0" min="0" step="10000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Vehicle / Personal Property Value</label>
+                            <div class="input-field-container">
+                                <input type="number" id="vehicleAmount" value="0" min="0" step="5000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Other Assets</label>
+                            <div class="input-field-container">
+                                <input type="number" id="otherAssetsAmount" value="0" min="0" step="1000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liabilities Section -->
+                <div class="section">
+                    <h2>📉 Liabilities</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label class="input-label">Home Loan Outstanding</label>
+                            <div class="input-field-container">
+                                <input type="number" id="homeLoanAmount" value="0" min="0" step="10000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Personal / Car Loan Outstanding</label>
+                            <div class="input-field-container">
+                                <input type="number" id="personalLoanAmount" value="0" min="0" step="5000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Credit Card Balance</label>
+                            <div class="input-field-container">
+                                <input type="number" id="creditCardAmount" value="0" min="0" step="1000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Other Liabilities</label>
+                            <div class="input-field-container">
+                                <input type="number" id="otherLiabilitiesAmount" value="0" min="0" step="1000" oninput="validateNetWorthInput(this); calculateNetWorth();">
+                                <span class="input-suffix">₹</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card total-assets-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Total Assets</div>
+                            <div class="card-value" id="totalAssetsResult">₹0</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card total-liabilities-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Liabilities</div>
+                            <div class="card-value" id="totalLiabilitiesResult">₹0</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card net-worth-card">
+                        <div class="card-content">
+                            <div class="card-label">Net Worth</div>
+                            <div class="card-value" id="netWorthResult">₹0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Text -->
+                <div class="summary-text">
+                    <p id="netWorthSummary">Your current net worth is ₹0.</p>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">Assets vs Liabilities Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="netWorthChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator total-assets"></div>
+                            <div class="summary-label">Total Assets</div>
+                            <div class="summary-amount" id="totalAssetsDisplay">₹0</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator total-liabilities"></div>
+                            <div class="summary-label">Total Liabilities</div>
+                            <div class="summary-amount" id="totalLiabilitiesDisplay">₹0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadNetWorthPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn save-btn" onclick="saveNetWorthSnapshot()">
+                        <span class="btn-icon">💾</span>
+                        Save Snapshot
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/net_worth_calculator_script.js') }}"></script>
+</body>
+</html>

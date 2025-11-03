@@ -963,4 +963,107 @@ nav {
         width: 200px;
         justify-content: center;
     }
-} 
+} /* === ROI page UI overrides to match Mutual Funds Expense Ratio === */
+/* Header styling */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  border: 1px solid rgba(60,131,246,0.20);
+  box-shadow: 0 8px 24px rgba(60,131,246,0.08);
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Slider styling with gradient fill + Firefox progress */
+.slider-container { margin-top: 12px; }
+.custom-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border: none;
+}
+.custom-slider::-webkit-slider-track {
+  width: 100%; height: 6px; cursor: pointer; background: transparent; border-radius: 9999px; border: none;
+}
+.custom-slider::-webkit-slider-thumb {
+  height: 20px; width: 20px; border-radius: 50%; background: #ffffff; border: 2px solid #3B82F6; cursor: pointer; -webkit-appearance: none; box-shadow: 0 2px 6px rgba(59,130,246,0.35);
+}
+.custom-slider::-webkit-slider-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
+.custom-slider::-moz-range-track { width: 100%; height: 6px; cursor: pointer; background: #e6edf5; border-radius: 9999px; border: none; }
+.custom-slider::-moz-range-progress { background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%); height: 6px; border-radius: 9999px; }
+.custom-slider::-moz-range-thumb { height: 20px; width: 20px; border-radius: 50%; background: #ffffff; border: 2px solid #3B82F6; cursor: pointer; box-shadow: 0 2px 6px rgba(59,130,246,0.35); }
+
+/* Result cards color overrides */
+.invested-amount-card { background: #3c83f6 !important; color: #ffffff !important; }
+.returns-card { background: #16a249 !important; color: #ffffff !important; }
+.final-value-card { background: #16a249 !important; color: #ffffff !important; }
+.roi-card { background: #16a249 !important; color: #ffffff !important; }
+.invested-amount-card .card-label, .invested-amount-card .card-value,
+.returns-card .card-label, .returns-card .card-value,
+.final-value-card .card-label, .final-value-card .card-value,
+.roi-card .card-label, .roi-card .card-value { color: #ffffff !important; }
+/* Annualized ROI card to green */
+.annualized-roi-card { background: #16a249 !important; color: #ffffff !important; }
+.annualized-roi-card .card-label, .annualized-roi-card .card-value { color: #ffffff !important; }
+
+/* ROI legend indicators aligned with chart */
+.color-indicator.invested-amount { background: #3c83f6 !important; }
+.color-indicator.returns-amount { background: #16a249 !important; }
+/* Navigation overrides to match Mutual Funds Expense Ratio design */
+nav { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; }
+.home-btn {
+  background: #3c83f6; color: #ffffff; padding: 12px 20px; font-size: 14px; font-weight: 600; border: none; border-radius: 6px; text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; box-sizing: border-box;
+}
+.home-btn:hover { background: #3c83f6; color: #ffffff; }
+.mega-menu { position: relative; display: inline-block; }
+.mega-menu-btn {
+  background: transparent; color: #3c83f6; padding: 12px 20px; font-size: 14px; font-weight: 600; border: 2px solid #3c83f6; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; letter-spacing: 0.5px; min-height: 44px; box-sizing: border-box;
+}
+.mega-menu-btn:hover { background: #3c83f6; color: #ffffff; border-color: #3c83f6; }
+.dropdown-arrow { font-size: 12px; transition: transform 0.2s ease; }
+.mega-menu.open .dropdown-arrow { transform: rotate(180deg); }
+/* Ensure dropdown visibility behavior */
+.mega-menu .mega-menu-content { display: none !important; position: absolute; background: #ffffff; min-width: 780px; max-width: 900px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 1000; border-radius: 8px; padding: 0; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 6px; border: 1px solid #e2e8f0; backdrop-filter: blur(10px); }
+.mega-menu.open .mega-menu-content { display: block !important; animation: sleekSlideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes sleekSlideDown { from { opacity: 0; transform: translateX(-50%) translateY(-12px) scale(0.98);} to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1);} }
+.mega-menu-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; padding: 18px; }
+.mega-menu-section { padding: 0 14px; border-right: 1px solid #f1f5f9; }
+.mega-menu-section:last-child { border-right: none; }
+.mega-section-title { font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.mega-link { display: block; padding: 10px 12px; color: #1f2937; text-decoration: none; border-radius: 6px; transition: all .2s ease; font-weight: 500; }
+.mega-link:hover { background: #f8fafc; color: #111827; transform: translateX(2px); }
+.mega-link.active { background: #eff6ff; color: #1d4ed8; box-shadow: inset 0 0 0 1px #bfdbfe; }
+@media (max-width: 767px) { .mega-menu .mega-menu-content { min-width: 95vw !important; max-width: 95vw !important; } .mega-menu-container { grid-template-columns: 1fr; gap: 15px; padding: 12px; } .home-btn, .mega-menu-btn { width: 100%; } }
+/* Fix: Home button width on mobile/tablet */
+@media (max-width: 1024px) {
+  nav { flex-direction: column; gap: 10px; }
+  .home-btn { width: auto !important; display: inline-flex; align-self: center; }
+  .mega-menu-btn { width: 100%; }
+}
+/* Mobile/tablet layout fixes */
+@media (max-width: 768px) {
+  .input-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .input-field-container { width: 100%; }
+}
+@media (max-width: 480px) {
+  .pie-chart-container { width: 100% !important; height: 260px !important; margin-left: auto; margin-right: auto; }
+  .pie-chart-container canvas { width: 100% !important; height: 100% !important; }
+  .slider-labels { font-size: 11px; }
+  header { padding: 18px; }
+  nav { gap: 8px; }
+}

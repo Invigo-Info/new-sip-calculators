@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Education Calculator | Plan Your Child's Educational Future</title>
+    <meta name="description" content="Calculate education costs and monthly savings required for your child's higher education. Plan ahead with our comprehensive education planning calculator.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/child_education_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Child Education Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- Child Education Planning Section -->
+                <div class="section">
+                    <h2>Calculate Education Savings</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Child's Current Age</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="currentAge" value="5" min="1" max="17" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="currentAgeSlider" min="1" max="17" value="5" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>1 Year</span>
+                                    <span>17 Years</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">College Start Age</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="collegeAge" value="18" min="16" max="25" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="collegeAgeSlider" min="16" max="25" value="18" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>16 Years</span>
+                                    <span>25 Years</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Current Cost of Higher Education</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="currentCost" value="500000" min="100000" max="5000000" step="50000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="currentCostSlider" min="100000" max="5000000" value="500000" step="50000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹1L</span>
+                                    <span>₹50L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Expected Education Inflation Rate</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="inflationRate" value="6.0" min="3.0" max="12.0" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="inflationRateSlider" min="3.0" max="12.0" value="6.0" step="0.1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>3%</span>
+                                    <span>12%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Expected Annual Return on Investment</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="returnRate" value="12.0" min="6.0" max="18.0" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="returnRateSlider" min="6.0" max="18.0" value="12.0" step="0.1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>6%</span>
+                                    <span>18%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Current Savings for Education (Optional)</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="currentSavings" value="0" min="0" max="1000000" step="10000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="currentSavingsSlider" min="0" max="1000000" value="0" step="10000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹0</span>
+                                    <span>₹10L</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card future-cost-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Future Cost of Education</div>
+                            <div class="card-value" id="futureCostResult">₹10,86,874</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card monthly-sip-card">
+                        <div class="card-content">
+                            <div class="card-label">Monthly SIP Required</div>
+                            <div class="card-value" id="monthlySipResult">₹4,785</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card total-investment-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Investment Required</div>
+                            <div class="card-value" id="totalInvestmentResult">₹7,46,120</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card years-remaining-card">
+                        <div class="card-content">
+                            <div class="card-label">Years to College</div>
+                            <div class="card-value" id="yearsRemainingResult">13 Years</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">Education Cost Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="educationChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator current-cost"></div>
+                            <div class="summary-label">Current Cost</div>
+                            <div class="summary-amount" id="currentCostDisplay">₹5,00,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator inflation-impact"></div>
+                            <div class="summary-label">Inflation Impact</div>
+                            <div class="summary-amount" id="inflationImpactDisplay">₹5,86,874</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator current-savings"></div>
+                            <div class="summary-label">Current Savings</div>
+                            <div class="summary-amount" id="currentSavingsDisplay">₹0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Statement -->
+                <div class="summary-statement" id="summaryStatement">
+                    To afford <strong>₹10,86,874</strong> by then, save <strong>₹4,785/month</strong> for the next <strong>13 years</strong>.
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadEducationPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn table-btn" onclick="toggleEducationTable()">
+                        <span class="btn-icon">📊</span>
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section hidden" id="educationTableSection">
+            <div class="table-header">
+                <h2>Year-wise Investment Projection</h2>
+            </div>
+            
+            <div class="table-container" id="educationYearlyTable">
+                <div class="table-wrapper">
+                    <table class="amortization-table">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Child's Age</th>
+                                <th>Annual Investment</th>
+                                <th>Cumulative Investment</th>
+                                <th>Portfolio Value</th>
+                                <th>Growth</th>
+                            </tr>
+                        </thead>
+                        <tbody id="educationYearlyTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/child_education_calculator_script.js') }}"></script>
+</body>
+</html>

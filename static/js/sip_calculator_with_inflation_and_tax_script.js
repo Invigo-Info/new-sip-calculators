@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDownloadButtons();
     setupMegaMenu();
     loadFromUrlParameters();
+    // Initialize slider fills for gradient track styling
+    initRangeFills();
     calculateAndUpdate();
 });
 
@@ -29,12 +31,14 @@ function setupEventListeners() {
             inputElement.addEventListener('input', function() {
                 const value = Math.max(Math.min(parseFloat(this.value) || min, max), min);
                 sliderElement.value = value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
             
             // Sync slider to input
             sliderElement.addEventListener('input', function() {
                 inputElement.value = this.value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
         }
@@ -118,36 +122,36 @@ function updateChart(data) {
         chartLabels = ['Total Invested', 'Net Returns'];
         chartData = [data.totalInvested, data.netReturns];
         chartColors = [
-            '#4facfe',  // Blue for invested amount
-            '#43e97b'   // Green for net returns
+            '#3c83f6',  // Invested (matches invested-amount-card)
+            '#16a249'   // Net Returns (matches net-returns-card)
         ];
     } else if (taxRate === 0) {
         // Exclude tax impact from chart when tax rate is 0
         chartLabels = ['Total Invested', 'Net Returns', 'Inflation Impact'];
         chartData = [data.totalInvested, data.netReturns, data.inflationImpact];
         chartColors = [
-            '#4facfe',  // Blue for invested amount
-            '#43e97b',  // Green for net returns
-            '#ff9500'   // Orange for inflation impact
+            '#3c83f6',  // Total Invested
+            '#16a249',  // Net Returns
+            '#fa709a'   // Inflation Impact
         ];
     } else if (inflationRate === 0) {
         // Exclude inflation impact from chart when inflation rate is 0
         chartLabels = ['Total Invested', 'Net Returns', 'Tax Impact'];
         chartData = [data.totalInvested, data.netReturns, data.taxImpact];
         chartColors = [
-            '#4facfe',  // Blue for invested amount
-            '#43e97b',  // Green for net returns
-            '#e91e63'   // Pink for tax impact
+            '#3c83f6',  // Total Invested (invested-amount-card)
+            '#16a249',  // Net Returns (net-returns-card)
+            '#34c063'   // Tax Impact (tax-impact-card)
         ];
     } else {
         // Include both impacts when neither rate is 0
         chartLabels = ['Total Invested', 'Net Returns', 'Inflation Impact', 'Tax Impact'];
         chartData = [data.totalInvested, data.netReturns, data.inflationImpact, data.taxImpact];
         chartColors = [
-            '#4facfe',  // Blue for invested amount
-            '#43e97b',  // Green for net returns
-            '#ff9500',  // Orange for inflation impact
-            '#e91e63'   // Pink for tax impact
+            '#3c83f6',  // Total Invested (invested-amount-card)
+            '#16a249',  // Net Returns (net-returns-card)
+            '#fa709a',  // Inflation Impact (inflation-impact-card)
+            '#34c063'   // Tax Impact (tax-impact-card)
         ];
     }
     
@@ -196,6 +200,20 @@ function updateChart(data) {
             }
         }
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function updateYearlyBreakdownTable(yearlyBreakdown) {

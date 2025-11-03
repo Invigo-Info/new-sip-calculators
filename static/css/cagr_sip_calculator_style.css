@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -45,7 +53,7 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -64,17 +72,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +96,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -338,25 +348,28 @@ nav {
 }
 
 .slider-container {
-    margin-top: 8px;
+    margin-top: 12px;
 }
 
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    /* WebKit/Blink fill using CSS var --fill, with fallback */
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
     outline: none;
     cursor: pointer;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 .custom-slider::-webkit-slider-track {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: transparent; /* Use element background as track */
+    border-radius: 9999px;
     border: none;
 }
 
@@ -364,40 +377,41 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
     -webkit-appearance: none;
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .custom-slider::-moz-range-track {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: #e6edf5; /* Firefox track color */
+    border-radius: 9999px;
     border: none;
+}
+
+/* Optional: filled portion color in Firefox */
+.custom-slider::-moz-range-progress {
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    height: 6px;
+    border-radius: 9999px;
 }
 
 .custom-slider::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .slider-labels {
@@ -447,23 +461,45 @@ nav {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    background: #e6edf5;
 }
 
-.invested-amount-card::before {
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+/* Result card color overrides to match requested palette */
+.invested-amount-card,
+.cagr-card {
+    background: #3c83f6;
+    border: 1px solid #3c83f6;
+    color: #ffffff;
+}
+.returns-card {
+    background: #43e97b;
+    border: 1px solid #43e97b;
+    color: #ffffff;
+}
+.final-value-card {
+    background: #16a249;
+    border: 1px solid #16a249;
+    color: #ffffff;
 }
 
-.returns-card::before {
-    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
-}
+.invested-amount-card::before,
+.cagr-card::before { background: #3c83f6; }
+.returns-card::before { background: #43e97b; }
+.final-value-card::before { background: #16a249; }
 
-.cagr-card::before {
-    background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
-}
-
-.final-value-card::before {
-    background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+.invested-amount-card .card-label,
+.invested-amount-card .card-value,
+.invested-amount-card .card-icon,
+.returns-card .card-label,
+.returns-card .card-value,
+.returns-card .card-icon,
+.cagr-card .card-label,
+.cagr-card .card-value,
+.cagr-card .card-icon,
+.final-value-card .card-label,
+.final-value-card .card-value,
+.final-value-card .card-icon {
+    color: #ffffff;
 }
 
 .card-icon {
@@ -489,15 +525,7 @@ nav {
     color: #2d3748;
 }
 
-.cagr-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.cagr-card .card-label,
-.cagr-card .card-value {
-    color: white;
-}
+/* Remove previous gradient styling for CAGR card (overridden above) */
 
 .cagr-card .card-label {
     opacity: 0.9;
@@ -556,11 +584,11 @@ nav {
 }
 
 .color-indicator.invested-amount {
-    background: #6C63FF;
+    background: #3c83f6;
 }
 
 .color-indicator.returns-amount {
-    background: #FF6B6B;
+    background: #16a249;
 }
 
 .summary-label {
@@ -620,6 +648,25 @@ nav {
     .frequency-select {
         min-width: 100px;
     }
+
+    /* Mobile-first input layout improvements */
+    .section {
+        padding: 18px;
+    }
+    .section h2 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+    .input-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .input-field-container {
+        width: 100%;
+    }
+    .slider-container { margin-top: 8px; }
+    .slider-labels { font-size: 11px; }
 
     nav {
         flex-direction: column;
@@ -694,9 +741,14 @@ nav {
 }
 
 @media (max-width: 480px) {
-    header h1 {
-        font-size: 1.3rem;
-    }
+    header { padding: 16px; }
+    header h1 { font-size: 1.3rem; }
+    /* Keep menu full-width; HOME adjusts to its content */
+    .mega-menu-btn { width: 100%; }
+    .home-btn { width: auto; }
+    .card-value { font-size: 18px; }
+    .pie-chart-container { height: 260px; width: 100%; }
+    .chart-section { padding: 16px; }
 
     .result-value {
         font-size: 14px;

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RD vs FD vs SIP Calculator | Compare Investment Returns</title>
+    <meta name="description" content="Compare RD, FD, and SIP investments with our comprehensive calculator. Analyze returns, maturity values, and make informed investment decisions.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/rd_vs_fd_vs_sip_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RD vs FD vs SIP Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="rdfdsipcalc-calculator-container">
+            <div class="rdfdsipcalc-input-sections">
+                <!-- Common Inputs Section -->
+                <div class="rdfdsipcalc-section">
+                    <h2>Common Settings</h2>
+                    <div class="rdfdsipcalc-input-grid">
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">Tenure (Years)</label>
+                                <div class="rdfdsipcalc-input-field-container">
+                                    <input type="number" id="rdfdsipcalcTenure" value="5" min="1" max="30" step="1">
+                                    <span class="rdfdsipcalc-input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="rdfdsipcalc-slider-container">
+                                <input type="range" id="rdfdsipcalcTenureSlider" min="1" max="30" value="5" step="1" class="rdfdsipcalc-custom-slider">
+                                <div class="rdfdsipcalc-slider-labels">
+                                    <span>1 Yr</span>
+                                    <span>30 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">Results Currency</label>
+                            </div>
+                            <div class="rdfdsipcalc-frequency-container">
+                                <select id="rdfdsipcalcCurrency" class="rdfdsipcalc-frequency-select">
+                                    <option value="INR">INR (₹)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RD Inputs Section -->
+                <div class="rdfdsipcalc-section">
+                    <h2>Recurring Deposit (RD)</h2>
+                    <div class="rdfdsipcalc-input-grid">
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">RD Monthly Deposit</label>
+                                <div class="rdfdsipcalc-input-field-container">
+                                    <input type="number" id="rdfdsipcalcRdMonthly" value="5000" min="100" max="100000" step="100">
+                                    <span class="rdfdsipcalc-input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="rdfdsipcalc-slider-container">
+                                <input type="range" id="rdfdsipcalcRdMonthlySlider" min="100" max="100000" value="5000" step="100" class="rdfdsipcalc-custom-slider">
+                                <div class="rdfdsipcalc-slider-labels">
+                                    <span>₹100</span>
+                                    <span>₹1L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">RD Annual Interest Rate</label>
+                                <div class="rdfdsipcalc-input-field-container">
+                                    <input type="number" id="rdfdsipcalcRdRate" value="6.8" min="2.0" max="15.0" step="0.1">
+                                    <span class="rdfdsipcalc-input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="rdfdsipcalc-slider-container">
+                                <input type="range" id="rdfdsipcalcRdRateSlider" min="2.0" max="15.0" value="6.8" step="0.1" class="rdfdsipcalc-custom-slider">
+                                <div class="rdfdsipcalc-slider-labels">
+                                    <span>2%</span>
+                                    <span>15%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FD Inputs Section -->
+                <div class="rdfdsipcalc-section">
+                    <h2>Fixed Deposit (FD)</h2>
+                    <div class="rdfdsipcalc-input-grid">
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">FD Investment Type</label>
+                            </div>
+                            <div class="rdfdsipcalc-frequency-container">
+                                <select id="rdfdsipcalcFdType" class="rdfdsipcalc-frequency-select">
+                                    <option value="lumpsum">Lump Sum</option>
+                                    <option value="match">Match RD/SIP total</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rdfdsipcalc-input-group" id="rdfdsipcalcFdLumpsumGroup">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">FD Lump Sum</label>
+                                <div class="rdfdsipcalc-input-field-container">
+                                    <input type="number" id="rdfdsipcalcFdLumpsum" value="300000" min="1000" max="10000000" step="1000">
+                                    <span class="rdfdsipcalc-input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="rdfdsipcalc-slider-container">
+                                <input type="range" id="rdfdsipcalcFdLumpsumSlider" min="1000" max="10000000" value="300000" step="1000" class="rdfdsipcalc-custom-slider">
+                                <div class="rdfdsipcalc-slider-labels">
+                                    <span>₹1K</span>
+                                    <span>₹1Cr</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">FD Annual Interest Rate</label>
+                                <div class="rdfdsipcalc-input-field-container">
+                                    <input type="number" id="rdfdsipcalcFdRate" value="7.0" min="2.0" max="15.0" step="0.1">
+                                    <span class="rdfdsipcalc-input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="rdfdsipcalc-slider-container">
+                                <input type="range" id="rdfdsipcalcFdRateSlider" min="2.0" max="15.0" value="7.0" step="0.1" class="rdfdsipcalc-custom-slider">
+                                <div class="rdfdsipcalc-slider-labels">
+                                    <span>2%</span>
+                                    <span>15%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">FD Compounding Frequency</label>
+                            </div>
+                            <div class="rdfdsipcalc-frequency-container">
+                                <select id="rdfdsipcalcFdCompounding" class="rdfdsipcalc-frequency-select">
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="annual">Annual</option>
+                                    <option value="halfyearly">Half-Yearly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIP Inputs Section -->
+                <div class="rdfdsipcalc-section">
+                    <h2>Systematic Investment Plan (SIP)</h2>
+                    <div class="rdfdsipcalc-input-grid">
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">SIP Monthly Investment</label>
+                                <div class="rdfdsipcalc-input-field-container">
+                                    <input type="number" id="rdfdsipcalcSipMonthly" value="5000" min="100" max="100000" step="100">
+                                    <span class="rdfdsipcalc-input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="rdfdsipcalc-slider-container">
+                                <input type="range" id="rdfdsipcalcSipMonthlySlider" min="100" max="100000" value="5000" step="100" class="rdfdsipcalc-custom-slider">
+                                <div class="rdfdsipcalc-slider-labels">
+                                    <span>₹100</span>
+                                    <span>₹1L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-input-row">
+                                <label class="rdfdsipcalc-input-label">SIP Expected Annual Return</label>
+                                <div class="rdfdsipcalc-input-field-container">
+                                    <input type="number" id="rdfdsipcalcSipReturn" value="12.0" min="1.0" max="30.0" step="0.1">
+                                    <span class="rdfdsipcalc-input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="rdfdsipcalc-slider-container">
+                                <input type="range" id="rdfdsipcalcSipReturnSlider" min="1.0" max="30.0" value="12.0" step="0.1" class="rdfdsipcalc-custom-slider">
+                                <div class="rdfdsipcalc-slider-labels">
+                                    <span>1%</span>
+                                    <span>30%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Options Section -->
+                <div class="rdfdsipcalc-section">
+                    <h2>Advanced Options</h2>
+                    <div class="rdfdsipcalc-input-grid">
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-toggle-container">
+                                <label class="rdfdsipcalc-toggle-label">
+                                    <input type="checkbox" id="rdfdsipcalcShowCagr" class="rdfdsipcalc-toggle-input">
+                                    <span class="rdfdsipcalc-toggle-slider"></span>
+                                    Show Effective CAGR/XIRR
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="rdfdsipcalc-input-group">
+                            <div class="rdfdsipcalc-toggle-container">
+                                <label class="rdfdsipcalc-toggle-label">
+                                    <input type="checkbox" id="rdfdsipcalcAddTax" class="rdfdsipcalc-toggle-input">
+                                    <span class="rdfdsipcalc-toggle-slider"></span>
+                                    Add Tax Approximation
+                                    <span class="rdfdsipcalc-tooltip" title="FD interest is taxable, SIP gains may be taxed on exit, RD interest taxable">ⓘ</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="rdfdsipcalc-results-section">
+                <div class="rdfdsipcalc-results-card-grid">
+                    <!-- RD Results Card -->
+                    <div class="rdfdsipcalc-result-card rdfdsipcalc-rd-card">
+                        <div class="rdfdsipcalc-card-header">
+                            <h3>Recurring Deposit (RD)</h3>
+                        </div>
+                        <div class="rdfdsipcalc-card-content">
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Total Invested</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcRdInvested">₹3,00,000</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Maturity Value</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcRdMaturity">₹3,57,840</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Interest Earned</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcRdInterest">₹57,840</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item rdfdsipcalc-cagr-item" style="display: none;">
+                                <div class="rdfdsipcalc-label">Effective CAGR</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcRdCagr">3.58%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FD Results Card -->
+                    <div class="rdfdsipcalc-result-card rdfdsipcalc-fd-card">
+                        <div class="rdfdsipcalc-card-header">
+                            <h3>Fixed Deposit (FD)</h3>
+                        </div>
+                        <div class="rdfdsipcalc-card-content">
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Total Invested</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcFdInvested">₹3,00,000</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Maturity Value</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcFdMaturity">₹4,25,128</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Interest Earned</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcFdInterest">₹1,25,128</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item rdfdsipcalc-cagr-item" style="display: none;">
+                                <div class="rdfdsipcalc-label">Effective CAGR</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcFdCagr">7.22%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SIP Results Card -->
+                    <div class="rdfdsipcalc-result-card rdfdsipcalc-sip-card">
+                        <div class="rdfdsipcalc-card-header">
+                            <h3>Systematic Investment Plan (SIP)</h3>
+                        </div>
+                        <div class="rdfdsipcalc-card-content">
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Total Invested</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcSipInvested">₹3,00,000</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Maturity Value</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcSipMaturity">₹4,08,220</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item">
+                                <div class="rdfdsipcalc-label">Gain Earned</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcSipGain">₹1,08,220</div>
+                            </div>
+                            <div class="rdfdsipcalc-result-item rdfdsipcalc-cagr-item" style="display: none;">
+                                <div class="rdfdsipcalc-label">Effective CAGR</div>
+                                <div class="rdfdsipcalc-value" id="rdfdsipcalcSipCagr">6.33%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison Summary -->
+                <div class="rdfdsipcalc-comparison-section">
+                    <div class="rdfdsipcalc-comparison-header">Investment Comparison Summary</div>
+                    <div class="rdfdsipcalc-ranking" id="rdfdsipcalcRanking">
+                        <div class="rdfdsipcalc-rank-item rdfdsipcalc-first">
+                            <span class="rdfdsipcalc-rank">1st</span>
+                            <span class="rdfdsipcalc-investment">Fixed Deposit (FD)</span>
+                            <span class="rdfdsipcalc-amount">₹4,25,128</span>
+                        </div>
+                        <div class="rdfdsipcalc-rank-item rdfdsipcalc-second">
+                            <span class="rdfdsipcalc-rank">2nd</span>
+                            <span class="rdfdsipcalc-investment">SIP</span>
+                            <span class="rdfdsipcalc-amount">₹4,08,220</span>
+                        </div>
+                        <div class="rdfdsipcalc-rank-item rdfdsipcalc-third">
+                            <span class="rdfdsipcalc-rank">3rd</span>
+                            <span class="rdfdsipcalc-investment">Recurring Deposit (RD)</span>
+                            <span class="rdfdsipcalc-amount">₹3,57,840</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="rdfdsipcalc-chart-section">
+                    <div class="rdfdsipcalc-chart-header">Investment Returns Comparison</div>
+                    <div class="rdfdsipcalc-chart-container">
+                        <canvas id="rdfdsipcalcComparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Assumptions -->
+                <div class="rdfdsipcalc-assumptions-section">
+                    <div class="rdfdsipcalc-assumptions-header">Important Assumptions</div>
+                    <div class="rdfdsipcalc-assumptions-content">
+                        <ul>
+                            <li>RD uses quarterly compounding</li>
+                            <li>FD uses selected compounding frequency</li>
+                            <li>SIP uses monthly compounding</li>
+                            <li>SIP returns are not guaranteed and are for illustration only</li>
+                            <li>Tax implications are not included in basic calculations</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="rdfdsipcalc-action-buttons">
+                    <button class="rdfdsipcalc-action-btn rdfdsipcalc-download-btn" onclick="rdfdsipcalcDownloadPDF()">
+                        <span class="rdfdsipcalc-btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="rdfdsipcalc-action-btn rdfdsipcalc-table-btn" onclick="rdfdsipcalcToggleTable()">
+                        <span class="rdfdsipcalc-btn-icon">📊</span>
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="rdfdsipcalc-table-section rdfdsipcalc-hidden" id="rdfdsipcalcTableSection">
+            <div class="rdfdsipcalc-table-header">
+                <h2>Detailed Comparison Table</h2>
+            </div>
+            
+            <div class="rdfdsipcalc-table-container">
+                <div class="rdfdsipcalc-table-wrapper">
+                    <table class="rdfdsipcalc-comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Investment Type</th>
+                                <th>Total Invested</th>
+                                <th>Maturity Value</th>
+                                <th>Returns/Interest</th>
+                                <th>Effective CAGR</th>
+                                <th>Risk Level</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rdfdsipcalcComparisonTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/rd_vs_fd_vs_sip_calculator_script.js') }}"></script>
+</body>
+</html>

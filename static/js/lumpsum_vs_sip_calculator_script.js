@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMegaMenu();
     syncInitialValues();
     loadFromUrlParameters();
+    // Initialize slider fill styling to match index page design
+    initRangeFills();
     calculateAndUpdate();
 });
 
@@ -45,6 +47,7 @@ function setupEventListeners() {
                 
                 // Update slider
                 sliderElement.value = value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
             
@@ -52,6 +55,7 @@ function setupEventListeners() {
             sliderElement.addEventListener('input', function() {
                 const value = parseFloat(this.value);
                 inputElement.value = value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
             
@@ -68,11 +72,26 @@ function setupEventListeners() {
                     this.value = max;
                     sliderElement.value = max;
                 }
-                
+
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
         }
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function calculateAndUpdate() {
@@ -158,16 +177,20 @@ function updateResults(data) {
     document.getElementById('sipPrincipalDisplay').textContent = formatCurrency(data.sipTotalInvestment);
     document.getElementById('sipGainsDisplay').textContent = formatCurrency(data.sipGains);
     
-    // Update better option card styling
+    // Update Better Option/Advantage card styling to fixed green theme
     const betterOptionCard = document.querySelector('.better-option-card');
+    const advantageCard = document.querySelector('.advantage-card');
     const betterOptionElement = document.getElementById('betterOptionResult');
-    
-    if (data.betterOption === 'Lumpsum') {
-        betterOptionElement.style.color = '#f59e0b';
-        betterOptionCard.style.background = 'linear-gradient(135deg, #fef3c7, #fbbf24)';
-    } else {
-        betterOptionElement.style.color = '#10b981';
-        betterOptionCard.style.background = 'linear-gradient(135deg, #d1fae5, #6ee7b7)';
+    if (betterOptionCard) {
+        betterOptionCard.style.background = '#16a249';
+        betterOptionCard.style.borderColor = '#16a249';
+    }
+    if (advantageCard) {
+        advantageCard.style.background = '#16a249';
+        advantageCard.style.borderColor = '#16a249';
+    }
+    if (betterOptionElement) {
+        betterOptionElement.style.color = '#ffffff';
     }
     
     // Add special messaging when one investment type is 0
@@ -206,7 +229,7 @@ function updateLumpsumChart(data) {
     } else {
         chartData = [data.lumpsumInvestment, data.lumpsumGains];
         chartLabels = ['Initial Investment', 'Investment Gains'];
-        chartColors = ['#f59e0b', '#22c55e'];
+        chartColors = ['#3c83f6', '#22c55e'];
     }
     
     lumpsumChart = new Chart(ctx, {

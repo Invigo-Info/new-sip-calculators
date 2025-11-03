@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDS Calculator | Calculate Tax Deducted at Source Online</title>
+    <meta name="description" content="Calculate TDS (Tax Deducted at Source) with our comprehensive TDS calculator. Get accurate TDS amount for different payment types and sections.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tds_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TDS Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- TDS Calculation Section -->
+                <div class="section">
+                    <h2>Calculate TDS Amount</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Select Category</label>
+                            </div>
+                            <div class="radio-container">
+                                <div class="radio-group">
+                                    <label class="radio-label">
+                                        <input type="radio" name="tds-category" value="individual" id="categoryIndividual" checked>
+                                        <span class="radio-custom"></span>
+                                        Individual
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="tds-category" value="other" id="categoryOther">
+                                        <span class="radio-custom"></span>
+                                        Other
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Tax Regime Type</label>
+                            </div>
+                            <div class="select-container">
+                                <select id="regimeType" class="form-select">
+                                    <option value="old">Old Tax Regime</option>
+                                    <option value="new">New Tax Regime</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Is PAN available?</label>
+                            </div>
+                            <div class="select-container">
+                                <select id="panAvailable" class="form-select">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Type of Payment</label>
+                            </div>
+                            <div class="select-container">
+                                <select id="paymentType" class="form-select">
+                                    <option value="192A">192A - Payment of accumulated balance due to an employee</option>
+                                    <option value="194A" selected>194A - Interest other than securities</option>
+                                    <option value="194H">194H - Commission or brokerage</option>
+                                    <option value="194I">194I - Rent (plant/machinery/building)</option>
+                                    <option value="194J">194J - Fees for professional/technical services</option>
+                                    <option value="194C">194C - Payment to contractors</option>
+                                    <option value="194D">194D - Insurance commission</option>
+                                    <option value="194G">194G - Commission on sale of lottery tickets</option>
+                                    <option value="194K">194K - Payment in respect of units</option>
+                                    <option value="194LA">194LA - Payment of compensation for compulsory acquisition</option>
+                                    <option value="194M">194M - Payment of certain sums by e-commerce operator</option>
+                                    <option value="194N">194N - Payment in respect of cash withdrawal</option>
+                                    <option value="194O">194O - Payment by e-commerce operator to e-commerce participant</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Payment Amount</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="paymentAmount" value="100000" min="1" step="1">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="paymentAmountSlider" min="1000" max="5000000" value="100000" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹1K</span>
+                                    <span>₹50L</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card tds-amount-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Total TDS</div>
+                            <div class="card-value" id="tdsAmountResult">₹10,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card net-amount-card">
+                        <div class="card-content">
+                            <div class="card-label">Net Amount</div>
+                            <div class="card-value" id="netAmountResult">₹90,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card tds-rate-card">
+                        <div class="card-content">
+                            <div class="card-label">TDS Rate</div>
+                            <div class="card-value" id="tdsRateResult">10%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Info Section -->
+                <div class="info-section">
+                    <div class="info-header">TDS Calculation Details</div>
+                    <div class="info-content">
+                        <div class="info-item">
+                            <div class="info-label">Payment Type:</div>
+                            <div class="info-value" id="paymentTypeDisplay">194A - Interest other than securities</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Tax Regime:</div>
+                            <div class="info-value" id="regimeTypeDisplay">Old Tax Regime</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Threshold Message:</div>
+                            <div class="info-value" id="thresholdMessage">TDS applicable as payment amount exceeds threshold</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Payment Amount:</div>
+                            <div class="info-value" id="paymentAmountDisplay">₹1,00,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">TDS Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="tdsChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator net-amount"></div>
+                            <div class="summary-label">Net Amount</div>
+                            <div class="summary-amount" id="netAmountDisplay">₹90,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator tds-amount"></div>
+                            <div class="summary-label">TDS Amount</div>
+                            <div class="summary-amount" id="tdsAmountDisplay">₹10,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadTdsPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn info-btn" onclick="toggleTdsInfo()">
+                        <span class="btn-icon">📊</span>
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TDS Information Section -->
+        <div class="tds-info-section hidden" id="tdsInfoSection">
+            <div class="info-section-header">
+                <h2>TDS Rates and Thresholds</h2>
+            </div>
+            
+            <div class="info-table-container">
+                <div class="table-wrapper">
+                    <table class="tds-info-table">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Payment Type</th>
+                                <th>Threshold (₹)</th>
+                                <th>Rate with PAN</th>
+                                <th>Rate without PAN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>192A</td>
+                                <td>Payment of accumulated balance due to an employee</td>
+                                <td>30,000</td>
+                                <td>10%</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>194A</td>
+                                <td>Interest other than securities</td>
+                                <td>40,000</td>
+                                <td>10%</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>194H</td>
+                                <td>Commission or brokerage</td>
+                                <td>15,000</td>
+                                <td>5%</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>194I</td>
+                                <td>Rent (plant/machinery/building)</td>
+                                <td>2,40,000</td>
+                                <td>10%</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>194J</td>
+                                <td>Fees for professional/technical services</td>
+                                <td>30,000</td>
+                                <td>10%</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>194C</td>
+                                <td>Payment to contractors</td>
+                                <td>30,000</td>
+                                <td>1%</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>194M</td>
+                                <td>Payment of certain sums by e-commerce operator</td>
+                                <td>5,00,000</td>
+                                <td>0.1%</td>
+                                <td>5%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tds_calculator_script.js') }}"></script>
+</body>
+</html>

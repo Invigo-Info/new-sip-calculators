@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPF Calculator | Calculate Public Provident Fund Returns</title>
+    <meta name="description" content="Calculate PPF returns with our comprehensive Public Provident Fund calculator. Plan your long-term investments with accurate maturity value calculations.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ppf_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PPF Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- PPF Calculation Section -->
+                <div class="section">
+                    <h2>Calculate PPF Returns</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Contribution Frequency</label>
+                            </div>
+                            <div class="frequency-container">
+                                <select id="contributionFrequency" class="frequency-select">
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="annually">Annually</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label" id="contributionAmountLabel">Contribution Amount</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="annualContribution" value="12500" min="500" max="150000" step="500">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="annualContributionSlider" min="500" max="150000" value="12500" step="500" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹500</span>
+                                    <span id="maxContributionLabel">₹1.5L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Investment Duration</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="investmentDuration" value="15" min="15" max="30" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="investmentDurationSlider" min="15" max="30" value="15" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>15 Yrs</span>
+                                    <span>30 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Interest Rate</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="interestRate" value="7.1" min="6.0" max="9.0" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="interestRateSlider" min="6.0" max="9.0" value="7.1" step="0.1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>6%</span>
+                                    <span>9%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card total-investment-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Total Investment</div>
+                            <div class="card-value" id="totalInvestmentResult">₹22,50,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card interest-earned-card">
+                        <div class="card-content">
+                            <div class="card-label">Interest Earned</div>
+                            <div class="card-value" id="interestEarnedResult">₹17,18,421</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card maturity-value-card">
+                        <div class="card-content">
+                            <div class="card-label">Maturity Value</div>
+                            <div class="card-value" id="maturityValueResult">₹39,68,421</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">PPF Investment Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="ppfChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator total-investment"></div>
+                            <div class="summary-label">Total Investment</div>
+                            <div class="summary-amount" id="totalInvestmentDisplay">₹22,50,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator interest-earned"></div>
+                            <div class="summary-label">Interest Earned</div>
+                            <div class="summary-amount" id="interestEarnedDisplay">₹17,18,421</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadPPFPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn table-btn" onclick="togglePPFTable()">
+                        <span class="btn-icon">📊</span>
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section hidden" id="ppfTableSection">
+            <div class="table-header">
+                <h2>Year-wise PPF Breakdown</h2>
+            </div>
+            
+            <div class="table-container" id="ppfYearlyTable">
+                <div class="table-wrapper">
+                    <table class="amortization-table">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Annual Contribution</th>
+                                <th>Opening Balance</th>
+                                <th>Interest Earned</th>
+                                <th>Closing Balance</th>
+                                <th>Total Invested</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ppfYearlyTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ppf_calculator_script.js') }}"></script>
+</body>
+</html>

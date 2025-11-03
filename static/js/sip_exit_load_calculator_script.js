@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDownloadButtons();
     setupMegaMenu();
     loadFromUrlParameters();
+    // Initialize slider fills for gradient track styling
+    initRangeFills();
     calculateAndUpdate();
 });
 
@@ -32,16 +34,34 @@ function setupEventListeners() {
             inputElement.addEventListener('input', function() {
                 const value = Math.max(Math.min(parseFloat(this.value) || min, max), min);
                 sliderElement.value = value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
             
             // Sync slider to input
             sliderElement.addEventListener('input', function() {
                 inputElement.value = this.value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
+            // Set initial fill
+            updateRangeFill(sliderElement);
         }
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function calculateAndUpdate() {
@@ -115,9 +135,9 @@ function updateChart(data) {
             datasets: [{
                 data: [data.totalInvested, data.netReturns, data.exitLoadCharges],
                 backgroundColor: [
-                    '#4facfe',  // Blue for invested amount
-                    '#43e97b',  // Green for net returns
-                    '#fa709a'   // Pink for exit load charges
+                    '#3c83f6',  // Total Invested (matches invested-amount-card)
+                    '#16a249',  // Net Returns (matches net-returns-card)
+                    '#43e97b'   // Exit Load Charges (matches exit-load-card)
                 ],
                 borderWidth: 0,
                 hoverOffset: 15
@@ -167,7 +187,7 @@ function updateYearlyBreakdownTable(yearlyBreakdown) {
         // Create year row
         const yearRow = document.createElement('tr');
         yearRow.className = 'year-row';
-        yearRow.style.cursor = 'pointer';
+        yearRow.style.cursor = 'default';
         yearRow.style.backgroundColor = '#f8fafc';
         yearRow.setAttribute('data-year', yearData.year);
         yearRow.innerHTML = `

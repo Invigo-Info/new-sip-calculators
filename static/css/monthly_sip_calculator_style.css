@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -45,7 +53,7 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -64,17 +72,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +96,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -344,10 +354,13 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    /* Use layered background: blue gradient for filled, light gray for rest */
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
     outline: none;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
 }
 
@@ -355,8 +368,8 @@ nav {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: transparent;
+    border-radius: 9999px;
     border: none;
 }
 
@@ -366,38 +379,44 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6; /* blue ring */
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.45);
 }
 
 .custom-slider::-moz-range-track {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: #e6edf5; /* Unfilled track */
+    border-radius: 9999px;
     border: none;
+}
+
+/* Firefox: filled portion of the track */
+.custom-slider::-moz-range-progress {
+    height: 6px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    border-radius: 9999px;
 }
 
 .custom-slider::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.45);
 }
 
 .slider-labels {
@@ -422,16 +441,26 @@ nav {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
     margin-bottom: 25px;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #F1F7FF 0%, #F7FBFF 100%);
+    border: 1px solid #E6F0FF;
+    box-shadow: 0 6px 24px rgba(59, 130, 246, 0.08);
 }
 
 .result-card {
-    background: white;
+    background: #ffffff;
     border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 18px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid #EEF2F7;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    /* Align icon and text horizontally for consistent layout */
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .result-card:hover {
@@ -450,15 +479,15 @@ nav {
 }
 
 .invested-amount-card::before {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
 }
 
 .returns-card::before {
-    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    background: linear-gradient(90deg, #0EA5A0 0%, #34D399 100%);
 }
 
 .maturity-card::before {
-    background: linear-gradient(135deg, #fa709a, #fee140);
+    background: #16a249;
 }
 
 .inflation-adjusted-card::before {
@@ -467,14 +496,22 @@ nav {
 
 .card-icon {
     font-size: 24px;
-    margin-bottom: 12px;
-    display: block;
+    /* remove vertical spacing since we use horizontal layout */
+    margin: 0;
+    /* normalize icon box to align across cards */
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .card-content {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+    flex: 1;
 }
 
 .card-label {
@@ -488,6 +525,46 @@ nav {
     font-weight: 700;
     color: #2d3748;
 }
+
+/* Emphasize values with colors like the screenshot */
+.invested-amount-card .card-value { color: #2563EB; }
+.returns-card .card-value { color: #16A34A; }
+.maturity-card {
+    background: #16a249;
+    border-color: #16a249;
+}
+.maturity-card .card-value {
+    color: #ffffff;
+    font-size: 24px;
+}
+
+.maturity-card .card-label,
+.maturity-card .card-icon { color: rgba(255,255,255,0.9); }
+
+/* Blue backgrounds for first two summary cards */
+.invested-amount-card,
+.returns-card {
+    background: #3c83f6;
+    border-color: #3c83f6;
+}
+.invested-amount-card .card-label,
+.returns-card .card-label,
+.invested-amount-card .card-icon,
+.returns-card .card-icon { color: rgba(255,255,255,0.9); }
+.invested-amount-card .card-value,
+.returns-card .card-value { color: #ffffff; }
+.invested-amount-card::before,
+.returns-card::before { background: #3c83f6; }
+
+/* Inflation Adjusted card background */
+.inflation-adjusted-card {
+    background: #16a249;
+    border-color: #16a249;
+}
+.inflation-adjusted-card::before { background: #16a249; }
+.inflation-adjusted-card .card-label,
+.inflation-adjusted-card .card-icon { color: rgba(255,255,255,0.9); }
+.inflation-adjusted-card .card-value { color: #ffffff; }
 
 .inflation-adjusted-card {
     /* Removed background gradient to match other cards */
@@ -543,11 +620,11 @@ nav {
 }
 
 .color-indicator.invested-amount {
-    background: #4facfe;
+    background: #3c83f6;
 }
 
 .color-indicator.returns-amount {
-    background: #43e97b;
+    background: #16a249;
 }
 
 .summary-label {
@@ -617,75 +694,77 @@ nav {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .mega-menu-btn {
-        width: 100%;
-        justify-content: center;
+        padding: 10px 16px;
+        font-size: 13px;
+        min-height: 40px;
     }
-    
+
     .mega-menu-content {
-        position: fixed;
-        top: 0;
+        min-width: 320px;
+        max-width: 350px;
         left: 0;
-        right: 0;
-        bottom: 0;
-        min-width: unset;
-        max-width: unset;
         transform: none;
-        margin-top: 0;
-        border-radius: 0;
+        right: 0;
+        margin: 6px auto 0;
     }
-    
+
     .mega-menu.open .mega-menu-content {
-        animation: none;
+        animation: mobileSlideDown 0.25s ease;
     }
-    
+
     .mega-menu-container {
         grid-template-columns: 1fr;
-        gap: 20px;
-        height: 100vh;
-        overflow-y: auto;
+        gap: 15px;
+        padding: 15px;
     }
-    
+
     .mega-menu-section {
+        padding: 0;
         border-right: none;
         border-bottom: 1px solid #f1f5f9;
-        padding: 20px;
+        padding-bottom: 15px;
     }
-    
+
     .mega-menu-section:last-child {
         border-bottom: none;
+        padding-bottom: 0;
     }
-    
+
     .mega-section-title {
         font-size: 14px;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
     }
-    
+    /* Keep SIP menu full-width but leave Home sized naturally */
+    .mega-menu-btn { width: 100%; }
+    .home-btn { width: auto; }
+
     .mega-link {
         padding: 8px 12px;
         font-size: 14px;
     }
-    
+
     .mega-link:hover {
         transform: none;
+        background: #f8fafc;
     }
-    
+
     .mega-link.active {
         transform: none;
     }
-    
+
     .mega-link.active:hover {
         transform: none;
     }
-    
+
     .nav-link {
         font-size: 14px;
-        padding: 10px 16px;
+        padding: 8px 12px;
     }
     
     header h1 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
 }
 
@@ -693,6 +772,7 @@ nav {
     header h1 {
         font-size: 1.25rem;
     }
+    header { padding: 12px; }
     
     .result-value {
         font-size: 16px;
@@ -725,6 +805,7 @@ nav {
 
 .table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border-radius: 8px;
     border: 1px solid #e2e8f0;
 }
@@ -733,6 +814,7 @@ nav {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+    min-width: 720px;
 }
 
 .amortization-table thead {
@@ -787,6 +869,24 @@ nav {
 
 .amortization-table tbody tr:last-child {
     border-bottom: none;
+}
+
+/* Header color overrides for specific columns */
+.amortization-table thead th:nth-child(2) { /* Yearly Investment */
+    background: #3c83f6 !important;
+    color: #ffffff !important;
+}
+.amortization-table thead th:nth-child(4) { /* Expected Value */
+    background: #16a249 !important;
+    color: #ffffff !important;
+}
+.amortization-table thead th:nth-child(5) { /* Returns Earned */
+    background: #ccf8dc !important;
+    color: #14532d !important;
+}
+.amortization-table thead th:nth-child(6) { /* Inflation Adjusted Value */
+    background: #16a249 !important;
+    color: #ffffff !important;
 }
 
 .amortization-table td {
@@ -870,7 +970,7 @@ nav {
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border: none;
+    border: 2px solid transparent;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
@@ -880,33 +980,39 @@ nav {
 }
 
 .pdf-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: transparent;
+    border-color: #3c83f6;
+    color: #3c83f6;
 }
 
 .pdf-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    background: #3c83f6;
+    border-color: #3c83f6;
+    color: #ffffff;
 }
 
 .excel-btn {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    color: white;
+    background: transparent;
+    border-color: #16a249;
+    color: #16a249;
 }
 
 .excel-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+    background: #16a249;
+    border-color: #16a249;
+    color: #ffffff;
 }
 
 .share-btn {
-    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-    color: #8b4513;
+    background: transparent;
+    border-color: #164ab3;
+    color: #164ab3;
 }
 
 .share-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(252, 182, 159, 0.4);
+    background: #164ab3;
+    border-color: #164ab3;
+    color: #ffffff;
 }
 
 .btn-icon {
@@ -937,4 +1043,13 @@ nav {
         max-width: 250px;
         margin: 0 auto;
     }
-} 
+}
+
+@media (max-width: 768px) {
+    .results-section { position: static; top: auto; }
+    .results-card-grid { grid-template-columns: 1fr; gap: 12px; }
+    .pie-chart-container { height: 220px; }
+    .chart-summary { flex-direction: column; align-items: center; gap: 8px; }
+    .mega-menu-btn { width: 100%; }
+    .home-btn { width: auto; }
+}

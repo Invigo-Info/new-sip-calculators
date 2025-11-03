@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRA Calculator | Calculate House Rent Allowance Tax Exemption</title>
+    <meta name="description" content="Calculate HRA tax exemption with our comprehensive House Rent Allowance calculator. Plan your tax savings with accurate exemption calculations.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hra_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HRA Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- HRA Calculation Section -->
+                <div class="section">
+                    <h2>Calculate HRA Exemption (Annual)</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label" data-tooltip="Your annual basic salary excluding allowances (per annum)">
+                                    Basic Salary Received (Annual)
+                                    <span class="tooltip-icon">💡</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="basicSalaryAnnual" value="600000" min="12000" max="50000000" step="12000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="basicSalaryAnnualSlider" min="12000" max="2400000" value="600000" step="12000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹12K</span>
+                                    <span>₹24L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label" data-tooltip="DA - This allowance is given to government and public sector employees and pensioners.">
+                                    Dearness Allowance (DA) Received (Annual)
+                                    <span class="tooltip-icon">💡</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="daReceivedAnnual" value="0" min="0" max="50000000" step="6000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="daReceivedAnnualSlider" min="0" max="1200000" value="0" step="6000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹0</span>
+                                    <span>₹12L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label" data-tooltip="Annual House Rent Allowance you receive from employer (per annum)">
+                                    HRA Received (Annual)
+                                    <span class="tooltip-icon">💡</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="hraReceivedAnnual" value="180000" min="0" max="50000000" step="6000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="hraReceivedAnnualSlider" min="0" max="1200000" value="180000" step="6000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹0</span>
+                                    <span>₹12L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label" data-tooltip="Total annual rent you pay for accommodation (per annum)">
+                                    Total Rent Paid (Annual)
+                                    <span class="tooltip-icon">💡</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="rentPaidAnnual" value="240000" min="0" max="50000000" step="6000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="rentPaidAnnualSlider" min="0" max="1800000" value="240000" step="6000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹0</span>
+                                    <span>₹18L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label" data-tooltip="Do you live in Delhi, Mumbai, Kolkata or Chennai? Metro cities get 50% exemption of basic salary, Non-metro cities get 40%">
+                                    Do you live in Delhi, Mumbai, Kolkata or Chennai?
+                                    <span class="tooltip-icon">💡</span>
+                                </label>
+                            </div>
+                            <div class="city-type-container">
+                                <select id="cityType" class="city-type-select">
+                                    <option value="metro">Yes (Metro City - 50% of Basic Salary)</option>
+                                    <option value="non-metro">No (Non-Metro City - 40% of Basic Salary)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card hra-exempt-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">HRA Exempt Amount (Annual)</div>
+                            <div class="card-value" id="hraExemptResult">₹1,80,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card taxable-hra-card">
+                        <div class="card-content">
+                            <div class="card-label">Taxable HRA Amount (Annual)</div>
+                            <div class="card-value" id="taxableHraResult">₹0</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card tax-saving-card">
+                        <div class="card-content">
+                            <div class="card-label">Potential Tax Savings (Annual)</div>
+                            <div class="card-value" id="taxSavingsResult">₹54,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">HRA Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="hraChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator hra-exempt"></div>
+                            <div class="summary-label">HRA Exempt (Annual)</div>
+                            <div class="summary-amount" id="hraExemptDisplay">₹1,80,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator taxable-hra"></div>
+                            <div class="summary-label">Taxable HRA (Annual)</div>
+                            <div class="summary-amount" id="taxableHraDisplay">₹0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculation Details -->
+                <div class="calculation-details">
+                    <div class="details-header">Calculation Details (Annual)</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Basic Salary (Annual):</span>
+                        <span class="detail-value" id="basicSalaryDetail">₹6,00,000</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Dearness Allowance (Annual):</span>
+                        <span class="detail-value" id="daReceivedDetail">₹0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Total Salary (Basic + DA):</span>
+                        <span class="detail-value" id="totalSalaryDetail">₹6,00,000</span>
+                    </div>
+                    <div class="detail-item separator">
+                        <span class="detail-label"><strong>HRA Exemption Calculation:</strong></span>
+                        <span class="detail-value"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">1. Actual HRA Received:</span>
+                        <span class="detail-value" id="actualHraDetail">₹1,80,000</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">2. 50%/40% of Basic Salary:</span>
+                        <span class="detail-value" id="salaryPercentageDetail">₹3,00,000</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">3. Rent - 10% of Total Salary:</span>
+                        <span class="detail-value" id="rentMinusTenDetail">₹1,80,000</span>
+                    </div>
+                    <div class="detail-item highlight">
+                        <span class="detail-label"><strong>Minimum (HRA Exempt):</strong></span>
+                        <span class="detail-value" id="minimumExemptDetail">₹1,80,000</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadHRAPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn share-btn" onclick="shareHRAResults()">
+                        <span class="btn-icon">📤</span>
+                        Share Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hra_calculator_script.js') }}"></script>
+</body>
+</html>

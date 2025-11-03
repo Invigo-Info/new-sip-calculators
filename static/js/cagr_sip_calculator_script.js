@@ -45,6 +45,7 @@ Chart.register(centerTextPlugin);
 document.addEventListener('DOMContentLoaded', function() {
     setupSliders();
     addEventListeners();
+    initRangeFills();
     calculateAndUpdateResults();
 });
 
@@ -61,14 +62,30 @@ function syncInputs(input, slider) {
         if (value >= slider.min && value <= slider.max) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateResults();
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function addEventListeners() {
@@ -138,7 +155,7 @@ function updateChart(result) {
             labels: ['Initial Investment', 'Absolute Returns'],
             datasets: [{
                 data: [result.initial_investment, result.absolute_returns],
-                backgroundColor: ['#6C63FF', '#FF6B6B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTC Calculator | Calculate Cost to Company & Take Home Salary</title>
+    <meta name="description" content="Calculate your take-home salary from CTC with our comprehensive Cost to Company calculator. Get detailed breakdown of salary components, deductions, and employer contributions.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ctc_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CTC Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- CTC Calculation Section -->
+                <div class="section">
+                    <h2>Calculate CTC & Take-Home Salary</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Cost to Company (CTC)</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="ctcAmount" value="83333" min="10000" max="1000000" step="1000">
+                                    <span class="input-suffix" id="ctcFrequencyLabel">monthly</span>
+                                </div>
+                            </div>
+                            <div class="ctc-frequency-container">
+                                <select id="ctcFrequency" class="frequency-select">
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                            </div>
+                            <div class="ctc-toggle-container">
+                                <button type="button" class="ctc-toggle-btn active" id="monthlyToggle">Monthly</button>
+                                <button type="button" class="ctc-toggle-btn" id="yearlyToggle">Yearly</button>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="ctcSlider" min="10000" max="1000000" value="83333" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span id="ctcMinLabel">₹10K</span>
+                                    <span id="ctcMaxLabel">₹10L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Basic Salary (% of CTC)</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="basicSalaryPercent" value="40" min="30" max="60" step="1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="basicSalaryPercentSlider" min="30" max="60" value="40" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>30%</span>
+                                    <span>60%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">HRA (% of Basic Salary)</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="hraPercent" value="40" min="0" max="100" step="5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="hraPercentSlider" min="0" max="100" value="40" step="5" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>0%</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Settings -->
+                        <div class="advanced-settings">
+                            <div class="advanced-header">
+                                <button type="button" class="advanced-toggle" id="advancedToggle">
+                                    Advanced Settings
+                                    <span class="toggle-arrow">▼</span>
+                                </button>
+                            </div>
+                            <div class="advanced-content hidden" id="advancedContent">
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Special Allowance</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="specialAllowance" value="0" min="0" max="500000" step="1000">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Bonus / Variable Pay</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="bonusAmount" value="0" min="0" max="500000" step="1000">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Employer PF Contribution (%)</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="employerPfPercent" value="12" min="0" max="20" step="0.5">
+                                            <span class="input-suffix">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Employee PF Contribution (%)</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="employeePfPercent" value="12" min="0" max="20" step="0.5">
+                                            <span class="input-suffix">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Gratuity (%)</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="gratuityPercent" value="4.81" min="0" max="10" step="0.1">
+                                            <span class="input-suffix">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Professional Tax (Annual)</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="professionalTax" value="2400" min="0" max="5000" step="100">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tax Regime Section -->
+                        <div class="tax-regime-section">
+                            <h3>Tax Regime</h3>
+                            <div class="tax-regime-toggle-container">
+                                <button type="button" class="tax-regime-btn" id="oldRegimeBtn">Old</button>
+                                <button type="button" class="tax-regime-btn active" id="newRegimeBtn">New</button>
+                            </div>
+
+                            <!-- Tax Deductions (Old Regime) -->
+                            <div class="tax-deductions-section hidden" id="taxDeductionsSection">
+                                <h4>Tax Deductions (Old Regime)</h4>
+                                
+                                <div class="input-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="metroCity" checked>
+                                        <label for="metroCity" class="checkbox-label">Metro City (for HRA calculation)</label>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Monthly Rent Paid</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="monthlyRent" value="0" min="0" max="100000" step="1000">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Section 80C (Max ₹1.5L)</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="section80C" value="0" min="0" max="150000" step="1000">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Section 80CCD(1B) - NPS</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="section80CCD1B" value="0" min="0" max="50000" step="1000">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Section 80D (Health Insurance)</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="section80D" value="0" min="0" max="100000" step="1000">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="seniorCitizens">
+                                        <label for="seniorCitizens" class="checkbox-label">Self/Family are Senior Citizens (60+ years)</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="includeParents">
+                                        <label for="includeParents" class="checkbox-label">Include Parents</label>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Section 80TTA (Savings Interest)</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="section80TTA" value="0" min="0" max="10000" step="100">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-row">
+                                        <label class="input-label">Home Loan Interest</label>
+                                        <div class="input-field-container">
+                                            <input type="number" id="homeLoanInterest" value="0" min="0" max="200000" step="1000">
+                                            <span class="input-suffix">₹</span>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="propertyRentedOut">
+                                        <label for="propertyRentedOut" class="checkbox-label">Property is rented out</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tax Calculation Options -->
+                            <div class="tax-options-section">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="epfApplicable" checked>
+                                    <label for="epfApplicable" class="checkbox-label">EPF Applicable</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="professionalTaxApplicable" checked>
+                                    <label for="professionalTaxApplicable" class="checkbox-label">Professional Tax Applicable</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card annual-ctc-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Annual CTC</div>
+                            <div class="card-value" id="annualCtcResult">₹10,00,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card monthly-gross-card">
+                        <div class="card-content">
+                            <div class="card-label">Monthly Gross Salary</div>
+                            <div class="card-value" id="monthlyGrossResult">₹79,167</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card monthly-takehome-card">
+                        <div class="card-content">
+                            <div class="card-label">Monthly Take-Home</div>
+                            <div class="card-value" id="monthlyTakehomeResult">₹71,167</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card takehome-percentage-card">
+                        <div class="card-content">
+                            <div class="card-label">Take-Home Percentage</div>
+                            <div class="card-value" id="takehomePercentageResult">85.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card tax-regime-card">
+                        <div class="card-content">
+                            <div class="card-label">Tax Regime</div>
+                            <div class="card-value" id="currentTaxRegimeResult">New Regime</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown -->
+                <div class="breakdown-section">
+                    <div class="breakdown-header">Salary Breakdown</div>
+                    <div class="breakdown-grid">
+                        <div class="breakdown-column">
+                            <h4>Earnings (Monthly)</h4>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Basic Salary</span>
+                                <span class="breakdown-amount" id="basicSalaryAmount">₹33,333</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">HRA</span>
+                                <span class="breakdown-amount" id="hraAmount">₹13,333</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Special Allowance</span>
+                                <span class="breakdown-amount" id="specialAllowanceAmount">₹0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Bonus (Monthly)</span>
+                                <span class="breakdown-amount" id="bonusMonthlyAmount">₹0</span>
+                            </div>
+                            <div class="breakdown-total">
+                                <span class="breakdown-label">Gross Salary</span>
+                                <span class="breakdown-amount" id="grossSalaryAmount">₹79,167</span>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-column">
+                            <h4>Deductions (Monthly)</h4>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Employee PF</span>
+                                <span class="breakdown-amount" id="employeePfAmount">₹4,000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Professional Tax</span>
+                                <span class="breakdown-amount" id="professionalTaxAmount">₹200</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Income Tax</span>
+                                <span class="breakdown-amount" id="incomeTaxAmount">₹0</span>
+                            </div>
+                            <div class="breakdown-total">
+                                <span class="breakdown-label">Total Deductions</span>
+                                <span class="breakdown-amount" id="totalDeductionsAmount">₹4,200</span>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-column">
+                            <h4>Employer Contributions (Monthly)</h4>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Employer PF</span>
+                                <span class="breakdown-amount" id="employerPfAmount">₹4,000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Gratuity</span>
+                                <span class="breakdown-amount" id="gratuityAmount">₹1,603</span>
+                            </div>
+                            <div class="breakdown-total">
+                                <span class="breakdown-label">Total Contributions</span>
+                                <span class="breakdown-amount" id="totalContributionsAmount">₹5,603</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tax Breakdown Section -->
+                <div class="tax-breakdown-section" id="taxBreakdownSection">
+                    <div class="breakdown-header">Tax Calculation Details</div>
+                    <div class="tax-info-grid">
+                        <div class="tax-info-item">
+                            <span class="tax-info-label">Current Tax Regime</span>
+                            <span class="tax-info-value" id="currentRegimeDisplay">New Regime</span>
+                        </div>
+                        <div class="tax-info-item">
+                            <span class="tax-info-label">Taxable Income</span>
+                            <span class="tax-info-value" id="taxableIncomeDisplay">₹5,00,000</span>
+                        </div>
+                        <div class="tax-info-item">
+                            <span class="tax-info-label">Annual Income Tax</span>
+                            <span class="tax-info-value" id="annualIncomeTaxDisplay">₹15,000</span>
+                        </div>
+                        <div class="tax-info-item old-regime-only hidden" id="hraExemptionInfo">
+                            <span class="tax-info-label">HRA Exemption</span>
+                            <span class="tax-info-value" id="hraExemptionDisplay">₹0</span>
+                        </div>
+                    </div>
+                    <div class="tax-regime-switch-info">
+                        <p class="regime-switch-text" id="regimeSwitchAdvice">
+                            💡 Switch to Old Regime if you have tax-saving investments to reduce your tax liability.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">CTC Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="ctcChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator takehome-color"></div>
+                            <div class="summary-label">Take-Home Salary</div>
+                            <div class="summary-amount" id="takehomeDisplay">₹8,54,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator deductions-color"></div>
+                            <div class="summary-label">Total Deductions</div>
+                            <div class="summary-amount" id="deductionsDisplay">₹50,400</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator contributions-color"></div>
+                            <div class="summary-label">Employer Contributions</div>
+                            <div class="summary-amount" id="contributionsDisplay">₹67,236</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadCtcPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn table-btn" onclick="toggleCtcTable()">
+                        <span class="btn-icon">📊</span>
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section hidden" id="ctcTableSection">
+            <div class="table-header">
+                <h2>Detailed CTC Breakdown</h2>
+            </div>
+            
+            <div class="table-container" id="ctcDetailTable">
+                <div class="table-wrapper">
+                    <table class="amortization-table">
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Monthly Amount</th>
+                                <th>Annual Amount</th>
+                                <th>Percentage of CTC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ctcDetailTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ctc_calculator_script.js') }}"></script>
+</body>
+</html>

@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -45,7 +53,7 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -64,17 +72,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +96,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -343,9 +353,11 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
     outline: none;
+    -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
 }
@@ -354,8 +366,8 @@ nav {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: transparent;
+    border-radius: 9999px;
     border: none;
 }
 
@@ -363,23 +375,23 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
     appearance: none;
-    border: none;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .custom-slider::-moz-range-track {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: #e6edf5;
+    border-radius: 9999px;
     border: none;
 }
 
@@ -387,14 +399,14 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: none;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .slider-labels {
@@ -419,6 +431,11 @@ nav {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     margin-bottom: 20px;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #F1F7FF 0%, #F7FBFF 100%);
+    border: 1px solid #E6F0FF;
+    box-shadow: 0 6px 24px rgba(59, 130, 246, 0.08);
 }
 
 .result-card {
@@ -446,23 +463,23 @@ nav {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #93C5FD 0%, #D1FAE5 100%);
 }
 
 .invested-amount-card::before {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
 }
 
 .returns-card::before {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    background: linear-gradient(90deg, #0EA5A0 0%, #34D399 100%);
 }
 
 .maturity-card::before {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    background: #16a249;
 }
 
 .inflation-adjusted-card::before {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    background: #16a249;
 }
 
 .card-icon {
@@ -491,10 +508,41 @@ nav {
     color: #2d3748;
 }
 
+/* Emphasize values to match the provided UI */
+.invested-amount-card .card-value { color: #2563EB; }
+.returns-card .card-value { color: #16A34A; }
+.maturity-card {
+    background: #16a249;
+    border: 1px solid #16a249;
+}
+.maturity-card .card-value {
+    color: #ffffff;
+    font-size: 24px;
+}
+
+.maturity-card .card-label,
+.maturity-card .card-icon { color: rgba(255,255,255,0.9); }
+
+/* Blue backgrounds for first two summary cards */
+.invested-amount-card,
+.returns-card {
+    background: #3c83f6;
+    border: 1px solid #3c83f6;
+}
+.invested-amount-card .card-label,
+.returns-card .card-label,
+.invested-amount-card .card-icon,
+.returns-card .card-icon { color: rgba(255,255,255,0.9); }
+.invested-amount-card .card-value,
+.returns-card .card-value { color: #ffffff; }
+.invested-amount-card::before,
+.returns-card::before { background: #3c83f6; }
+
 .inflation-adjusted-card {
-    grid-column: span 2;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    grid-column: auto;
+    background: #16a249;
+    color: #ffffff;
+    border: 1px solid #16a249;
 }
 
 .inflation-adjusted-card .card-label,
@@ -503,11 +551,11 @@ nav {
 }
 
 .inflation-adjusted-card .card-value {
-    color: white;
+    color: #ffffff;
 }
 
 .inflation-adjusted-card .card-label {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .chart-section {
@@ -553,12 +601,13 @@ nav {
     border-radius: 50%;
 }
 
+
 .color-indicator.invested-amount {
-    background: #4facfe;
+    background: #3c83f6;
 }
 
 .color-indicator.returns-amount {
-    background: #43e97b;
+    background: #16a249;
 }
 
 .summary-label {
@@ -575,7 +624,7 @@ nav {
 
 @media (max-width: 768px) {
     .container {
-        padding: 15px;
+        padding: 12px;
     }
 
     .calculator-container {
@@ -589,6 +638,8 @@ nav {
 
     .results-section {
         order: 2;
+        position: static;
+        top: auto;
     }
 
     .results-card-grid {
@@ -618,6 +669,10 @@ nav {
 
     .inflation-adjusted-card .card-value {
         font-size: 18px;
+    }
+
+    .pie-chart-container {
+        height: 220px;
     }
 
     .input-field-container,
@@ -672,6 +727,15 @@ nav {
         margin-bottom: 8px;
     }
 
+    .chart-summary {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    /* Keep SIP menu full-width but leave Home sized naturally */
+    .mega-menu-btn { width: 100%; }
+    .home-btn { width: auto; }
+
     .mega-link {
         padding: 8px 12px;
         font-size: 14px;
@@ -704,6 +768,7 @@ nav {
     header h1 {
         font-size: 1.4rem;
     }
+    header { padding: 12px; }
 
     .result-value {
         font-size: 1.4rem;
@@ -716,6 +781,8 @@ nav {
     .frequency-container {
         margin-bottom: 8px;
     }
+    .mega-menu-btn { width: 100%; }
+    .home-btn { width: auto; }
 }
 
 .amortization-section {
@@ -745,6 +812,7 @@ nav {
     border-collapse: collapse;
     font-size: 14px;
     background: white;
+    min-width: 720px;
 }
 
 .amortization-table thead {
@@ -795,6 +863,24 @@ nav {
 
 .amortization-table tbody tr:last-child {
     border-bottom: none;
+}
+
+/* Header color overrides for specific columns */
+.amortization-table thead th:nth-child(2) { /* Yearly Investment */
+    background: #3c83f6 !important;
+    color: #ffffff !important;
+}
+.amortization-table thead th:nth-child(4) { /* Expected Value */
+    background: #16a249 !important;
+    color: #ffffff !important;
+}
+.amortization-table thead th:nth-child(5) { /* Returns Earned */
+    background: #ccf8dc !important;
+    color: #14532d !important;
+}
+.amortization-table thead th:nth-child(6) { /* Inflation Adjusted Value */
+    background: #16a249 !important;
+    color: #ffffff !important;
 }
 
 .amortization-table td {
@@ -883,13 +969,15 @@ nav {
 }
 
 .pdf-btn {
-    border-color: #e53e3e;
-    color: #e53e3e;
+    background: transparent;
+    border-color: #3c83f6;
+    color: #3c83f6;
 }
 
 .pdf-btn:hover {
-    background: #e53e3e;
-    color: white;
+    background: #3c83f6;
+    border-color: #3c83f6;
+    color: #ffffff;
 }
 
 .excel-btn {

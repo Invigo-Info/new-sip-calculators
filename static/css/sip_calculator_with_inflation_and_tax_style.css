@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -45,7 +53,7 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -63,18 +71,15 @@ nav {
     box-sizing: border-box;
 }
 
-.home-btn:hover {
-    background: #2c5282;
-    color: white;
-}
+.home-btn:hover { background: #3c83f6; color: white; }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +93,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -134,12 +141,7 @@ nav {
     }
 }
 
-.mega-menu-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    padding: 18px;
-}
+.mega-menu-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; padding: 18px; }
 
 .mega-menu-section {
     padding: 0 14px;
@@ -357,8 +359,12 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
+    -webkit-appearance: none; /* Chrome/Safari */
+    -moz-appearance: none;    /* Firefox */
+    appearance: none;
     outline: none;
     cursor: pointer;
 }
@@ -366,8 +372,8 @@ nav {
 .custom-slider::-webkit-slider-track {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: transparent;
     border: none;
     outline: none;
 }
@@ -377,37 +383,55 @@ nav {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
     cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .custom-slider::-moz-range-track {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: #e6edf5;
     border: none;
     outline: none;
+}
+
+.custom-slider::-moz-range-progress {
+    height: 6px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    border-radius: 9999px;
 }
 
 .custom-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
     cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
-.custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
+.custom-slider::-moz-range-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
+
+/* Firefox filled portion uses ::-moz-range-progress */
+.custom-slider::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    background: #e6edf5; /* unfilled */
+    border-radius: 9999px;
+}
+
+.custom-slider::-moz-range-progress {
+    height: 6px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%); /* filled */
+    border-radius: 9999px;
 }
 
 .slider-labels {
@@ -470,12 +494,12 @@ nav {
 }
 
 .result-card.invested-amount-card {
-    background: linear-gradient(135deg, #e6f3ff, #cce7ff);
-    border-color: #4facfe;
+    background: #3c83f6;
+    border: 1px solid #3c83f6;
 }
 
 .result-card.invested-amount-card::before {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    background: #3c83f6;
 }
 
 .result-card.invested-amount-card:hover {
@@ -483,12 +507,12 @@ nav {
 }
 
 .result-card.gross-returns-card {
-    background: linear-gradient(135deg, #e6ffe6, #ccf5cc);
-    border-color: #43e97b;
+    background: #16a249;
+    border: 1px solid #16a249;
 }
 
 .result-card.gross-returns-card::before {
-    background: linear-gradient(135deg, #43e97b, #52f788);
+    background: #16a249;
 }
 
 .result-card.gross-returns-card:hover {
@@ -496,38 +520,38 @@ nav {
 }
 
 .result-card.inflation-impact-card {
-    background: linear-gradient(135deg, #fff2e6, #ffe6cc);
-    border-color: #ff9500;
+    background: #fa709a;
+    border: 1px solid #fa709a;
 }
 
 .result-card.inflation-impact-card::before {
-    background: linear-gradient(135deg, #ff9500, #ffad33);
+    background: #fa709a;
 }
 
 .result-card.inflation-impact-card:hover {
-    box-shadow: 0 8px 30px rgba(255, 149, 0, 0.2);
+    box-shadow: 0 8px 30px rgba(250, 112, 154, 0.2);
 }
 
 .result-card.tax-impact-card {
-    background: linear-gradient(135deg, #ffe6f2, #ffccdd);
-    border-color: #e91e63;
+    background: #34c063;
+    border: 1px solid #34c063;
 }
 
 .result-card.tax-impact-card::before {
-    background: linear-gradient(135deg, #e91e63, #f06292);
+    background: #34c063;
 }
 
 .result-card.tax-impact-card:hover {
-    box-shadow: 0 8px 30px rgba(233, 30, 99, 0.2);
+    box-shadow: 0 8px 30px rgba(52, 192, 99, 0.2);
 }
 
 .result-card.net-returns-card {
-    background: linear-gradient(135deg, #f0e6ff, #e6ccff);
-    border-color: #9c27b0;
+    background: #16a249;
+    border: 1px solid #16a249;
 }
 
 .result-card.net-returns-card::before {
-    background: linear-gradient(135deg, #9c27b0, #ba68c8);
+    background: #16a249;
 }
 
 .result-card.net-returns-card:hover {
@@ -535,12 +559,12 @@ nav {
 }
 
 .result-card.maturity-card {
-    background: linear-gradient(135deg, #e8f5e8, #d4f4d4);
-    border-color: #4caf50;
+    background: #16a249;
+    border: 1px solid #16a249;
 }
 
 .result-card.maturity-card::before {
-    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    background: #16a249;
 }
 
 .result-card.maturity-card:hover {
@@ -548,12 +572,12 @@ nav {
 }
 
 .result-card.real-value-card {
-    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
-    border-color: #ff9800;
+    background: #16a249;
+    border: 1px solid #16a249;
 }
 
 .result-card.real-value-card::before {
-    background: linear-gradient(135deg, #ff9800, #ffb74d);
+    background: #16a249;
 }
 
 .result-card.real-value-card:hover {
@@ -584,6 +608,12 @@ nav {
     color: #2d3748;
     margin-top: 5px;
     text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Force white text on all result cards for readability */
+.result-card .card-label,
+.result-card .card-value {
+    color: #ffffff;
 }
 
 .chart-section {
@@ -637,12 +667,10 @@ nav {
     background: #43e97b;
 }
 
-.color-indicator.inflation-impact-amount {
-    background: #ff9500;
-}
+.color-indicator.inflation-impact-amount { background: #fa709a; }
 
 .color-indicator.tax-impact-amount {
-    background: #e91e63;
+    background: #2cca62;
 }
 
 .summary-label {
@@ -711,6 +739,21 @@ nav {
 .amortization-table th:last-child {
     text-align: right;
 }
+
+/* Year-wise SIP Growth with Inflation & Tax header colors */
+#yearlyBreakdownTable thead { background: transparent; }
+#yearlyBreakdownTable thead th { color: #ffffff; }
+#yearlyBreakdownTable thead th:nth-child(1) { /* Year */
+    background: #1e3a8a;
+}
+#yearlyBreakdownTable thead th:nth-child(2), /* Yearly Investment */
+#yearlyBreakdownTable thead th:nth-child(3)  /* Cumulative Investment */
+{ background: #3c83f6; }
+#yearlyBreakdownTable thead th:nth-child(4), /* Gross Value */
+#yearlyBreakdownTable thead th:nth-child(5), /* Tax Impact */
+#yearlyBreakdownTable thead th:nth-child(6), /* Net Value (After Tax) */
+#yearlyBreakdownTable thead th:nth-child(7)  /* Real Value (After Inflation) */
+{ background: #16a249; }
 
 .amortization-table tbody tr {
     border-bottom: 1px solid #f1f5f9;
@@ -828,44 +871,24 @@ nav {
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border: none;
     border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
+    background: transparent;
+    border: 2px solid transparent;
 }
 
-.pdf-btn {
-    background: #dc2626;
-    color: white;
-}
+.pdf-btn { border-color: #3c83f6; color: #3c83f6; }
+.pdf-btn:hover { background: #3c83f6; color: #ffffff; transform: translateY(-1px); }
 
-.pdf-btn:hover {
-    background: #b91c1c;
-    transform: translateY(-1px);
-}
+.excel-btn { border-color: #16a249; color: #16a249; }
+.excel-btn:hover { background: #16a249; color: #ffffff; transform: translateY(-1px); }
 
-.excel-btn {
-    background: #059669;
-    color: white;
-}
-
-.excel-btn:hover {
-    background: #047857;
-    transform: translateY(-1px);
-}
-
-.share-btn {
-    background: #3b82f6;
-    color: white;
-}
-
-.share-btn:hover {
-    background: #2563eb;
-    transform: translateY(-1px);
-}
+.share-btn { border-color: #164ab3; color: #164ab3; }
+.share-btn:hover { background: #164ab3; color: #ffffff; transform: translateY(-1px); }
 
 .btn-icon {
     font-size: 1.1rem;

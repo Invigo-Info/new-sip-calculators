@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Calculator | Calculate Goods & Services Tax</title>
+    <meta name="description" content="Calculate GST (Goods & Services Tax) with our comprehensive calculator. Add or remove GST, view breakdown, and get accurate tax calculations.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gst_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GST Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- GST Calculation Section -->
+                <div class="section">
+                    <h2>Calculate GST</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Amount</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="gstAmount" value="10000" min="0" step="0.01">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="gstAmountSlider" min="0" max="20000000" value="10000" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹0</span>
+                                    <span>₹2Cr</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">GST Rate</label>
+                            </div>
+                            <div class="gst-rate-container">
+                                <select id="gstRate" class="gst-rate-select">
+                                    <option value="0">0% - Essential goods</option>
+                                    <option value="5">5% - Essential items</option>
+                                    <option value="12">12% - Standard items</option>
+                                    <option value="18" selected>18% - Services & goods</option>
+                                    <option value="28">28% - Luxury items</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Calculation Type</label>
+                            </div>
+                            <div class="calculation-type-container">
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="addGst" name="calculationType" value="add" checked>
+                                        <label for="addGst" class="radio-label">
+                                            <span class="radio-custom"></span>
+                                            <span class="radio-text">
+                                                <strong>Add GST</strong>
+                                                <small>Amount is exclusive of GST</small>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="removeGst" name="calculationType" value="remove">
+                                        <label for="removeGst" class="radio-label">
+                                            <span class="radio-custom"></span>
+                                            <span class="radio-text">
+                                                <strong>Remove GST</strong>
+                                                <small>Amount is inclusive of GST</small>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card base-amount-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Base Amount</div>
+                            <div class="card-value" id="baseAmountResult">₹10,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card gst-amount-card">
+                        <div class="card-content">
+                            <div class="card-label">GST Amount</div>
+                            <div class="card-value" id="gstAmountResult">₹1,800</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card total-amount-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Amount</div>
+                            <div class="card-value" id="totalAmountResult">₹11,800</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breakdown Summary -->
+                <div class="breakdown-summary">
+                    <div class="summary-header">GST Breakdown</div>
+                    <div class="summary-content" id="gstBreakdownText">
+                        For an amount of ₹10,000 with 18% GST (Add GST):<br>
+                        • Base Amount: ₹10,000<br>
+                        • GST Amount: ₹1,800<br>
+                        • Total Amount: ₹11,800
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">GST Amount Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="gstChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator base-amount"></div>
+                            <div class="summary-label">Base Amount</div>
+                            <div class="summary-amount" id="baseAmountDisplay">₹10,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator gst-amount"></div>
+                            <div class="summary-label">GST Amount</div>
+                            <div class="summary-amount" id="gstAmountDisplay">₹1,800</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadGstPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn history-btn" onclick="toggleGstHistory()">
+                        <span class="btn-icon">📊</span>
+                        View History
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div class="history-section hidden" id="gstHistorySection">
+            <div class="history-header">
+                <h2>Recent Calculations</h2>
+                <button class="clear-history-btn" onclick="clearGstHistory()">Clear History</button>
+            </div>
+            
+            <div class="history-container" id="gstHistoryContainer">
+                <div class="history-wrapper">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Amount</th>
+                                <th>GST Rate</th>
+                                <th>Type</th>
+                                <th>Base Amount</th>
+                                <th>GST Amount</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gstHistoryTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gst_calculator_script.js') }}"></script>
+</body>
+</html>

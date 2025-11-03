@@ -14,6 +14,7 @@ const tenureYearsSlider = document.getElementById('tenureYearsSlider');
 const centerTextPlugin = {
     id: 'centerText',
     beforeDraw: function(chart) {
+        if (!chart.chartArea) return;
         if (chart.config.options.plugins.centerText && chart.config.options.plugins.centerText.display) {
             const ctx = chart.ctx;
             const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addEventListeners();
     calculateAndUpdateResults();
     setupMegaMenu();
+initRangeFills();
 });
 
 function setupSliders() {
@@ -61,6 +63,7 @@ function syncInputs(input, slider) {
         const value = this.value;
         if (value >= slider.min && value <= slider.max) {
             slider.value = value;
+        updateRangeFill(slider);
         }
         calculateAndUpdateResults();
     });
@@ -68,6 +71,7 @@ function syncInputs(input, slider) {
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateResults();
     });
 }
@@ -140,7 +144,7 @@ function updateChart(result) {
             labels: ['Initial Investment', 'Absolute Returns'],
             datasets: [{
                 data: [result.initial_investment, result.absolute_returns],
-                backgroundColor: ['#6C63FF', '#FF6B6B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',
@@ -196,7 +200,19 @@ function formatCurrency(amount) {
     }).format(Math.round(amount));
 }
 
-// Mega menu functionality
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+  document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}
+// Mega menu functionality (restored)
 function setupMegaMenu() {
     const megaMenuBtn = document.querySelector('.mega-menu-btn');
     const megaMenuContent = document.querySelector('.mega-menu-content');
@@ -223,4 +239,4 @@ function setupMegaMenu() {
             megaMenu.classList.remove('open');
         });
     });
-} 
+}

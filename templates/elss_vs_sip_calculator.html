@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELSS vs SIP Calculator | Compare ELSS Tax Benefits with Regular SIP</title>
+    <meta name="description" content="Compare ELSS vs Regular SIP investments with tax benefits calculation. Find out which option gives better returns including Section 80C tax savings.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elss_vs_sip_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ELSS vs SIP Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- ELSS vs SIP Calculation Section -->
+                <div class="section">
+                    <h2>Compare ELSS vs Regular SIP</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Monthly Investment</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="monthlyInvestmentElss" value="5000" min="500" max="50000" step="500">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="monthlyInvestmentElssSlider" min="500" max="50000" value="5000" step="500" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹500</span>
+                                    <span>₹50K</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Investment Duration</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="investmentDurationElss" value="10" min="3" max="30" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="investmentDurationElssSlider" min="3" max="30" value="10" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>3 Yrs</span>
+                                    <span>30 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Expected Return in Regular SIP</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="sipReturnRateElss" value="12.0" min="8.0" max="20.0" step="0.5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="sipReturnRateElssSlider" min="8.0" max="20.0" value="12.0" step="0.5" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>8%</span>
+                                    <span>20%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Expected Return in ELSS</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="elssReturnRateElss" value="14.0" min="10.0" max="22.0" step="0.5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="elssReturnRateElssSlider" min="10.0" max="22.0" value="14.0" step="0.5" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>10%</span>
+                                    <span>22%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Income Tax Slab</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="taxSlabElss" value="30" min="5" max="30" step="5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="taxSlabElssSlider" min="5" max="30" value="30" step="5" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>5%</span>
+                                    <span>30%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card sip-value-card">
+                        <div class="card-content">
+                            <div class="card-label">Regular SIP Final Value</div>
+                            <div class="card-value" id="sipFinalValueElssResult">₹15,25,864</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card elss-value-card">
+                        <div class="card-content">
+                            <div class="card-label">ELSS Final Value</div>
+                            <div class="card-value" id="elssFinalValueElssResult">₹19,47,235</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card tax-saved-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Tax Saved via ELSS</div>
+                            <div class="card-value" id="taxSavedElssResult">₹1,80,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card net-benefit-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Net Benefit from ELSS</div>
+                            <div class="card-value" id="netBenefitElssResult">₹6,01,371</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">ELSS vs SIP Comparison</div>
+                    <div class="chart-container">
+                        <canvas id="elssVsSipChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator sip-color"></div>
+                            <div class="summary-label">Regular SIP Value</div>
+                            <div class="summary-amount" id="sipFinalValueElssDisplay">₹15,25,864</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator elss-color"></div>
+                            <div class="summary-label">ELSS Value</div>
+                            <div class="summary-amount" id="elssFinalValueElssDisplay">₹19,47,235</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator tax-color"></div>
+                            <div class="summary-label">Tax Saved</div>
+                            <div class="summary-amount" id="taxSavedElssDisplay">₹1,80,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadElssVsSipPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn table-btn" onclick="toggleElssVsSipTable()">
+                        <span class="btn-icon">📊</span>
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section hidden" id="elssVsSipTableSection">
+            <div class="table-header">
+                <h2>Year-wise ELSS vs SIP Comparison</h2>
+            </div>
+            
+            <div class="table-container" id="elssVsSipYearlyTable">
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Annual Investment</th>
+                                <th>Regular SIP Value</th>
+                                <th>ELSS Value</th>
+                                <th>Annual Tax Saved</th>
+                                <th>ELSS Advantage</th>
+                            </tr>
+                        </thead>
+                        <tbody id="elssVsSipYearlyTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Section -->
+        <div class="info-section">
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>📊 What is ELSS?</h3>
+                    <p>Equity Linked Savings Scheme (ELSS) is a type of mutual fund that invests primarily in equity and equity-related instruments. It offers tax benefits under Section 80C of the Income Tax Act with a 3-year lock-in period.</p>
+                </div>
+                <div class="info-card">
+                    <h3>💰 Tax Benefits</h3>
+                    <p>ELSS investments are eligible for tax deduction up to ₹1.5 lakh per year under Section 80C. This calculator shows the additional benefit you get from tax savings compared to regular SIP investments.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🔒 Lock-in Period</h3>
+                    <p>ELSS funds have a mandatory 3-year lock-in period, which is the shortest among all tax-saving investments under Section 80C. Regular SIP investments have no lock-in period.</p>
+                </div>
+                <div class="info-card">
+                    <h3>📈 Risk Profile</h3>
+                    <p>Both ELSS and regular equity SIPs carry similar market risks as they invest in equity. ELSS funds may have slightly higher returns due to their focused investment approach.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/elss_vs_sip_calculator_script.js') }}"></script>
+</body>
+</html>

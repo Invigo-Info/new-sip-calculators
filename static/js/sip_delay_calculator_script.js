@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMegaMenu();
     loadFromUrlParameters();
     updateEarningsLostLabel(); // Set initial label
+    // Initialize slider fill styling to match design
+    initRangeFills();
     calculateAndUpdate();
 });
 
@@ -31,6 +33,7 @@ function setupEventListeners() {
             inputElement.addEventListener('input', function() {
                 const value = Math.max(Math.min(parseFloat(this.value) || min, max), min);
                 sliderElement.value = value;
+                updateRangeFill(sliderElement);
                 
                 // Update earnings lost label if this is the delay period
                 if (input === 'delayPeriod') {
@@ -43,6 +46,7 @@ function setupEventListeners() {
             // Sync slider to input
             sliderElement.addEventListener('input', function() {
                 inputElement.value = this.value;
+                updateRangeFill(sliderElement);
                 
                 // Update earnings lost label if this is the delay period
                 if (input === 'delayPeriod') {
@@ -53,6 +57,20 @@ function setupEventListeners() {
             });
         }
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function setupDelayToggle() {
@@ -236,7 +254,7 @@ function updateChart(data) {
             datasets: [{
                 data: [data.noDelayFinalAmount, data.delayedFinalAmount, data.delayImpact],
                 backgroundColor: [
-                    '#10b981',  // Green for no delay amount
+                    '#16a249',  // Green for no delay amount (updated)
                     '#f59e0b',  // Orange for delayed amount
                     '#ef4444'   // Red for delay impact
                 ],

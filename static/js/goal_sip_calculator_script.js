@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSliders();
     addEventListeners();
     initialSyncValues();
+    // Initialize slider track fill styling for all range inputs
+    initRangeFills();
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
@@ -72,12 +74,14 @@ function syncInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
@@ -95,6 +99,20 @@ function syncInputs(input, slider) {
         }
         calculateAndUpdateResults();
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function addEventListeners() {
@@ -302,7 +320,7 @@ function updateChart(result) {
             labels: ['Total Investment', 'Wealth Gain'],
             datasets: [{
                 data: [result.total_investment, result.wealth_gain],
-                backgroundColor: ['#3182ce', '#f59e0b'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 0,
                 cutout: '60%'
             }]

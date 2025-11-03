@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -44,8 +52,9 @@ nav {
 }
 
 /* Home Button */
+
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -60,20 +69,22 @@ nav {
     justify-content: center;
     min-height: 44px;
     box-sizing: border-box;
+    text-transform: uppercase;
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
+
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -83,10 +94,13 @@ nav {
     letter-spacing: 0.5px;
     min-height: 44px;
     box-sizing: border-box;
+    text-transform: uppercase;
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -359,8 +373,9 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
     outline: none;
     -webkit-appearance: none;
     cursor: pointer;
@@ -368,21 +383,21 @@ nav {
 
 .custom-slider::-webkit-slider-track {
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: transparent;
     border: none;
     box-shadow: none;
 }
 
 .custom-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 18px;
-    width: 18px;
+    height: 20px;
+    width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
     cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
@@ -391,20 +406,26 @@ nav {
 
 .custom-slider::-moz-range-track {
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: #e6edf5;
     border: none;
     box-shadow: none;
 }
 
+.custom-slider::-moz-range-progress {
+    height: 6px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    border-radius: 9999px;
+}
+
 .custom-slider::-moz-range-thumb {
-    height: 18px;
-    width: 18px;
+    height: 20px;
+    width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
     cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
@@ -469,74 +490,55 @@ nav {
     height: 6px;
 }
 
-.result-card.invested-amount-card {
-    background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
-}
-
-.result-card.invested-amount-card::before {
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-}
+.result-card.invested-amount-card { background: #3c83f6; border: 1px solid #3c83f6; }
+.result-card.invested-amount-card::before { background: #3c83f6; }
+.result-card.invested-amount-card .card-label,
+.result-card.invested-amount-card .card-value { color: #ffffff; -webkit-text-fill-color: initial; background: none; }
 
 .result-card.invested-amount-card:hover {
     box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
 }
 
-.result-card.nominal-returns-card {
-    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
-}
-
-.result-card.nominal-returns-card::before {
-    background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
-}
+.result-card.nominal-returns-card { background: #16a249; border: 1px solid #16a249; }
+.result-card.nominal-returns-card::before { background: #16a249; }
+.result-card.nominal-returns-card .card-label,
+.result-card.nominal-returns-card .card-value { color: #ffffff; -webkit-text-fill-color: initial; background: none; }
 
 .result-card.nominal-returns-card:hover {
     box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
 }
 
-.result-card.inflation-impact-card {
-    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
-}
-
-.result-card.inflation-impact-card::before {
-    background: linear-gradient(90deg, #f56565 0%, #e53e3e 100%);
-}
+.result-card.inflation-impact-card { background: #16a249; border: 1px solid #16a249; }
+.result-card.inflation-impact-card::before { background: #16a249; }
+.result-card.inflation-impact-card .card-label,
+.result-card.inflation-impact-card .card-value { color: #ffffff; -webkit-text-fill-color: initial; background: none; }
 
 .result-card.inflation-impact-card:hover {
     box-shadow: 0 8px 25px rgba(245, 101, 101, 0.3);
 }
 
-.result-card.real-returns-card {
-    background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%);
-    border: 2px solid #a0aec0;
-}
-
-.result-card.real-returns-card::before {
-    background: linear-gradient(90deg, #805ad5 0%, #6b46c1 100%);
-}
+.result-card.real-returns-card { background: #43e97b; border: 1px solid #43e97b; }
+.result-card.real-returns-card::before { background: #43e97b; }
+.result-card.real-returns-card .card-label,
+.result-card.real-returns-card .card-value { color: #ffffff; -webkit-text-fill-color: initial; background: none; }
 
 .result-card.real-returns-card:hover {
     box-shadow: 0 8px 25px rgba(128, 90, 213, 0.3);
 }
 
-.result-card.maturity-card {
-    background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
-}
-
-.result-card.maturity-card::before {
-    background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%);
-}
+.result-card.maturity-card { background: #16a249; border: 1px solid #16a249; }
+.result-card.maturity-card::before { background: #16a249; }
+.result-card.maturity-card .card-label,
+.result-card.maturity-card .card-value { color: #ffffff; -webkit-text-fill-color: initial; background: none; }
 
 .result-card.maturity-card:hover {
     box-shadow: 0 8px 25px rgba(237, 137, 54, 0.3);
 }
 
-.result-card.real-value-card {
-    background: linear-gradient(135deg, #f0f4ff 0%, #ddd6fe 100%);
-}
-
-.result-card.real-value-card::before {
-    background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
-}
+.result-card.real-value-card { background: #16a249; border: 1px solid #16a249; }
+.result-card.real-value-card::before { background: #16a249; }
+.result-card.real-value-card .card-label,
+.result-card.real-value-card .card-value { color: #ffffff; -webkit-text-fill-color: initial; background: none; }
 
 .result-card.real-value-card:hover {
     box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
@@ -614,17 +616,9 @@ nav {
     margin-bottom: 5px;
 }
 
-.color-indicator.invested-amount {
-    background: #4facfe;
-}
-
-.color-indicator.real-returns-amount {
-    background: #43e97b;
-}
-
-.color-indicator.inflation-impact-amount {
-    background: #fa709a;
-}
+.color-indicator.invested-amount { background: #3c83f6; }
+.color-indicator.real-returns-amount { background: #43e97b; }
+.color-indicator.inflation-impact-amount { background: #16a249; }
 
 .summary-label {
     font-size: 12px;
@@ -691,6 +685,28 @@ nav {
 
 .amortization-table th:last-child {
     text-align: right;
+}
+
+/* Year-wise SIP Growth (with Inflation Impact) header colors aligned with result cards */
+#yearlyBreakdownTable thead { background: transparent; }
+#yearlyBreakdownTable thead th { color: #ffffff; }
+#yearlyBreakdownTable thead th:nth-child(1) { /* Year */
+    background: #1e3a8a;
+}
+#yearlyBreakdownTable thead th:nth-child(2) { /* Yearly Investment */
+    background: #3c83f6;
+}
+#yearlyBreakdownTable thead th:nth-child(3) { /* Cumulative Investment */
+    background: #3c83f6;
+}
+#yearlyBreakdownTable thead th:nth-child(4) { /* Nominal Value */
+    background: #16a249;
+}
+#yearlyBreakdownTable thead th:nth-child(5) { /* Inflation Impact */
+    background: #16a249;
+}
+#yearlyBreakdownTable thead th:nth-child(6) { /* Real Value */
+    background: #16a249;
 }
 
 .amortization-table tbody tr {
@@ -807,44 +823,27 @@ nav {
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border: none;
     border-radius: 8px;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     letter-spacing: 0.5px;
+    background: transparent;
+    border: 2px solid transparent;
 }
 
-.pdf-btn {
-    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
-    color: white;
-}
+/* PDF - blue */
+.pdf-btn { border-color: #3c83f6; color: #3c83f6; }
+.pdf-btn:hover { background: #3c83f6; color: #ffffff; transform: translateY(-2px); }
 
-.pdf-btn:hover {
-    background: linear-gradient(135deg, #c53030 0%, #9c2a2a 100%);
-    transform: translateY(-2px);
-}
+/* Excel - green */
+.excel-btn { border-color: #16a249; color: #16a249; }
+.excel-btn:hover { background: #16a249; color: #ffffff; transform: translateY(-2px); }
 
-.excel-btn {
-    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
-    color: white;
-}
-
-.excel-btn:hover {
-    background: linear-gradient(135deg, #2f855a 0%, #276749 100%);
-    transform: translateY(-2px);
-}
-
-.share-btn {
-    background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
-    color: white;
-}
-
-.share-btn:hover {
-    background: linear-gradient(135deg, #2c5282 0%, #2a4365 100%);
-    transform: translateY(-2px);
-}
+/* Share - dark blue */
+.share-btn { border-color: #164ab3; color: #164ab3; }
+.share-btn:hover { background: #164ab3; color: #ffffff; transform: translateY(-2px); }
 
 .btn-icon {
     font-size: 16px;
@@ -1018,4 +1017,35 @@ nav {
     .frequency-container {
         flex-direction: column;
     }
-} 
+}
+
+/* Mobile-first enhancements to ensure visibility on small devices */
+@media (max-width: 768px) {
+    .container { padding: 12px; }
+    .calculator-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .input-sections { order: 1; }
+    .results-section { order: 2; padding: 16px; }
+    .chart-section { order: 3; padding: 16px; border-radius: 12px; }
+    .amortization-section { order: 4; padding: 16px; overflow-x: auto; }
+    .results-card-grid { grid-template-columns: 1fr; gap: 12px; }
+    .pie-chart-container { height: 220px; }
+    nav { flex-direction: column; gap: 10px; }
+    .mega-menu-btn { width: 100%; justify-content: center; }
+    .mega-menu-content { min-width: 95vw; max-width: 95vw; left: 2.5vw; transform: none; }
+    .amortization-table { min-width: 640px; font-size: 12px; }
+    .amortization-table thead th, .amortization-table td { padding: 8px 6px; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 10px; }
+    header h1 { font-size: 1.4rem; }
+    .chart-section { padding: 14px; }
+    .pie-chart-container { height: 200px; }
+    .results-card-grid { gap: 10px; }
+    .amortization-table { font-size: 11px; }
+    .amortization-table thead th, .amortization-table td { padding: 6px 4px; }
+}

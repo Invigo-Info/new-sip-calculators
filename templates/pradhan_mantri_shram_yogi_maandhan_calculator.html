@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pradhan Mantri Shram Yogi Maandhan Calculator | PMSYM Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pradhan_mantri_shram_yogi_maandhan_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pradhan Mantri Shram Yogi Maandhan Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- PMSYM Calculation Section -->
+                <div class="section">
+                    <h2>Calculate PMSYM Pension Benefits</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Age of Subscriber</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="joiningAge" value="25" min="18" max="40" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="joiningAgeSlider" min="18" max="40" value="25" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>18 Yrs</span>
+                                    <span>40 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Pension Target (Fixed)</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="pensionAmount" value="3000" readonly>
+                                    <span class="input-suffix">₹/month</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <div class="slider-labels">
+                                    <span>Fixed at ₹3,000/month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card monthly-contribution-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Monthly Contribution Required</div>
+                            <div class="card-value" id="monthlyContributionResult">₹55</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card government-contribution-card">
+                        <div class="card-content">
+                            <div class="card-label">Government Contribution</div>
+                            <div class="card-value" id="governmentContributionResult">₹27.5</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card total-contribution-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Contribution till Age 60</div>
+                            <div class="card-value" id="totalContributionResult">₹23,100</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">PMSYM Contribution Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="pmsymChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator total-contribution"></div>
+                            <div class="summary-label">Your Contribution</div>
+                            <div class="summary-amount" id="userContributionDisplay">₹15,400</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator total-returns"></div>
+                            <div class="summary-label">Government Contribution</div>
+                            <div class="summary-amount" id="governmentContributionDisplay">₹7,700</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="downloadPDF" class="action-btn download-btn">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button id="toggleTable" class="action-btn table-btn">
+                        <span class="btn-icon">📊</span>
+                        View Table
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section hidden" id="tableSection">
+            <div class="table-header">
+                <h2>PMSYM Investment Schedule</h2>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table class="amortization-table" id="pmsymTable">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Age</th>
+                                <th>Subscriber Contribution</th>
+                                <th>Government Contribution</th>
+                                <th>Total Contribution</th>
+                                <th>Corpus at Year End</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pmsymTableBody">
+                            <!-- Dynamic content will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pradhan_mantri_shram_yogi_maandhan_script.js') }}"></script>
+</body>
+</html> 

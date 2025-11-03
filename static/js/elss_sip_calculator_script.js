@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSliders();
     addEventListeners();
     initialSyncValues();
+    initRangeFills();
     calculateAndUpdateResults();
     setupMegaMenu();
     setupResponsiveCharts();
@@ -77,6 +78,8 @@ function initialSyncValues() {
     lumpsumAmountSlider.value = lumpsumAmountInput.value;
     expectedReturnSlider.value = expectedReturnInput.value;
     investmentPeriodSlider.value = investmentPeriodInput.value;
+    // Set initial slider fill for visual consistency
+    initRangeFills();
 }
 
 function syncInputs(input, slider) {
@@ -86,12 +89,14 @@ function syncInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
@@ -107,8 +112,23 @@ function syncInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
+}
+
+// Range fill helpers (align with index implementation)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function addEventListeners() {
@@ -250,7 +270,7 @@ function updateChart(result) {
             labels: ['Total Invested', 'Wealth Gained'],
             datasets: [{
                 data: chartData,
-                backgroundColor: ['#10B981', '#F59E0B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',
@@ -364,24 +384,24 @@ function updateYearwiseChart(result) {
                     {
                         label: 'Cumulative Investment',
                         data: cumulativeInvestment,
-                        backgroundColor: '#10B981',
-                        borderColor: '#059669',
+                        backgroundColor: '#3c83f6',
+                        borderColor: '#3c83f6',
                         borderWidth: 1,
                         borderRadius: 4
                     },
                     {
                         label: 'Expected Value',
                         data: expectedValue,
-                        backgroundColor: '#3B82F6',
-                        borderColor: '#2563EB',
+                        backgroundColor: '#43e97b',
+                        borderColor: '#43e97b',
                         borderWidth: 1,
                         borderRadius: 4
                     },
                     {
                         label: 'Wealth Gained',
                         data: wealthGained,
-                        backgroundColor: '#F59E0B',
-                        borderColor: '#D97706',
+                        backgroundColor: '#16a249',
+                        borderColor: '#16a249',
                         borderWidth: 1,
                         borderRadius: 4
                     }
@@ -399,24 +419,24 @@ function updateYearwiseChart(result) {
                     {
                         label: 'Cumulative Investment',
                         data: [0],
-                        backgroundColor: '#10B981',
-                        borderColor: '#059669',
+                        backgroundColor: '#3c83f6',
+                        borderColor: '#3c83f6',
                         borderWidth: 1,
                         borderRadius: 4
                     },
                     {
                         label: 'Expected Value',
                         data: [0],
-                        backgroundColor: '#3B82F6',
-                        borderColor: '#2563EB',
+                        backgroundColor: '#43e97b',
+                        borderColor: '#43e97b',
                         borderWidth: 1,
                         borderRadius: 4
                     },
                     {
                         label: 'Wealth Gained',
                         data: [0],
-                        backgroundColor: '#F59E0B',
-                        borderColor: '#D97706',
+                        backgroundColor: '#16a249',
+                        borderColor: '#16a249',
                         borderWidth: 1,
                         borderRadius: 4
                     }

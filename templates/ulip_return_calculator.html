@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULIP Return Calculator | Calculate Unit Linked Insurance Plan Returns</title>
+    <meta name="description" content="Calculate ULIP returns with our comprehensive Unit Linked Insurance Plan calculator. Plan your long-term investments with accurate maturity value calculations for both regular and one-time investments.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ulip_return_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ULIP Return Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="ulip-calculator-container">
+            <div class="ulip-input-sections">
+                <!-- ULIP Calculation Section -->
+                <div class="ulip-section">
+                    <h2>Calculate ULIP Returns</h2>
+                    <div class="ulip-input-grid">
+                        <!-- Investment Mode Toggle -->
+                        <div class="ulip-input-group">
+                            <div class="ulip-input-row">
+                                <label class="ulip-input-label">Investment Mode</label>
+                            </div>
+                            <div class="ulip-mode-toggle-container">
+                                <div class="ulip-mode-toggle">
+                                    <input type="radio" id="ulipRegularMode" name="ulipInvestmentMode" value="Regular Investment" checked>
+                                    <label for="ulipRegularMode" class="ulip-mode-label">Regular Investment</label>
+                                    
+                                    <input type="radio" id="ulipOneTimeMode" name="ulipInvestmentMode" value="One-time Investment">
+                                    <label for="ulipOneTimeMode" class="ulip-mode-label">One-time Investment</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Investment Tenure -->
+                        <div class="ulip-input-group">
+                            <div class="ulip-input-row">
+                                <label class="ulip-input-label">Investment Tenure</label>
+                                <div class="ulip-input-field-container">
+                                    <input type="number" id="ulipInvestmentTenure" value="15" min="1" max="30" step="1">
+                                    <span class="ulip-input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="ulip-slider-container">
+                                <input type="range" id="ulipInvestmentTenureSlider" min="1" max="30" value="15" step="1" class="ulip-custom-slider">
+                                <div class="ulip-slider-track"></div>
+                                <div class="ulip-slider-labels">
+                                    <span>1 Yr</span>
+                                    <span>30 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Expected Return -->
+                        <div class="ulip-input-group">
+                            <div class="ulip-input-row">
+                                <label class="ulip-input-label">Expected Return (p.a.)</label>
+                                <div class="ulip-input-field-container">
+                                    <input type="number" id="ulipExpectedReturn" value="10" min="1" max="20" step="0.1">
+                                    <span class="ulip-input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="ulip-slider-container">
+                                <input type="range" id="ulipExpectedReturnSlider" min="1" max="20" value="10" step="0.1" class="ulip-custom-slider">
+                                <div class="ulip-slider-track"></div>
+                                <div class="ulip-slider-labels">
+                                    <span>1%</span>
+                                    <span>20%</span>
+                                </div>
+                            </div>
+                            <div class="ulip-helper-text">
+                                Sensex has delivered ~10% in some past decades—use your own assumption
+                            </div>
+                        </div>
+
+                        <!-- Existing Investment -->
+                        <div class="ulip-input-group">
+                            <div class="ulip-input-row">
+                                <label class="ulip-input-label">Existing Investment (Optional)</label>
+                                <div class="ulip-input-field-container">
+                                    <input type="number" id="ulipExistingInvestment" value="0" min="0" step="1000">
+                                    <span class="ulip-input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="ulip-slider-container">
+                                <input type="range" id="ulipExistingInvestmentSlider" min="0" max="1000000" value="0" step="10000" class="ulip-custom-slider">
+                                <div class="ulip-slider-track"></div>
+                                <div class="ulip-slider-labels">
+                                    <span>₹0</span>
+                                    <span>₹10L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Regular Investment Inputs -->
+                        <div id="ulipRegularInputs" class="ulip-conditional-inputs">
+                            <!-- Monthly Investment -->
+                            <div class="ulip-input-group">
+                                <div class="ulip-input-row">
+                                    <label class="ulip-input-label">Monthly Investment</label>
+                                    <div class="ulip-input-field-container">
+                                        <input type="number" id="ulipMonthlyInvestment" value="5000" min="100" step="100">
+                                        <span class="ulip-input-suffix">₹</span>
+                                    </div>
+                                </div>
+                                <div class="ulip-slider-container">
+                                    <input type="range" id="ulipMonthlyInvestmentSlider" min="100" max="50000" value="5000" step="100" class="ulip-custom-slider">
+                                    <div class="ulip-slider-track"></div>
+                                    <div class="ulip-slider-labels">
+                                        <span>₹100</span>
+                                        <span>₹50K</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Periodic Top-up -->
+                            <div class="ulip-input-group">
+                                <div class="ulip-input-row">
+                                    <label class="ulip-input-label">Periodic Top-up (Optional)</label>
+                                    <div class="ulip-input-field-container">
+                                        <input type="number" id="ulipPeriodicTopup" value="0" min="0" step="100">
+                                        <span class="ulip-input-suffix">₹/mo</span>
+                                    </div>
+                                </div>
+                                <div class="ulip-slider-container">
+                                    <input type="range" id="ulipPeriodicTopupSlider" min="0" max="10000" value="0" step="100" class="ulip-custom-slider">
+                                    <div class="ulip-slider-track"></div>
+                                    <div class="ulip-slider-labels">
+                                        <span>₹0</span>
+                                        <span>₹10K</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- One-time Investment Inputs -->
+                        <div id="ulipOneTimeInputs" class="ulip-conditional-inputs" style="display: none;">
+                            <!-- Lump Sum -->
+                            <div class="ulip-input-group">
+                                <div class="ulip-input-row">
+                                    <label class="ulip-input-label">Lump Sum Investment</label>
+                                    <div class="ulip-input-field-container">
+                                        <input type="number" id="ulipLumpSum" value="200000" min="1000" step="1000">
+                                        <span class="ulip-input-suffix">₹</span>
+                                    </div>
+                                </div>
+                                <div class="ulip-slider-container">
+                                    <input type="range" id="ulipLumpSumSlider" min="1000" max="2000000" value="200000" step="1000" class="ulip-custom-slider">
+                                    <div class="ulip-slider-track"></div>
+                                    <div class="ulip-slider-labels">
+                                        <span>₹1K</span>
+                                        <span>₹20L</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tooltip Information -->
+                        <div class="ulip-tooltip-section">
+                            <div class="ulip-tooltip-item">
+                                <span class="ulip-tooltip-icon">ℹ️</span>
+                                <span class="ulip-tooltip-text">Market-linked returns are not guaranteed</span>
+                            </div>
+                            <div class="ulip-tooltip-item">
+                                <span class="ulip-tooltip-icon">ℹ️</span>
+                                <span class="ulip-tooltip-text">ULIP NAV reflects charges; this tool uses expected net return for projection</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="ulip-results-section">
+                <div class="ulip-results-card-grid">
+                    <div class="ulip-result-card ulip-maturity-card">
+                        <div class="ulip-card-content">
+                            <div class="ulip-card-label">Projected Maturity Value</div>
+                            <div class="ulip-card-value" id="ulipMaturityValueResult">₹28,14,482</div>
+                        </div>
+                    </div>
+
+                    <div class="ulip-result-card ulip-invested-card">
+                        <div class="ulip-card-content">
+                            <div class="ulip-card-label">Total Invested</div>
+                            <div class="ulip-card-value" id="ulipTotalInvestedResult">₹9,00,000</div>
+                        </div>
+                    </div>
+
+                    <div class="ulip-result-card ulip-return-card">
+                        <div class="ulip-card-content">
+                            <div class="ulip-card-label">Estimated Absolute Return</div>
+                            <div class="ulip-card-value" id="ulipAbsoluteReturnResult">212.72%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="ulip-summary-section">
+                    <div class="ulip-summary-content">
+                        <div class="ulip-summary-label">Investment Summary</div>
+                        <div class="ulip-summary-text" id="ulipSummaryText">
+                            If you invest ₹5,000 monthly for 15 years at 10% p.a., you may get ₹28,14,482.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="ulip-chart-section">
+                    <div class="ulip-chart-header">ULIP Investment Breakdown</div>
+                    <div class="ulip-pie-chart-container">
+                        <canvas id="ulipChart"></canvas>
+                    </div>
+                    <div class="ulip-chart-summary">
+                        <div class="ulip-summary-item">
+                            <div class="ulip-color-indicator ulip-invested-color"></div>
+                            <div class="ulip-summary-label">Total Invested</div>
+                            <div class="ulip-summary-amount" id="ulipInvestedDisplay">₹9,00,000</div>
+                        </div>
+                        <div class="ulip-summary-item">
+                            <div class="ulip-color-indicator ulip-returns-color"></div>
+                            <div class="ulip-summary-label">Estimated Returns</div>
+                            <div class="ulip-summary-amount" id="ulipReturnsDisplay">₹19,14,482</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="ulip-action-buttons">
+                    <button class="ulip-action-btn ulip-download-btn" onclick="downloadULIPPDF()">
+                        <span class="ulip-btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ulip_return_calculator_script.js') }}"></script>
+</body>
+</html>

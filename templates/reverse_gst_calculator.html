@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse GST Calculator | Calculate Base Price from GST Inclusive Amount</title>
+    <meta name="description" content="Calculate base price from GST inclusive amount with our comprehensive Reverse GST calculator. Find CGST, SGST, IGST breakdowns for intra-state and inter-state transactions.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reverse_gst_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Reverse GST Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- Reverse GST Calculation Section -->
+                <div class="section">
+                    <h2>Calculate Base Price from GST Inclusive Amount</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Amount (Inclusive of GST)</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="reverseGstInclusiveAmount" value="11800" min="1" max="20000000" step="0.01">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="reverseGstInclusiveAmountSlider" min="100" max="100000" value="11800" step="100" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹100</span>
+                                    <span>₹1L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">GST Rate</label>
+                            </div>
+                            <div class="gst-rate-container">
+                                <select id="reverseGstRate" class="gst-rate-select">
+                                    <option value="0">0% GST</option>
+                                    <option value="3">3% GST</option>
+                                    <option value="5">5% GST</option>
+                                    <option value="12">12% GST</option>
+                                    <option value="18" selected>18% GST</option>
+                                    <option value="28">28% GST</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Transaction Type</label>
+                            </div>
+                            <div class="transaction-type-container">
+                                <div class="radio-group">
+                                    <input type="radio" id="reverseGstIntraState" name="reverseGstTransactionType" value="intra-state" checked>
+                                    <label for="reverseGstIntraState" class="radio-label">
+                                        <span class="radio-indicator"></span>
+                                        Intra-State (CGST + SGST)
+                                    </label>
+                                </div>
+                                <div class="radio-group">
+                                    <input type="radio" id="reverseGstInterState" name="reverseGstTransactionType" value="inter-state">
+                                    <label for="reverseGstInterState" class="radio-label">
+                                        <span class="radio-indicator"></span>
+                                        Inter-State (IGST)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card base-price-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Base Price</div>
+                            <div class="card-value" id="reverseGstBasePriceResult">₹10,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card gst-amount-card">
+                        <div class="card-content">
+                            <div class="card-label">GST Amount</div>
+                            <div class="card-value" id="reverseGstAmountResult">₹1,800</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card cgst-card" id="reverseGstCgstCard">
+                        <div class="card-content">
+                            <div class="card-label">CGST (9%)</div>
+                            <div class="card-value" id="reverseGstCgstResult">₹900</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card sgst-card" id="reverseGstSgstCard">
+                        <div class="card-content">
+                            <div class="card-label">SGST (9%)</div>
+                            <div class="card-value" id="reverseGstSgstResult">₹900</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card igst-card hidden" id="reverseGstIgstCard">
+                        <div class="card-content">
+                            <div class="card-label">IGST (18%)</div>
+                            <div class="card-value" id="reverseGstIgstResult">₹1,800</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">GST Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="reverseGstChart"></canvas>
+                    </div>
+                    <div class="chart-summary" id="reverseGstChartSummary">
+                        <div class="summary-item">
+                            <div class="color-indicator base-price"></div>
+                            <div class="summary-label">Base Price</div>
+                            <div class="summary-amount" id="reverseGstBasePriceDisplay">₹10,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator gst-amount"></div>
+                            <div class="summary-label">GST Amount</div>
+                            <div class="summary-amount" id="reverseGstAmountDisplay">₹1,800</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Text -->
+                <div class="summary-text-section">
+                    <div class="summary-text" id="reverseGstSummaryText">
+                        ₹11,800 includes ₹1,800 in GST at 18%.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/reverse_gst_calculator_script.js') }}"></script>
+</body>
+</html>

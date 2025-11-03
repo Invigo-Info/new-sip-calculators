@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateResults();
     setupMegaMenu();
     setupResponsiveCharts();
+    initRangeFills();
 });
 
 function setupSliders() {
@@ -89,6 +90,7 @@ function syncInputs(input, slider) {
         const value = parseFloat(this.value) || 0;
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
+        updateRangeFill(slider);
         }
         calculateAndUpdateResults();
     });
@@ -96,6 +98,7 @@ function syncInputs(input, slider) {
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateResults();
     });
 
@@ -198,11 +201,7 @@ function updateChart(result) {
                     result.total_employer_contribution,
                     result.total_interest
                 ],
-                backgroundColor: [
-                    '#10b981', // Green for employee contribution
-                    '#8b5cf6', // Purple for employer contribution
-                    '#f59e0b'  // Orange for interest earned
-                ],
+                backgroundColor: ['#3c83f6', '#1750aa', '#16a249'],
                 borderWidth: 0,
                 cutout: '70%'
             }]
@@ -253,19 +252,19 @@ function updateYearwiseChart(result) {
                 {
                     label: 'Employee Contribution',
                     data: employeeContributions,
-                    backgroundColor: '#10b981',
+                    backgroundColor: '#3c83f6',
                     borderRadius: 4
                 },
                 {
                     label: 'Employer Contribution',
                     data: employerContributions,
-                    backgroundColor: '#8b5cf6',
+                    backgroundColor: '#1750aa',
                     borderRadius: 4
                 },
                 {
                     label: 'Interest Earned',
                     data: interestEarned,
-                    backgroundColor: '#f59e0b',
+                    backgroundColor: '#16a249',
                     borderRadius: 4
                 }
             ]
@@ -387,3 +386,15 @@ function getResponsiveChartOptions(baseOptions) {
     }
     return baseOptions;
 } 
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+  document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

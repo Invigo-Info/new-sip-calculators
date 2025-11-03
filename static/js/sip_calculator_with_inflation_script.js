@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDownloadButtons();
     setupMegaMenu();
     loadFromUrlParameters();
+    // Initialize slider fill styling to match design
+    initRangeFills();
     calculateAndUpdate();
 });
 
@@ -28,12 +30,14 @@ function setupEventListeners() {
             inputElement.addEventListener('input', function() {
                 const value = Math.max(Math.min(parseFloat(this.value) || min, max), min);
                 sliderElement.value = value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
             
             // Sync slider to input
             sliderElement.addEventListener('input', function() {
                 inputElement.value = this.value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
         }
@@ -104,9 +108,9 @@ function updateChart(data) {
             datasets: [{
                 data: [data.totalInvested, data.realReturns, data.inflationImpact],
                 backgroundColor: [
-                    '#4facfe',  // Blue for invested amount
-                    '#43e97b',  // Green for real returns
-                    '#fa709a'   // Pink for inflation impact
+                    '#3c83f6',  // Total Invested
+                    '#43e97b',  // Real Returns (updated)
+                    '#16a249'   // Inflation Impact
                 ],
                 borderWidth: 0,
                 hoverOffset: 15
@@ -145,6 +149,20 @@ function updateChart(data) {
             }
         }
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function updateYearlyBreakdownTable(yearlyBreakdown) {

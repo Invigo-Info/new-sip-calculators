@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDownloadButtons();
     setupMegaMenu();
     loadFromUrlParameters();
+    // Initialize slider fill styling to match monthly/quarterly pages
+    initRangeFills();
     calculateAndUpdate();
 });
 
@@ -29,16 +31,34 @@ function setupEventListeners() {
             inputElement.addEventListener('input', function() {
                 const value = Math.max(Math.min(parseFloat(this.value) || min, max), min);
                 sliderElement.value = value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
             
             // Sync slider to input
             sliderElement.addEventListener('input', function() {
                 inputElement.value = this.value;
+                updateRangeFill(sliderElement);
                 calculateAndUpdate();
             });
+            // Set initial fill for each slider
+            updateRangeFill(sliderElement);
         }
     });
+}
+
+// Visually fill range input using CSS background-size
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function calculateAndUpdate() {
@@ -103,8 +123,8 @@ function updateChart(data) {
             datasets: [{
                 data: [data.totalInvested, data.totalReturns],
                 backgroundColor: [
-                    '#4facfe',  // Blue gradient for invested amount
-                    '#43e97b'   // Green gradient for returns
+                    '#3c83f6',  // Total Invested (match cards)
+                    '#16a249'   // Expected Returns (match cards)
                 ],
                 borderWidth: 0,
                 hoverOffset: 15
@@ -166,8 +186,8 @@ function updateYearlyReturnChart(yearlyBreakdown) {
                 {
                     label: 'Total Investment',
                     data: investmentData,
-                    backgroundColor: '#4285f4',
-                    borderColor: '#4285f4',
+                    backgroundColor: '#3c83f6',
+                    borderColor: '#3c83f6',
                     borderWidth: 0,
                     borderRadius: 4,
                     borderSkipped: false,
@@ -175,8 +195,8 @@ function updateYearlyReturnChart(yearlyBreakdown) {
                 {
                     label: 'Returns',
                     data: returnsData,
-                    backgroundColor: '#34a853',
-                    borderColor: '#34a853',
+                    backgroundColor: '#16a249',
+                    borderColor: '#16a249',
                     borderWidth: 0,
                     borderRadius: 4,
                     borderSkipped: false,

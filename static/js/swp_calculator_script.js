@@ -49,6 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSliders();
     addEventListeners();
     initialSyncValues();
+    // Initialize slider fills for gradient track
+    initRangeFills();
     calculateAndUpdateResults();
     setupMegaMenu();
 });
@@ -75,12 +77,14 @@ function syncInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
@@ -96,6 +100,7 @@ function syncInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 }
@@ -173,7 +178,7 @@ function updateChart(result) {
             labels: ['Initial Investment', 'Total Withdrawals', 'Remaining Balance'],
             datasets: [{
                 data: [result.initial_investment, result.total_withdrawals, result.final_balance],
-                backgroundColor: ['#10B981', '#F59E0B', '#3B82F6'],
+                backgroundColor: ['#3c83f6', '#16a249', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',
@@ -213,6 +218,20 @@ function updateChart(result) {
             }
         }
     });
+}
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+    document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function formatCurrency(amount) {

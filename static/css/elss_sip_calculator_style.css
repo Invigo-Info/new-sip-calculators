@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -45,8 +53,8 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
-    color: white;
+    background: #3c83f6;
+    color: #ffffff;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
@@ -64,17 +72,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
-    color: white;
+    background: #3c83f6;
+    color: #ffffff;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +96,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -382,61 +392,71 @@ nav {
     margin-top: 8px;
 }
 
+/* Cross-browser colored slider track (matches index design) */
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
     outline: none;
+    -webkit-appearance: none;
+    appearance: none;
     cursor: pointer;
 }
 
 .custom-slider::-webkit-slider-track {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 9999px;
     border: none;
 }
 
 .custom-slider::-webkit-slider-thumb {
-    appearance: none;
-    width: 20px;
     height: 20px;
+    width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    appearance: none;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
+/* Firefox: track + progress */
 .custom-slider::-moz-range-track {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    cursor: pointer;
+    background: #e6edf5;
+    border-radius: 9999px;
     border: none;
-    outline: none;
+}
+
+.custom-slider::-moz-range-progress {
+    height: 6px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    border-radius: 9999px;
 }
 
 .custom-slider::-moz-range-thumb {
-    width: 20px;
     height: 20px;
+    width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .slider-labels {
@@ -488,16 +508,37 @@ nav {
     background: linear-gradient(90deg, #3182ce, #2563eb);
 }
 
-.total-invested-card::before {
-    background: linear-gradient(90deg, #10B981, #059669);
+/* Result cards color update per request */
+.total-invested-card {
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: transparent;
 }
-
-.wealth-gained-card::before {
-    background: linear-gradient(90deg, #F59E0B, #D97706);
+.wealth-gained-card,
+.final-amount-card {
+    background: #16a249;
+    color: #ffffff;
+    border-color: transparent;
 }
-
+.total-invested-card::before,
+.wealth-gained-card::before,
 .final-amount-card::before {
-    background: linear-gradient(90deg, #8B5CF6, #7C3AED);
+    display: none;
+}
+.total-invested-card .card-label,
+.total-invested-card .card-value,
+.wealth-gained-card .card-label,
+.wealth-gained-card .card-value,
+.final-amount-card .card-label,
+.final-amount-card .card-value {
+    color: #ffffff;
+}
+
+/* Ensure bold-title labels on colored cards stay white */
+.wealth-gained-card .card-label.bold-title,
+.final-amount-card .card-label.bold-title,
+.total-invested-card .card-label.bold-title {
+    color: #ffffff;
 }
 
 
@@ -580,11 +621,11 @@ nav {
 }
 
 .color-indicator.total-invested {
-    background: #10B981;
+    background: #3c83f6;
 }
 
 .color-indicator.wealth-gained {
-    background: #F59E0B;
+    background: #16a249;
 }
 
 .summary-label {
@@ -1194,8 +1235,101 @@ nav {
     .switch-btn {
         min-height: 44px;
         padding: 12px 20px;
-    }
+}
 
+.align-index-nav {
+}
+
+/* Header/Nav alignment with index (override ELSS-specific nav to match nav-component) */
+/* Buttons */
+.home-btn {
+    background: #3c83f6;
+    color: #ffffff;
+}
+.home-btn:hover {
+    background: #3c83f6;
+    color: #ffffff;
+}
+
+.mega-menu-btn {
+    background: transparent;
+    color: #3c83f6;
+    border: 2px solid #3c83f6;
+}
+.mega-menu-btn:hover {
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
+}
+
+/* Dropdown container behavior and layout */
+.mega-menu .mega-menu-content {
+    display: none;
+    position: absolute;
+    background: #ffffff;
+    min-width: 780px;
+    max-width: 900px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    z-index: 1000;
+    border-radius: 8px;
+    padding: 0;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 6px;
+    border: 1px solid #e2e8f0;
+    backdrop-filter: blur(10px);
+}
+.mega-menu.open .mega-menu-content {
+    display: block;
+    animation: sleekSlideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mega-menu-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    padding: 18px;
+}
+
+@media (max-width: 767px) {
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .mega-menu-content {
+        min-width: 95vw;
+        max-width: 95vw;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1100;
+    }
+    .mega-menu-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 15px;
+    }
+}
+
+/* Force ELSS header/nav to match index design (high-specificity overrides) */
+div.container header nav .home-btn {
+    background: #3c83f6 !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+div.container header nav .home-btn:hover {
+    background: #3c83f6 !important;
+    color: #ffffff !important;
+}
+div.container header nav .mega-menu-btn {
+    background: transparent !important;
+    color: #3c83f6 !important;
+    border: 2px solid #3c83f6 !important;
+}
+div.container header nav .mega-menu-btn:hover {
+    background: #3c83f6 !important;
+    color: #ffffff !important;
+    border-color: #3c83f6 !important;
+}
     .custom-slider::-webkit-slider-thumb {
         width: 20px;
         height: 20px;
@@ -1219,3 +1353,24 @@ nav {
         align-items: center;
     }
 } 
+/* Year-wise Breakdown header colors aligned to bar chart */
+.breakdown-table thead th:nth-child(1) { /* Year */
+    background: #1e40af; /* dark blue */
+    color: #ffffff;
+}
+.breakdown-table thead th:nth-child(2) { /* Annual Investment */
+    background: #3c83f6;
+    color: #ffffff;
+}
+.breakdown-table thead th:nth-child(3) { /* Cumulative Investment */
+    background: #3c83f6;
+    color: #ffffff;
+}
+.breakdown-table thead th:nth-child(4) { /* Expected Value */
+    background: #43e97b;
+    color: #ffffff;
+}
+.breakdown-table thead th:nth-child(5) { /* Wealth Gained */
+    background: #16a249;
+    color: #ffffff;
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM Vaya Vandana Yojana Calculator | PMVVY Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pradhan_mantri_vaya_vandana_yojana_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PM Vaya Vandana Yojana Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- PMVVY Calculation Section -->
+                <div class="section">
+                    <h2>Calculate PMVVY Pension Benefits</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Age of Subscriber</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="subscriberAge" value="65" min="60" max="90" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="subscriberAgeSlider" min="60" max="90" value="65" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>60 Yrs</span>
+                                    <span>90 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Lump Sum Investment</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="investmentAmount" value="200000" min="10000" max="1500000" step="1000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="investmentAmountSlider" min="10000" max="1500000" value="200000" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹10,000</span>
+                                    <span>₹15,00,000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Pension Frequency</label>
+                                <div class="frequency-container">
+                                    <select id="pensionFrequency" class="frequency-select">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="quarterly">Quarterly</option>
+                                        <option value="half-yearly">Half-Yearly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card pension-amount-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Pension Amount</div>
+                            <div class="card-value" id="pensionAmountResult">₹1,320</div>
+                            <div class="card-frequency" id="pensionFrequencyDisplay">per month</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card total-payout-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Pension (10 Years)</div>
+                            <div class="card-value" id="totalPayoutResult">₹1,58,400</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card maturity-amount-card">
+                        <div class="card-content">
+                            <div class="card-label">Maturity Amount</div>
+                            <div class="card-value" id="maturityAmountResult">₹3,58,400</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card effective-rate-card">
+                        <div class="card-content">
+                            <div class="card-label">Effective Return Rate</div>
+                            <div class="card-value" id="effectiveRateResult">7.92%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">PMVVY Investment Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="pmvvyChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator investment-amount"></div>
+                            <div class="summary-label">Investment Amount</div>
+                            <div class="summary-amount" id="investmentDisplay">₹2,00,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator pension-earned"></div>
+                            <div class="summary-label">Pension Earned</div>
+                            <div class="summary-amount" id="pensionEarnedDisplay">₹1,58,400</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="downloadPDF" class="action-btn download-btn">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button id="toggleTable" class="action-btn table-btn">
+                        <span class="btn-icon">📊</span>
+                        View Table
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section hidden" id="tableSection">
+            <div class="table-header">
+                <h2>PMVVY Pension Schedule</h2>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table class="amortization-table" id="pmvvyTable">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Age</th>
+                                <th>Pension Amount</th>
+                                <th>Total Pension Paid</th>
+                                <th>Remaining Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pmvvyTableBody">
+                            <!-- Dynamic content will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pradhan_mantri_vaya_vandana_yojana_script.js') }}"></script>
+</body>
+</html>

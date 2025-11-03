@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initialSyncValues(); // Add initial synchronization
     calculateAndUpdateResults();
     setupMegaMenu();
+    initRangeFills();
 });
 
 function setupSliders() {
@@ -79,6 +80,7 @@ function syncInputs(input, slider) {
         const value = parseFloat(this.value) || 0;
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
+        updateRangeFill(slider);
         }
         calculateAndUpdateResults();
     });
@@ -86,6 +88,7 @@ function syncInputs(input, slider) {
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateResults();
     });
 
@@ -253,7 +256,7 @@ function updateChart(result) {
             labels: ['Total Deposits', 'Interest Earned'],
             datasets: [{
                 data: [result.total_deposits, result.interest_earned],
-                backgroundColor: ['#10B981', '#F59E0B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',
@@ -331,3 +334,16 @@ function setupMegaMenu() {
         });
     }
 } 
+
+// Range fill helpers (applies to any .custom-slider on the page)
+function initRangeFills() {
+  document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

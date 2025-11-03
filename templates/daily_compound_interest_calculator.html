@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Compound Interest Calculator | Calculate Compound Interest Returns</title>
+    <meta name="description" content="Calculate compound interest with different compounding frequencies. Compare daily, weekly, monthly, quarterly, half-yearly, and annual compounding options.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/daily_compound_interest_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Daily Compound Interest Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- Compound Interest Calculation Section -->
+                <div class="section">
+                    <h2>Calculate Compound Interest</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Principal Amount</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="principalAmount" value="10000" min="1000" max="10000000" step="1000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="principalAmountSlider" min="1000" max="10000000" value="10000" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹1K</span>
+                                    <span>₹1Cr</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Annual Interest Rate</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="annualRate" value="10" min="0.1" max="50" step="0.1">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="annualRateSlider" min="0.1" max="50" value="10" step="0.1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>0.1%</span>
+                                    <span>50%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Time Period Unit</label>
+                            </div>
+                            <div class="frequency-container">
+                                <select id="timePeriodUnit" class="frequency-select">
+                                    <option value="days" selected>Days</option>
+                                    <option value="weeks">Weeks</option>
+                                    <option value="months">Months</option>
+                                    <option value="quarters">Quarters</option>
+                                    <option value="years">Years</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label" id="timePeriodLabel">Total Time Period</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="timePeriod" value="1" min="1" max="365" step="1">
+                                    <span class="input-suffix" id="timePeriodSuffix">Year(s)</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="timePeriodSlider" min="1" max="365" value="1" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span id="timePeriodMinLabel">1</span>
+                                    <span id="timePeriodMaxLabel">365</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Compounding Frequency</label>
+                            </div>
+                            <div class="frequency-container">
+                                <select id="compoundingFrequency" class="frequency-select">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly" selected>Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="half-yearly">Half-Yearly</option>
+                                    <option value="annually">Annually</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card future-value-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Total Future Value</div>
+                            <div class="card-value" id="futureValueResult">₹10,003</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card interest-earned-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Interest Earned</div>
+                            <div class="card-value" id="interestEarnedResult">₹3</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card effective-rate-card">
+                        <div class="card-content">
+                            <div class="card-label">Effective Annual Rate</div>
+                            <div class="card-value" id="effectiveRateResult">10.47%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-section">
+                    <div class="summary-header">Investment Summary</div>
+                    <div class="summary-text" id="summaryText">
+                        Investing ₹10,000 at 10% compounded monthly for 1 day will grow to ₹10,003.
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">Principal vs Interest Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="compoundInterestChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator principal-amount"></div>
+                            <div class="summary-label">Principal Amount</div>
+                            <div class="summary-amount" id="principalDisplay">₹10,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator interest-earned"></div>
+                            <div class="summary-label">Interest Earned</div>
+                            <div class="summary-amount" id="interestDisplay">₹3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadCompoundInterestPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn table-btn" onclick="toggleCompoundInterestTable()">
+                        <span class="btn-icon">📊</span>
+                        View Comparison
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Table Section -->
+        <div class="table-section hidden" id="compoundInterestTableSection">
+            <div class="table-header">
+                <h2>Compounding Frequency Comparison</h2>
+            </div>
+            
+            <div class="table-container" id="compoundInterestComparisonTable">
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Frequency</th>
+                                <th>Future Value</th>
+                                <th>Interest Earned</th>
+                                <th>Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compoundInterestComparisonTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/daily_compound_interest_calculator_script.js') }}"></script>
+</body>
+</html>

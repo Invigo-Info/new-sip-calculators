@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Calculator | Plan Your Retirement Corpus and Monthly Savings</title>
+    <meta name="description" content="Calculate your retirement corpus requirement and monthly savings needed with our comprehensive retirement planning calculator. Plan for financial freedom.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/retirement_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Retirement Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- Retirement Planning Section -->
+                <div class="section">
+                    <h2>Retirement Planning Details</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Current Age 
+                                    <span class="tooltip-icon" data-tooltip="Your current age in years">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="currentAge" value="30" min="18" max="65" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="currentAgeSlider" min="18" max="65" value="30" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>18 Yrs</span>
+                                    <span>65 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Retirement Age 
+                                    <span class="tooltip-icon" data-tooltip="Age at which you plan to retire">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="retirementAge" value="60" min="50" max="75" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="retirementAgeSlider" min="50" max="75" value="60" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>50 Yrs</span>
+                                    <span>75 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Life Expectancy 
+                                    <span class="tooltip-icon" data-tooltip="Expected life span for retirement planning">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="lifeExpectancy" value="80" min="65" max="100" step="1">
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="lifeExpectancySlider" min="65" max="100" value="80" step="1" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>65 Yrs</span>
+                                    <span>100 Yrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Monthly Retirement Income Desired 
+                                    <span class="tooltip-icon" data-tooltip="Monthly income you want during retirement (in today's value)">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="monthlyIncomeDesired" value="50000" min="10000" max="500000" step="5000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="monthlyIncomeDesiredSlider" min="10000" max="500000" value="50000" step="5000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹10K</span>
+                                    <span>₹5L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Expected Annual Inflation Rate 
+                                    <span class="tooltip-icon" data-tooltip="Expected average inflation rate over the years">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="inflationRate" value="6" min="3" max="12" step="0.5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="inflationRateSlider" min="3" max="12" value="6" step="0.5" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>3%</span>
+                                    <span>12%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Expected Annual Return Pre-retirement 
+                                    <span class="tooltip-icon" data-tooltip="Expected annual return on investments before retirement">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="preRetirementReturn" value="8" min="5" max="15" step="0.5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="preRetirementReturnSlider" min="5" max="15" value="8" step="0.5" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>5%</span>
+                                    <span>15%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Expected Annual Return Post-retirement 
+                                    <span class="tooltip-icon" data-tooltip="Expected annual return on corpus during retirement">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="postRetirementReturn" value="6" min="3" max="10" step="0.5">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="postRetirementReturnSlider" min="3" max="10" value="6" step="0.5" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>3%</span>
+                                    <span>10%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">
+                                    Current Retirement Savings 
+                                    <span class="tooltip-icon" data-tooltip="Amount you have already saved for retirement">ℹ️</span>
+                                </label>
+                                <div class="input-field-container">
+                                    <input type="number" id="currentSavings" value="100000" min="0" max="10000000" step="10000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="currentSavingsSlider" min="0" max="10000000" value="100000" step="10000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹0</span>
+                                    <span>₹1Cr</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card corpus-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Required Retirement Corpus</div>
+                            <div class="card-value" id="requiredCorpusResult">₹2,50,00,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card savings-card">
+                        <div class="card-content">
+                            <div class="card-label">Monthly Savings Required</div>
+                            <div class="card-value" id="monthlySavingsResult">₹25,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card income-card">
+                        <div class="card-content">
+                            <div class="card-label">Annual Retirement Income Needed</div>
+                            <div class="card-value" id="annualIncomeResult">₹12,00,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">Retirement Planning Breakdown</div>
+                    <div class="pie-chart-container">
+                        <canvas id="retirementChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator current-savings"></div>
+                            <div class="summary-label">Current Savings Growth</div>
+                            <div class="summary-amount" id="currentSavingsDisplay">₹5,00,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator additional-needed"></div>
+                            <div class="summary-label">Additional Corpus Needed</div>
+                            <div class="summary-amount" id="additionalNeededDisplay">₹2,00,00,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-section">
+                    <h3>Retirement Planning Summary</h3>
+                    <p id="retirementSummary">
+                        To have ₹50,000/month at retirement, you need a corpus of ₹2.5 Cr and must save ₹25,000/month.
+                    </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadRetirementPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn save-btn" onclick="saveRetirementScenario()">
+                        <span class="btn-icon">💾</span>
+                        Save Scenario
+                    </button>
+                    <button class="action-btn load-btn" onclick="loadRetirementScenario()">
+                        <span class="btn-icon">📂</span>
+                        Load Scenario
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tooltip container -->
+        <div id="tooltip" class="tooltip"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/retirement_calculator_script.js') }}"></script>
+</body>
+</html>

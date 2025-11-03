@@ -20,13 +20,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -45,7 +53,7 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -63,17 +71,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -86,7 +94,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -357,19 +367,21 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat,
+                #e6edf5;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
+    cursor: pointer;
 }
 
 .custom-slider::-webkit-slider-track {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: transparent;
+    border-radius: 9999px;
     border: none;
 }
 
@@ -377,24 +389,23 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    -webkit-appearance: none;
-    border: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    appearance: none;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .custom-slider::-moz-range-track {
     width: 100%;
     height: 6px;
     cursor: pointer;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: #e6edf5;
+    border-radius: 9999px;
     border: none;
 }
 
@@ -402,15 +413,14 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .slider-labels {
@@ -476,17 +486,33 @@ nav {
     background: linear-gradient(90deg, #3182ce, #2563eb);
 }
 
-.sip-amount-card::before {
-    background: linear-gradient(90deg, #10b981, #059669);
-}
-
+.sip-amount-card::before,
 .total-investment-card::before {
-    background: linear-gradient(90deg, #3182ce, #2563eb);
+    background: #3c83f6;
 }
 
 .wealth-gain-card::before {
-    background: linear-gradient(90deg, #f59e0b, #d97706);
+    background: #16a249;
 }
+
+/* Result card color overrides to match index design */
+.sip-amount-card,
+.total-investment-card {
+    background: #3c83f6;
+    border: 1px solid #3c83f6;
+}
+.sip-amount-card .card-label,
+.total-investment-card .card-label { color: rgba(255,255,255,0.9); }
+.sip-amount-card .card-label { color: #ffffff; }
+.sip-amount-card .card-value,
+.total-investment-card .card-value { color: #ffffff; }
+
+.wealth-gain-card {
+    background: #16a249;
+    border: 1px solid #16a249;
+}
+.wealth-gain-card .card-label { color: rgba(255,255,255,0.9); }
+.wealth-gain-card .card-value { color: #ffffff; }
 
 .card-icon {
     margin-bottom: 12px;
@@ -506,7 +532,7 @@ nav {
 
 .card-label.bold-title {
     font-weight: 600;
-    color: #1a202c;
+    color: #ffffff;
     font-size: 15px;
 }
 
@@ -549,7 +575,7 @@ nav {
 .chart-summary {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 12px;
 }
 
 .summary-item {
@@ -558,6 +584,8 @@ nav {
     gap: 10px;
     flex-direction: column;
     text-align: center;
+    padding: 10px 14px;
+    border-radius: 10px;
 }
 
 .color-indicator {
@@ -568,11 +596,11 @@ nav {
 }
 
 .color-indicator.total-investment {
-    background: #3182ce;
+    background: #3c83f6;
 }
 
 .color-indicator.total-returns {
-    background: #f59e0b;
+    background: #16a249;
 }
 
 .summary-label {
@@ -586,6 +614,28 @@ nav {
     font-size: 16px;
     font-weight: 600;
     color: #1a202c;
+}
+
+/* Goal SIP Investment Breakdown summary card backgrounds */
+.chart-summary .summary-item:nth-child(1) {
+    background: #ffffff;
+}
+.chart-summary .summary-item:nth-child(1) .summary-label,
+.chart-summary .summary-item:nth-child(1) .summary-amount {
+    color: #000000;
+}
+
+.chart-summary .summary-item:nth-child(2) {
+    background: #ffffff;
+}
+.chart-summary .summary-item:nth-child(2) .summary-label,
+.chart-summary .summary-item:nth-child(2) .summary-amount {
+    color: #000000;
+}
+
+/* Make color chips readable on colored cards */
+.chart-summary .summary-item .color-indicator {
+    border: 2px solid rgba(255,255,255,0.6);
 }
 
 .action-buttons {
@@ -609,22 +659,26 @@ nav {
 }
 
 .download-btn {
-    background: #10b981;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
+    border: 2px solid #3c83f6;
 }
 
 .download-btn:hover {
-    background: #059669;
+    background: #3c83f6;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
 .table-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #164ab3;
+    border: 2px solid #164ab3;
 }
 
 .table-btn:hover {
-    background: #2c5282;
+    background: #164ab3;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
@@ -843,6 +897,38 @@ nav {
     border-bottom: 2px solid #e2e8f0;
     font-size: 13px;
     letter-spacing: 0.5px;
+}
+
+/* Goal SIP Investment Schedule (Yearly) header colors */
+#yearlyTable thead { background: transparent; }
+#yearlyTable thead th { color: #ffffff; }
+#yearlyTable thead th:nth-child(1) { /* Year */
+    background: #1e3a8a; /* Dark Blue */
+}
+#yearlyTable thead th:nth-child(2) { /* Investment */
+    background: #3c83f6;
+}
+#yearlyTable thead th:nth-child(3) { /* Returns */
+    background: #16a249;
+}
+#yearlyTable thead th:nth-child(4) { /* Total Value */
+    background: #164ab3;
+}
+
+/* Goal SIP Investment Schedule (Monthly) header colors */
+#monthlyTable thead { background: transparent; }
+#monthlyTable thead th { color: #ffffff; }
+#monthlyTable thead th:nth-child(1) { /* Year */
+    background: #1e3a8a; /* Dark Blue */
+}
+#monthlyTable thead th:nth-child(2) { /* Month */
+    background: #1e3a8a; /* Dark Blue for consistency */
+}
+#monthlyTable thead th:nth-child(3) { /* SIP Amount (Investment) */
+    background: #3c83f6;
+}
+#monthlyTable thead th:nth-child(4) { /* Balance (Total Value) */
+    background: #164ab3;
 }
 
 .amortization-table tbody tr {

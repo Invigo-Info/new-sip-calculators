@@ -10,6 +10,7 @@ body {
     color: #333;
     line-height: 1.6;
 }
+html, body { max-width: 100%; overflow-x: hidden; }
 
 .container {
     max-width: 1200px;
@@ -20,14 +21,25 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
+
+/* Hide old inline nav inside header; we render shared nav outside header */
+/* nav visible inside header; follow shared nav-component.css */
 
 nav {
     display: flex;
@@ -45,7 +57,7 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -64,17 +76,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +100,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -200,6 +214,12 @@ nav {
     margin-bottom: 40px;
 }
 
+@media (max-width: 1199px) {
+    .calculator-container { grid-template-columns: 1fr; gap: 20px; }
+    .input-sections { order: 1; }
+    .results-section { order: 2; position: static; }
+}
+
 /* Input Sections */
 .input-sections {
     background: white;
@@ -207,6 +227,10 @@ nav {
     padding: 30px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
 }
 
 .section {
@@ -216,6 +240,12 @@ nav {
     border-radius: 0;
     box-shadow: none;
 }
+
+/* Ensure children can shrink to avoid overflow */
+.results-column,
+.result-card,
+.chart-section,
+.table-section { min-width: 0; }
 
 .section:last-child {
     margin-bottom: 0;
@@ -259,6 +289,7 @@ nav {
     display: flex;
     align-items: center;
     width: 140px;
+    max-width: 100%;
 }
 
 .input-field-container input {
@@ -294,52 +325,65 @@ nav {
     flex-direction: column;
     gap: 5px;
     margin-top: 5px;
+    width: 100%;
 }
 
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: linear-gradient(to right, #10b981 0%, #10b981 var(--value, 20%), #e5e7eb var(--value, 20%), #e5e7eb 100%);
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
 }
 
-.custom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #10b981;
+.custom-slider::-webkit-slider-track {
+    width: 100%;
+    height: 6px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
+    background: transparent;
+    border-radius: 9999px;
+    border: none;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
+    cursor: pointer;
+    appearance: none;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #059669;
-    transform: scale(1.1);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
+}
+
+.custom-slider::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #e6edf5;
+    border-radius: 9999px;
+    border: none;
 }
 
 .custom-slider::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
+    height: 20px;
+    width: 20px;
     border-radius: 50%;
-    background: #10b981;
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
-    background: #059669;
-    transform: scale(1.1);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .slider-labels {
@@ -368,6 +412,8 @@ nav {
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
 }
 
 .lumpsum-results-column {
@@ -411,6 +457,7 @@ nav {
     padding: 15px;
     border: 1px solid #e2e8f0;
     transition: all 0.2s ease;
+    width: 100%;
 }
 
 .result-card:hover {
@@ -424,6 +471,7 @@ nav {
     align-items: center;
     text-align: center;
     gap: 8px;
+    width: 100%;
 }
 
 .card-icon {
@@ -446,34 +494,39 @@ nav {
 }
 
 /* Specific card styling */
-.lumpsum-investment-card {
-    background: linear-gradient(135deg, #fef3c7, #fbbf24);
-    border-color: #f59e0b;
-}
-
-.lumpsum-maturity-card {
-    background: linear-gradient(135deg, #fee2e2, #fca5a5);
-    border-color: #ef4444;
-}
-
-.lumpsum-gains-card {
-    background: linear-gradient(135deg, #dcfce7, #86efac);
-    border-color: #22c55e;
-}
-
+.lumpsum-investment-card,
 .sip-investment-card {
-    background: linear-gradient(135deg, #dbeafe, #93c5fd);
-    border-color: #3b82f6;
+    background: #3c83f6;
+    border-color: #3c83f6;
 }
 
-.sip-maturity-card {
-    background: linear-gradient(135deg, #d1fae5, #6ee7b7);
-    border-color: #10b981;
-}
-
+.lumpsum-maturity-card,
+.lumpsum-gains-card,
+.sip-maturity-card,
 .sip-gains-card {
-    background: linear-gradient(135deg, #f3e8ff, #c4b5fd);
-    border-color: #8b5cf6;
+    background: #16a249;
+    border-color: #16a249;
+}
+
+.lumpsum-investment-card .card-label,
+.lumpsum-investment-card .card-value,
+.lumpsum-investment-card .card-icon,
+.sip-investment-card .card-label,
+.sip-investment-card .card-value,
+.sip-investment-card .card-icon,
+.lumpsum-maturity-card .card-label,
+.lumpsum-maturity-card .card-value,
+.lumpsum-maturity-card .card-icon,
+.lumpsum-gains-card .card-label,
+.lumpsum-gains-card .card-value,
+.lumpsum-gains-card .card-icon,
+.sip-maturity-card .card-label,
+.sip-maturity-card .card-value,
+.sip-maturity-card .card-icon,
+.sip-gains-card .card-label,
+.sip-gains-card .card-value,
+.sip-gains-card .card-icon {
+    color: #ffffff;
 }
 
 /* Comparison Summary */
@@ -511,14 +564,19 @@ nav {
     gap: 20px;
 }
 
-.better-option-card {
-    background: linear-gradient(135deg, #fef3c7, #fbbf24);
-    border-color: #f59e0b;
+.better-option-card,
+.advantage-card {
+    background: #16a249;
+    border-color: #16a249;
 }
 
-.advantage-card {
-    background: linear-gradient(135deg, #d1fae5, #6ee7b7);
-    border-color: #10b981;
+.better-option-card .card-label,
+.better-option-card .card-value,
+.better-option-card .card-icon,
+.advantage-card .card-label,
+.advantage-card .card-value,
+.advantage-card .card-icon {
+    color: #ffffff;
 }
 
 /* Chart Section */
@@ -555,6 +613,7 @@ nav {
     flex-direction: column;
     align-items: center;
 }
+.pie-chart-container canvas { width: 100% !important; height: auto !important; max-width: 280px; }
 
 .pie-chart-container h4 {
     font-size: 1.1rem;
@@ -742,8 +801,11 @@ nav {
     }
     
     .mega-menu-content {
-        min-width: 320px;
-        max-width: 350px;
+        min-width: 95vw;
+        max-width: 95vw;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1100;
     }
     
     .mega-menu-container {
@@ -791,6 +853,32 @@ nav {
     }
 }
 
+/* Tablet optimizations to prevent overflow */
+@media (max-width: 992px) {
+    .input-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .input-field-container { width: 100%; }
+    .calculator-container { grid-template-columns: 1fr; gap: 20px; }
+    .results-comparison-grid { grid-template-columns: 1fr; gap: 16px; }
+    .summary-cards { grid-template-columns: 1fr; gap: 16px; }
+    .chart-container { grid-template-columns: 1fr; gap: 16px; }
+}
+
+@media (max-width: 640px) {
+    .input-sections { padding: 16px; }
+    .results-column { padding: 16px; }
+    .result-card { padding: 12px; }
+    .card-content { align-items: flex-start; text-align: left; }
+    .input-row { gap: 6px; }
+    .input-label { margin-bottom: 4px; }
+    .input-field-container { width: 100%; }
+    .input-field-container input { font-size: 14px; }
+    .slider-container { gap: 6px; }
+}
+
 @media (max-width: 480px) {
     .container {
         padding: 10px;
@@ -803,6 +891,11 @@ nav {
     .table-section {
         padding: 15px;
     }
+    .results-column { border-left-width: 3px; }
+    .result-card { padding: 12px; }
+    .input-grid { gap: 16px; }
+    .slider-container { gap: 6px; }
+    .pie-chart-container canvas { max-width: 240px; }
     
     header h1 {
         font-size: 1.4rem;

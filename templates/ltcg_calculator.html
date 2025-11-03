@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTCG Calculator | Calculate Long Term Capital Gains Tax</title>
+    <meta name="description" content="Calculate LTCG tax on equity shares and mutual funds with our comprehensive Capital Gains Tax calculator. Includes July 2024 rule changes.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ltcg_calculator_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LTCG Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- LTCG Calculation Section -->
+                <div class="section">
+                    <h2>Calculate Capital Gains Tax
+                        <div class="tooltip-container">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                From 23-Jul-2024, equity LTCG exemption ₹1.25L & rate 12.5%; STCG 20%. Earlier: ₹1L & 10% LTCG; STCG 15%. This calculator ignores cess/surcharge and set-off of losses.
+                            </div>
+                        </div>
+                    </h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Asset Type</label>
+                            </div>
+                            <div class="frequency-container">
+                                <select id="ltcgAssetType" class="frequency-select">
+                                    <option value="Listed Equity Share">Listed Equity Share</option>
+                                    <option value="Equity Mutual Fund">Equity Mutual Fund</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Purchase Date</label>
+                                <div class="input-field-container">
+                                    <input type="date" id="ltcgPurchaseDate" value="2023-01-01">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Sale Date</label>
+                                <div class="input-field-container">
+                                    <input type="date" id="ltcgSaleDate" value="2024-08-01">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Purchase Value</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="ltcgPurchaseValue" value="100000" min="1" max="100000000" step="1000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="ltcgPurchaseValueSlider" min="1000" max="10000000" value="100000" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹1K</span>
+                                    <span>₹1Cr</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Sale Value</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="ltcgSaleValue" value="160000" min="1" max="100000000" step="1000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="ltcgSaleValueSlider" min="1000" max="10000000" value="160000" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹1K</span>
+                                    <span>₹1Cr</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card holding-period-card">
+                        <div class="card-content">
+                            <div class="card-label">Holding Period</div>
+                            <div class="card-value" id="ltcgHoldingPeriodResult">578 Days (LTCG)</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card net-gain-card">
+                        <div class="card-content">
+                            <div class="card-label">Net Gain</div>
+                            <div class="card-value" id="ltcgNetGainResult">₹60,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card exemption-card" id="ltcgExemptionCard">
+                        <div class="card-content">
+                            <div class="card-label">Exemption</div>
+                            <div class="card-value" id="ltcgExemptionResult">₹1,25,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card taxable-gain-card">
+                        <div class="card-content">
+                            <div class="card-label">Taxable Gain</div>
+                            <div class="card-value" id="ltcgTaxableGainResult">₹0</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card applicable-rate-card">
+                        <div class="card-content">
+                            <div class="card-label">Applicable Rate</div>
+                            <div class="card-value" id="ltcgApplicableRateResult">12.5%</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card tax-payable-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Capital Gains Tax Payable</div>
+                            <div class="card-value" id="ltcgTaxPayableResult">₹0</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card effective-tax-card">
+                        <div class="card-content">
+                            <div class="card-label">Effective Tax %</div>
+                            <div class="card-value" id="ltcgEffectiveTaxResult">0.00%</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Tax Regime Info Section -->
+                <div class="tax-regime-section">
+                    <div class="tax-regime-header">Tax Regime Information</div>
+                    <div class="tax-regime-info" id="ltcgTaxRegimeInfo">
+                        <div class="regime-item">
+                            <div class="regime-label">Sale Date:</div>
+                            <div class="regime-value" id="ltcgRegimeSaleDate">01-Aug-2024</div>
+                        </div>
+                        <div class="regime-item">
+                            <div class="regime-label">Tax Regime:</div>
+                            <div class="regime-value" id="ltcgRegimeName">New Regime (From 23-Jul-2024)</div>
+                        </div>
+                        <div class="regime-item">
+                            <div class="regime-label">STCG Rate:</div>
+                            <div class="regime-value" id="ltcgRegimeStcgRate">20%</div>
+                        </div>
+                        <div class="regime-item">
+                            <div class="regime-label">LTCG Exemption:</div>
+                            <div class="regime-value" id="ltcgRegimeLtcgExemption">₹1,25,000</div>
+                        </div>
+                        <div class="regime-item">
+                            <div class="regime-label">LTCG Rate:</div>
+                            <div class="regime-value" id="ltcgRegimeLtcgRate">12.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculation Breakdown Section -->
+        
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ltcg_calculator_script.js') }}"></script>
+</body>
+</html>

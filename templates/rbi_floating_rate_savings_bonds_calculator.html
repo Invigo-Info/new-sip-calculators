@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBI Floating Rate Savings Bonds Calculator | Calculate Bond Returns</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-component.css') }}">
+    <meta name="description" content="Calculate RBI Floating Rate Savings Bonds returns with our comprehensive calculator. Plan your fixed-income investments with accurate half-yearly payout calculations.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/rbi_floating_rate_savings_bonds_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RBI Floating Rate Savings Bonds Calculator</h1>
+            {% include 'navigation.html' %}
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-sections">
+                <!-- RBI Bond Calculation Section -->
+                <div class="section">
+                    <h2>Calculate RBI Bond Returns</h2>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Investment Amount</label>
+                                <div class="input-field-container">
+                                    <input type="number" id="rbiBondInvestmentAmount" value="10000" min="1000" max="10000000" step="1000">
+                                    <span class="input-suffix">₹</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="rbiBondInvestmentAmountSlider" min="1000" max="1000000" value="10000" step="1000" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>₹1K</span>
+                                    <span>₹10L</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Interest Rate <span class="rate-info" title="Current RBI floating rate. Rate resets every 6 months">ℹ️</span></label>
+                                <div class="input-field-container">
+                                    <input type="number" id="rbiBondInterestRate" value="8.05" min="1.0" max="20.0" step="0.01">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="rbiBondInterestRateSlider" min="1.0" max="20.0" value="8.05" step="0.01" class="custom-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-labels">
+                                    <span>1%</span>
+                                    <span>20%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Bond Tenure</label>
+                                <div class="input-field-container disabled">
+                                    <input type="number" id="rbiBondTenure" value="7" min="7" max="7" step="1" readonly>
+                                    <span class="input-suffix">Years</span>
+                                </div>
+                            </div>
+                            <div class="fixed-info">
+                                <small>Fixed by RBI (7 years)</small>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-row">
+                                <label class="input-label">Interest Payout Frequency</label>
+                                <div class="frequency-container">
+                                    <div class="frequency-display disabled">
+                                        Half-Yearly (Every 6 months)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fixed-info">
+                                <small>Fixed payment schedule</small>
+                            </div>
+                        </div>
+
+                        <div class="rate-revision-info">
+                            <div class="info-card">
+                                <div class="info-icon">📅</div>
+                                <div class="info-content">
+                                    <div class="info-title">Next Rate Revision</div>
+                                    <div class="info-value" id="rbiBondNextRevision">Jan 1, 2025</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-card-grid">
+                    <div class="result-card investment-amount-card">
+                        <div class="card-content">
+                            <div class="card-label bold-title">Investment Amount</div>
+                            <div class="card-value" id="rbiBondInvestmentResult">₹10,000</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card half-yearly-payout-card">
+                        <div class="card-content">
+                            <div class="card-label">Half-Yearly Payout</div>
+                            <div class="card-value" id="rbiBondHalfYearlyPayoutResult">₹403</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card yearly-interest-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Interest per Year</div>
+                            <div class="card-value" id="rbiBondYearlyInterestResult">₹805</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card total-interest-card">
+                        <div class="card-content">
+                            <div class="card-label">Total Interest Over Tenure</div>
+                            <div class="card-value" id="rbiBondTotalInterestResult">₹5,635</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card maturity-value-card">
+                        <div class="card-content">
+                            <div class="card-label">Maturity Amount</div>
+                            <div class="card-value" id="rbiBondMaturityValueResult">₹15,635</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Text -->
+                <div class="summary-section">
+                    <div class="summary-card">
+                        <div class="summary-icon">💰</div>
+                        <div class="summary-text" id="rbiBondSummaryText">
+                            For an investment of ₹10,000 at 8.05% interest, you will receive ₹403 every 6 months for 7 years.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <div class="chart-header">Investment Breakdown</div>
+                    <div class="bar-chart-container">
+                        <canvas id="rbiBondChart"></canvas>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <div class="color-indicator principal-amount"></div>
+                            <div class="summary-label">Principal Amount</div>
+                            <div class="summary-amount" id="rbiBondPrincipalDisplay">₹10,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="color-indicator interest-earned"></div>
+                            <div class="summary-label">Total Interest Earned</div>
+                            <div class="summary-amount" id="rbiBondInterestDisplay">₹5,635</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadRbiBondPDF()">
+                        <span class="btn-icon">📄</span>
+                        Download PDF
+                    </button>
+                    <button class="action-btn table-btn" onclick="toggleRbiBondTable()">
+                        <span class="btn-icon">📊</span>
+                        View Payout Schedule
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section hidden" id="rbiBondTableSection">
+            <div class="table-header">
+                <h2>Half-Yearly Payout Schedule</h2>
+            </div>
+            
+            <div class="table-container" id="rbiBondPayoutTable">
+                <div class="table-wrapper">
+                    <table class="payout-table">
+                        <thead>
+                            <tr>
+                                <th>Payout No.</th>
+                                <th>Year</th>
+                                <th>Half Year</th>
+                                <th>Payout Amount</th>
+                                <th>Cumulative Interest</th>
+                                <th>Principal Outstanding</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rbiBondPayoutTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/nav-component.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/rbi_floating_rate_savings_bonds_script.js') }}"></script>
+</body>
+</html>
