@@ -178,23 +178,11 @@ function updateStockReturnChart(data) {
         datasets: [{
             label: 'Amount (₹)',
             data: [data.total_invested, data.total_value],
-            backgroundColor: [
-                '#667eea',
-                data.is_profitable ? '#48bb78' : '#f56565'
-            ],
-            borderColor: [
-                '#5a67d8',
-                data.is_profitable ? '#38a169' : '#e53e3e'
-            ],
+            backgroundColor: ['#3c83f6', '#16a249'],
+            borderColor: ['#3c83f6', '#16a249'],
             borderWidth: 2,
-            hoverBackgroundColor: [
-                '#5a67d8',
-                data.is_profitable ? '#38a169' : '#e53e3e'
-            ],
-            hoverBorderColor: [
-                '#4c51bf',
-                data.is_profitable ? '#2f855a' : '#c53030'
-            ]
+            hoverBackgroundColor: ['#3c83f6', '#16a249'],
+            hoverBorderColor: ['#3c83f6', '#16a249']
         }]
     };
 

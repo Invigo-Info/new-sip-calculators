@@ -203,16 +203,13 @@ nav {
 @media (max-width: 1199px) {
     .calculator-container {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 18px;
+        width: 100%;
+        align-items: stretch;
     }
     
-    .input-sections {
-        order: 2;
-    }
-    
-    .results-section {
-        order: 1;
-    }
+    .input-sections { order: 1; }
+    .results-section { order: 2; position: static; }
 }
 
 .input-sections {
@@ -567,11 +564,11 @@ nav {
 }
 
 .color-indicator.total-contribution {
-    background: #10B981;
+    background: #3c83f6;
 }
 
 .color-indicator.gains-amount {
-    background: #F59E0B;
+    background: #16a249;
 }
 
 .summary-label {
@@ -587,50 +584,31 @@ nav {
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
+    header { padding: 12px; margin-bottom: 16px; }
+    header h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    .container { padding: 12px; }
 
-    .calculator-container {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
+    .calculator-container { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-bottom: 24px; }
+    .input-sections { order: 1; padding: 16px; gap: 12px; }
+    .results-section { order: 2; position: static; }
 
-    .input-sections {
-        order: 2;
-    }
+    .section h2 { font-size: 1.1rem; margin-bottom: 14px; }
+    .input-grid { gap: 12px; }
+    .input-group { padding: 12px; gap: 6px; }
+    .input-row { flex-direction: column; align-items: stretch; gap: 8px; }
+    .input-label { font-size: 13px; }
+    .input-field-container, .frequency-container { min-width: 0; }
+    .slider-labels { font-size: 11px; }
 
-    .results-section {
-        order: 1;
-        position: static;
-    }
+    .results-card-grid { grid-template-columns: 1fr; gap: 12px; }
+    .result-card { padding: 12px; }
+    .card-label { font-size: 12px; }
+    .card-value { font-size: 16px; }
+    .card-icon { display: none; }
 
-    .results-card-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
+    .pie-chart-container { height: 220px; }
 
-    .result-card {
-        padding: 12px;
-    }
-
-    .card-label {
-        font-size: 11px;
-    }
-
-    .card-value {
-        font-size: 14px;
-    }
-
-    .input-field-container,
-    .frequency-container {
-        min-width: 120px;
-    }
-
-    nav {
-        flex-direction: column;
-        gap: 10px;
-    }
+    nav { flex-direction: column; gap: 10px; }
 
     /* .mega-menu-btn {
         font-size: 12px;
@@ -704,6 +682,126 @@ nav {
     }
 }
 
+/* === UI/UX alignment with ROI page === */
+/* Header container and title styling to match ROI */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  border: 1px solid rgba(60,131,246,0.20);
+  box-shadow: 0 8px 24px rgba(60,131,246,0.08);
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Slider styling: blue gradient track and Firefox support */
+.slider-container { margin-top: 12px; }
+.custom-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  /* ROI-like gradient fill using CSS var --fill for WebKit */
+  background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border: none;
+}
+.custom-slider::-webkit-slider-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: transparent; /* fill handled on input background */
+  border-radius: 9999px;
+  border: none;
+}
+.custom-slider::-webkit-slider-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #3B82F6;
+  cursor: pointer;
+  -webkit-appearance: none;
+  box-shadow: 0 2px 6px rgba(59,130,246,0.35);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.custom-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 4px 12px rgba(59,130,246,0.45);
+  transform: scale(1.05);
+}
+/* Firefox */
+.custom-slider::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: #e6edf5; /* base track color */
+  border-radius: 9999px;
+  border: none;
+}
+.custom-slider::-moz-range-progress {
+  background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+  height: 6px;
+  border-radius: 9999px;
+}
+.custom-slider::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #3B82F6;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(59,130,246,0.35);
+}
+
+/* Results card color updates */
+.investment-amount-card {
+  background: #3c83f6 !important;
+  color: #ffffff !important;
+}
+.investment-amount-card .card-label,
+.investment-amount-card .card-value,
+.investment-amount-card .card-icon { color: #ffffff !important; }
+
+.pension-wealth-card,
+.lump-sum-card,
+.monthly-pension-card,
+.annuity-card {
+  background: #16a249 !important;
+  color: #ffffff !important;
+}
+.pension-wealth-card .card-label,
+.pension-wealth-card .card-value,
+.pension-wealth-card .card-icon,
+.lump-sum-card .card-label,
+.lump-sum-card .card-value,
+.lump-sum-card .card-icon,
+.monthly-pension-card .card-label,
+.monthly-pension-card .card-value,
+.monthly-pension-card .card-icon,
+.annuity-card .card-label,
+.annuity-card .card-value,
+.annuity-card .card-icon { color: #ffffff !important; }
+
+/* Optional: soften the left accent bar on colored cards */
+.investment-amount-card::before,
+.pension-wealth-card::before,
+.lump-sum-card::before,
+.monthly-pension-card::before,
+.annuity-card::before {
+  background: rgba(255,255,255,0.35) !important;
+}
+
 @media (max-width: 480px) {
     header h1 {
         font-size: 1.3rem;
@@ -718,6 +816,6 @@ nav {
     }
 
     .frequency-container {
-        min-width: 100px;
+        min-width: 0;
     }
-} 
+}

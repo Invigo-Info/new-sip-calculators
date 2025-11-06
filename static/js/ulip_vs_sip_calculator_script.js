@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupUlipSipSliders();
     addUlipSipEventListeners();
     initialSyncUlipSipValues();
+    // UI-only: initialize range slider fill so track shows gradient like daily-compound
+    initRangeFills();
     updateTermPremiumVisibility();
     calculateAndUpdateUlipSipResults();
     setupUlipSipMegaMenu();
@@ -69,6 +71,7 @@ function syncUlipSipInputs(input, slider) {
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this); // UI-only
         calculateAndUpdateUlipSipResults();
     });
 
@@ -84,6 +87,7 @@ function syncUlipSipInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider); // UI-only
         calculateAndUpdateUlipSipResults();
     });
 }
@@ -110,6 +114,8 @@ function addUlipSipEventListeners() {
     
     allSliders.forEach(slider => {
         slider.addEventListener('input', calculateAndUpdateUlipSipResults);
+        // keep visual track in sync
+        slider.addEventListener('input', function(){ updateRangeFill(this); });
     });
 
     // Add listener for term insurance checkbox
@@ -120,6 +126,24 @@ function addUlipSipEventListeners() {
 
     // Add listener for tax model dropdown
     taxModelSelectUlipSip.addEventListener('change', calculateAndUpdateUlipSipResults);
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily-compound page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function updateTermPremiumVisibility() {
@@ -389,7 +413,7 @@ function updateUlipSipResultsDisplay(result) {
     const bestOptionElement = document.getElementById('bestOptionUlipSip');
     bestOptionElement.className = 'comparison-value best-option';
     if (result.comparison.bestOption.includes('ULIP')) {
-        bestOptionElement.style.color = '#f39c12';
+        bestOptionElement.style.color = '#16a249';
     } else {
         bestOptionElement.style.color = '#059669';
     }
@@ -407,15 +431,15 @@ function updateUlipSipChart(result) {
         {
             label: 'SIP (Post-Tax)',
             data: [result.sip.postTaxValue],
-            backgroundColor: '#3498db',
-            borderColor: '#2980b9',
+            backgroundColor: '#16a249',
+            borderColor: '#16a249',
             borderWidth: 2
         },
         {
             label: 'ULIP (Net)',
             data: [result.ulip.netPayout],
-            backgroundColor: '#f39c12',
-            borderColor: '#e67e22',
+            backgroundColor: '#16a249',
+            borderColor: '#16a249',
             borderWidth: 2
         }
     ];
@@ -425,8 +449,8 @@ function updateUlipSipChart(result) {
         datasets.splice(1, 0, {
             label: 'SIP + Term (Post-Tax)',
             data: [result.sipTerm.postTaxValue],
-            backgroundColor: '#27ae60',
-            borderColor: '#229954',
+            backgroundColor: '#16a249',
+            borderColor: '#16a249',
             borderWidth: 2
         });
     }
@@ -670,3 +694,7 @@ function getTaxModelDisplayName(taxModel) {
     };
     return taxModels[taxModel] || 'Equity MF (LTCG 10% > ₹1L gain)';
 }
+
+
+
+

@@ -170,7 +170,7 @@ function createNetWorthChart() {
             labels: ['Total Assets', 'Total Liabilities'],
             datasets: [{
                 data: [0, 0],
-                backgroundColor: ['#10b981', '#ef4444'],
+                backgroundColor: ['#16a249', '#ef4444'],
                 borderColor: ['#059669', '#dc2626'],
                 borderWidth: 2,
                 cutout: '60%'

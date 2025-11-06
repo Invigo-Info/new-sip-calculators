@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateHRAResults();
     setupHRAMegaMenu();
     setupTooltips();
+    // Initialize slider filled track UI (Firefox supported)
+    initRangeFills();
 });
 
 function setupHRASliders() {
@@ -76,12 +78,14 @@ function syncHRAInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateHRAResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateHRAResults();
     });
 
@@ -97,6 +101,7 @@ function syncHRAInputs(input, slider) {
             // For values above slider max, keep the input value but set slider to max
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateHRAResults();
     });
 }
@@ -513,4 +518,21 @@ function formatCityType(cityType) {
 // Utility function to get exemption percentage
 function getExemptionPercentage(cityType) {
     return cityType === 'metro' ? '50%' : '40%';
+}
+
+// Range fill helpers (UI-only) to color the slider track like the daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }

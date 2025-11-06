@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initialSyncValues();
     calculateAndUpdateResults();
     setupMegaMenu();
+    // Initialize slider filled track UI (UI-only)
+    initRangeFills();
 });
 
 function setupSliders() {
@@ -162,7 +164,7 @@ function updateChart(result) {
             labels: ['Invested Amount', 'Total Interest'],
             datasets: [{
                 data: [result.invested_amount, result.total_interest],
-                backgroundColor: ['#10B981', '#F59E0B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',
@@ -248,4 +250,23 @@ function setupMegaMenu() {
             }
         });
     }
-} 
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const denom = (max - min);
+  const percent = denom === 0 ? 100 : ((val - min) * 100) / denom;
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

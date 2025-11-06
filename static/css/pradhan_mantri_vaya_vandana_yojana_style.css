@@ -20,22 +20,24 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 15px;
-}
+nav { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; }
 
 /* Mega Menu Styles */
 .mega-menu {
@@ -44,50 +46,11 @@ nav {
 }
 
 /* Home Button */
-.home-btn {
-    background: #3182ce;
-    color: white;
-    padding: 12px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    box-sizing: border-box;
-}
+.home-btn { background: #3c83f6; color: #ffffff; padding: 12px 20px; font-size: 14px; font-weight: 600; border: none; border-radius: 6px; text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; box-sizing: border-box; }
+.home-btn:hover { background: #3c83f6; color: #ffffff; }
 
-.home-btn:hover {
-    background: #2c5282;
-    color: white;
-}
-
-.mega-menu-btn {
-    background: #3182ce;
-    color: white;
-    padding: 12px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.2s ease;
-    letter-spacing: 0.5px;
-    min-height: 44px;
-    box-sizing: border-box;
-}
-
-.mega-menu-btn:hover {
-    background: #2c5282;
-}
+.mega-menu-btn { background: transparent; color: #3c83f6; padding: 12px 20px; font-size: 14px; font-weight: 600; border: 2px solid #3c83f6; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; letter-spacing: 0.5px; min-height: 44px; box-sizing: border-box; }
+.mega-menu-btn:hover { background: #3c83f6; color: #ffffff; border-color: #3c83f6; }
 
 .dropdown-arrow {
     font-size: 12px;
@@ -98,25 +61,8 @@ nav {
     transform: rotate(180deg);
 }
 
-.mega-menu-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    min-width: 800px;
-    padding: 20px;
-    margin-top: 5px;
-}
-
-.mega-menu.open .mega-menu-content {
-    display: block;
-    animation: sleekSlideDown 0.3s ease-out;
-}
+.mega-menu .mega-menu-content { display: none !important; position: absolute; background: #ffffff; min-width: 780px; max-width: 900px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 1000; border-radius: 8px; padding: 0; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 6px; border: 1px solid #e2e8f0; backdrop-filter: blur(10px); }
+.mega-menu.open .mega-menu-content { display: block !important; animation: sleekSlideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
 
 @keyframes sleekSlideDown {
     from {
@@ -129,58 +75,29 @@ nav {
     }
 }
 
-.mega-menu-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
+.mega-menu-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; padding: 18px; }
 
-.mega-menu-section {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+.mega-menu-section { padding: 0 14px; border-right: 1px solid #f1f5f9; }
 
 .mega-menu-section:last-child {
     border-right: none;
 }
 
-.mega-section-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #4a5568;
-    margin-bottom: 8px;
-    padding-bottom: 4px;
-    border-bottom: 2px solid #e2e8f0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+.mega-section-title { font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
 
-.mega-link {
-    color: #2d3748;
-    text-decoration: none;
-    padding: 6px 8px;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    display: block;
-}
+.mega-link { display: block; padding: 10px 12px; color: #1f2937; text-decoration: none; border-radius: 6px; transition: all .2s ease; font-weight: 500; }
+.mega-link:hover { background: #f8fafc; color: #111827; transform: translateX(2px); }
+.mega-link.active { background: #eff6ff; color: #1d4ed8; box-shadow: inset 0 0 0 1px #bfdbfe; }
 
-.mega-link:hover {
-    background: #f7fafc;
-    color: #3182ce;
-    transform: translateX(2px);
+@media (max-width: 1024px) {
+  nav { flex-direction: column; gap: 10px; }
+  .home-btn { width: auto !important; align-self: center; }
+  .mega-menu-btn { width: 100%; }
 }
-
-.mega-link.active {
-    background: #ebf8ff;
-    color: #3182ce;
-    font-weight: 600;
-}
-
-.mega-link.active:hover {
-    background: #bee3f8;
+@media (max-width: 767px) {
+  .mega-menu .mega-menu-content { min-width: 95vw !important; max-width: 95vw !important; }
+  .mega-menu-container { grid-template-columns: 1fr; gap: 15px; padding: 12px; }
+  .home-btn, .mega-menu-btn { width: 100%; }
 }
 
 .calculator-container {
@@ -331,63 +248,28 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    /* Gradient filled track like daily compound page; second layer is unfilled bg */
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
-}
-
-.custom-slider::-webkit-slider-track {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
     border: none;
 }
 
-.custom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #3182ce;
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
-}
+.custom-slider::-webkit-slider-track { width: 100%; height: 6px; border-radius: 9999px; background: transparent; border: none; }
 
-.custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
-}
+.custom-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #ffffff; cursor: pointer; border: 2px solid #3B82F6; box-shadow: 0 2px 6px rgba(59,130,246,0.35); transition: all 0.2s ease; }
 
-.custom-slider::-moz-range-track {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
-    border: none;
-}
+.custom-slider::-webkit-slider-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
 
-.custom-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #3182ce;
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
-}
+.custom-slider::-moz-range-track { width: 100%; height: 6px; border-radius: 9999px; background: #e6edf5; border: none; }
+.custom-slider::-moz-range-progress { background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%); height: 6px; border-radius: 9999px; }
 
-.custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
-}
+.custom-slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #ffffff; border: 2px solid #3B82F6; cursor: pointer; box-shadow: 0 2px 6px rgba(59,130,246,0.35); transition: all 0.2s ease; }
+
+.custom-slider::-moz-range-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
 
 .slider-labels {
     display: flex;
@@ -474,6 +356,41 @@ nav {
     text-align: center;
 }
 
+/* === Result card color overrides (UI-only) === */
+.result-card::before { display: none; }
+
+/* Pension Amount -> blue */
+.pension-amount-card {
+    background: #3c83f6 !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+
+/* Total Pension, Maturity Amount, Effective Return Rate -> green */
+.total-payout-card,
+.maturity-amount-card,
+.effective-rate-card {
+    background: #16a249 !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+
+/* Ensure inner texts are white on colored cards */
+.pension-amount-card .card-label,
+.pension-amount-card .card-value,
+.pension-amount-card .card-frequency,
+.total-payout-card .card-label,
+.total-payout-card .card-value,
+.total-payout-card .card-frequency,
+.maturity-amount-card .card-label,
+.maturity-amount-card .card-value,
+.maturity-amount-card .card-frequency,
+.effective-rate-card .card-label,
+.effective-rate-card .card-value,
+.effective-rate-card .card-frequency { 
+    color: #ffffff !important; 
+}
+
 .card-label {
     font-size: 12px;
     color: #718096;
@@ -555,11 +472,11 @@ nav {
 }
 
 .color-indicator.investment-amount {
-    background: #3182ce;
+    background: #3c83f6;
 }
 
 .color-indicator.pension-earned {
-    background: #38a169;
+    background: #16a249;
 }
 
 .summary-label {
@@ -585,31 +502,35 @@ nav {
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border: none;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
-    color: white;
+    border-width: 2px;
+    border-style: solid;
 }
 
 .download-btn {
-    background: #38a169;
+    background: transparent;
+    color: #3c83f6;
+    border-color: #3c83f6;
 }
-
 .download-btn:hover {
-    background: #2f855a;
+    background: #3c83f6;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
 .table-btn {
-    background: #3182ce;
+    background: transparent;
+    color: #16a249;
+    border-color: #16a249;
 }
-
 .table-btn:hover {
-    background: #2c5282;
+    background: #16a249;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
@@ -803,6 +724,30 @@ nav {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* PMVVY Pension Schedule: Header colors aligned with result cards */
+/* Year and Age -> dark blue */
+#pmvvyTable thead th:nth-child(1),
+#pmvvyTable thead th:nth-child(2) {
+    background: #2c5282; /* dark blue */
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Pension Amount -> blue (matches Pension Amount card) */
+#pmvvyTable thead th:nth-child(3) {
+    background: #3c83f6; /* blue */
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Total Pension Paid and Remaining Balance -> green (matches green cards) */
+#pmvvyTable thead th:nth-child(4),
+#pmvvyTable thead th:nth-child(5) {
+    background: #16a249; /* green */
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.25);
 }
 
 .amortization-table tbody tr {

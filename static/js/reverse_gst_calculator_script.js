@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSliderRange(parseFloat(reverseGstInclusiveAmountInput.value) || 11800);
     calculateAndUpdateReverseGstResults();
     setupReverseGstMegaMenu();
+    // Initialize slider filled track UI (matches daily page styling)
+    initRangeFills();
 });
 
 function setupReverseGstSliders() {
@@ -79,12 +81,14 @@ function syncReverseGstInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateReverseGstResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateReverseGstResults();
     });
 
@@ -102,6 +106,7 @@ function syncReverseGstInputs(input, slider) {
             updateSliderRange(value);
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateReverseGstResults();
     });
 }
@@ -294,8 +299,8 @@ function updateReverseGstChart(result) {
                 result.gst_amount
             ],
             backgroundColor: [
-                '#3498db',
-                '#27ae60'
+                '#3c83f6',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -412,3 +417,20 @@ window.ReverseGstCalculator = {
     formatCurrency: formatReverseGstCurrency,
     formatNumber: formatNumber
 };
+
+// Range fill helpers (UI-only) to color the slider track like the daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

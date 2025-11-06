@@ -24,6 +24,32 @@ header {
     margin-bottom: 30px;
 }
 
+/* === Header/Nav UI override to match Daily page === */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  border: 1px solid rgba(60,131,246,0.20);
+  box-shadow: 0 8px 24px rgba(60,131,246,0.08);
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+nav { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; }
+.home-btn { background: #3c83f6; color: #ffffff; padding: 12px 20px; font-size: 14px; font-weight: 600; border: none; border-radius: 6px; text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; box-sizing: border-box; }
+.home-btn:hover { background: #3c83f6; color: #ffffff; }
+.mega-menu { position: relative; display: inline-block; }
+.mega-menu-btn { background: transparent; color: #3c83f6; padding: 12px 20px; font-size: 14px; font-weight: 600; border: 2px solid #3c83f6; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; letter-spacing: 0.5px; min-height: 44px; box-sizing: border-box; }
+.mega-menu-btn:hover { background: #3c83f6; color: #ffffff; border-color: #3c83f6; }
+
 header h1 {
     color: #2d3748;
     font-size: 2rem;
@@ -393,35 +419,25 @@ input:checked + .toggle-slider:before {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
+    border: none;
 }
 
-.custom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #3182ce;
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+/* Slider tracks and thumbs (WebKit + Firefox) */
+.custom-slider::-webkit-slider-track { width: 100%; height: 6px; cursor: pointer; background: transparent; border-radius: 9999px; border: none; }
 
-.custom-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #3182ce;
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+.custom-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #ffffff; cursor: pointer; border: 2px solid #3B82F6; box-shadow: 0 2px 6px rgba(59,130,246,0.35); }
+.custom-slider::-webkit-slider-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
+
+.custom-slider::-moz-range-track { width: 100%; height: 6px; cursor: pointer; background: #e6edf5; border-radius: 9999px; border: none; }
+.custom-slider::-moz-range-progress { background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%); height: 6px; border-radius: 9999px; }
+.custom-slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #ffffff; cursor: pointer; border: 2px solid #3B82F6; box-shadow: 0 2px 6px rgba(59,130,246,0.35); }
+.custom-slider::-moz-range-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
 
 .slider-labels {
     display: flex;
@@ -487,6 +503,16 @@ input:checked + .toggle-slider:before {
     background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
     color: #2d3748;
 }
+
+/* === UI overrides: result card palette per request === */
+.result-card.holding-period-card,
+.result-card.tax-rate-card { background: #3c83f6 !important; color: #ffffff !important; }
+.result-card.net-gain-card,
+.result-card.taxable-gain-card,
+.result-card.capital-gains-tax-card,
+.result-card.effective-rate-card { background: #16a249 !important; color: #ffffff !important; }
+.result-card.capital-gains-tax-card { grid-column: span 2; }
+.result-card .card-label, .result-card .card-value, .result-card .card-sub { color: #ffffff !important; }
 
 .card-content {
     text-align: center;
@@ -579,17 +605,9 @@ input:checked + .toggle-slider:before {
     border-radius: 50%;
 }
 
-.color-indicator.net-gain {
-    background: #4facfe;
-}
-
-.color-indicator.capital-gains-tax {
-    background: #fa709a;
-}
-
-.color-indicator.after-tax-gain {
-    background: #43e97b;
-}
+.color-indicator.net-gain { background: #16a249; }
+.color-indicator.capital-gains-tax { background: #3c83f6; }
+.color-indicator.after-tax-gain { background: #16a249; }
 
 .summary-label {
     flex: 1;
@@ -610,10 +628,11 @@ input:checked + .toggle-slider:before {
 }
 
 .action-btn {
-    background: #3182ce;
-    color: white;
-    border: none;
     padding: 12px 24px;
+    border-width: 2px;
+    border-style: solid;
+    background: transparent;
+    color: inherit;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
@@ -624,10 +643,12 @@ input:checked + .toggle-slider:before {
     font-size: 14px;
 }
 
-.action-btn:hover {
-    background: #2c5282;
-    transform: translateY(-1px);
-}
+/* Outlined button styles per request */
+.download-btn { background: transparent !important; color: #3c83f6 !important; border-color: #3c83f6 !important; }
+.download-btn:hover { background: #3c83f6 !important; color: #ffffff !important; }
+
+.table-btn { background: transparent !important; color: #16a249 !important; border-color: #16a249 !important; }
+.table-btn:hover { background: #16a249 !important; color: #ffffff !important; }
 
 .btn-icon {
     font-size: 16px;
@@ -761,7 +782,9 @@ input:checked + .toggle-slider:before {
     
     .action-buttons {
         flex-direction: column;
+        align-items: center; /* prevent full-width stretching on mobile */
     }
+    .action-btn { width: auto; }
     
     .chart-summary {
         gap: 8px;
@@ -805,6 +828,46 @@ input:checked + .toggle-slider:before {
         padding: 8px 10px;
     }
 }
+
+/* === Ensure nav button overrides take precedence === */
+nav { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; }
+.home-btn {
+  background: #3c83f6 !important;
+  color: #ffffff !important;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+.home-btn:hover { background: #3c83f6 !important; color: #ffffff !important; }
+.mega-menu { position: relative; display: inline-block; }
+.mega-menu-btn {
+  background: transparent !important;
+  color: #3c83f6 !important;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid #3c83f6 !important;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+.mega-menu-btn:hover { background: #3c83f6 !important; color: #ffffff !important; border-color: #3c83f6 !important; }
 
 /* Focus and accessibility improvements */
 .input-field-container input:focus,

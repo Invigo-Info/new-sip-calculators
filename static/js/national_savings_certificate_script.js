@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
+    // Initialize slider filled track UI (UI-only)
+    initRangeFills();
 });
 
 function setupSliders() {
@@ -250,14 +252,8 @@ function updateChart(result) {
         labels: ['Principal Amount', 'Interest Earned'],
         datasets: [{
             data: [result.investment_amount, result.total_interest],
-            backgroundColor: [
-                'rgba(49, 130, 206, 0.8)',
-                'rgba(5, 150, 105, 0.8)'
-            ],
-            borderColor: [
-                'rgba(49, 130, 206, 1)',
-                'rgba(5, 150, 105, 1)'
-            ],
+            backgroundColor: ['#3c83f6', '#16a249'],
+            borderColor: '#ffffff',
             borderWidth: 2
         }]
     };
@@ -313,6 +309,24 @@ function updateYearlyTable(yearlyData) {
         `;
         tbody.appendChild(tr);
     });
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function updateMonthlyTable(monthlyData) {

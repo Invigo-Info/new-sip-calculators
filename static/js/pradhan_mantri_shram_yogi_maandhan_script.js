@@ -15,11 +15,32 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
+    // UI-only: initialize range slider fill styling to match daily page
+    initPmsymRangeFills();
 });
 
 function setupSliders() {
     syncInputs(joiningAgeInput, joiningAgeSlider);
     // Pension amount is fixed, no slider needed
+}
+
+// ===== UI helpers: range fill coloring (no functional impact) =====
+function initPmsymRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updatePmsymRangeFill(r);
+        r.addEventListener('input', function () { updatePmsymRangeFill(this); });
+        r.addEventListener('change', function () { updatePmsymRangeFill(this); });
+    });
+}
+
+function updatePmsymRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function initialSyncValues() {
@@ -197,13 +218,10 @@ function updateChart(result) {
             datasets: [{
                 data: [userContribution, governmentContribution],
                 backgroundColor: [
-                    '#3182ce',
-                    '#38a169'
+                    '#3c83f6',
+                    '#3c83f6'
                 ],
-                borderColor: [
-                    '#2c5282',
-                    '#2f855a'
-                ],
+                borderColor: '#ffffff',
                 borderWidth: 2
             }]
         },

@@ -20,6 +20,11 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 header h1 {
@@ -45,16 +50,16 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
+    text-transform: uppercase;
     border: none;
     border-radius: 6px;
     text-decoration: none;
     transition: all 0.2s ease;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
     display: inline-flex;
     align-items: center;
@@ -64,17 +69,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +93,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -410,19 +417,22 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
     outline: none;
     -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    cursor: pointer;
 }
 
 .custom-slider::-webkit-slider-track {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 9999px;
     border: none;
-    outline: none;
 }
 
 .custom-slider::-webkit-slider-thumb {
@@ -431,37 +441,46 @@ nav {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
+    transform: scale(1.05);
 }
 
 .custom-slider::-moz-range-track {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: #e6edf5;
     border: none;
     outline: none;
+    cursor: pointer;
+}
+
+.custom-slider::-moz-range-progress {
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    height: 6px;
+    border-radius: 9999px;
 }
 
 .custom-slider::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3182ce;
+    background: #ffffff;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
+    transform: scale(1.05);
 }
 
 .slider-labels {
@@ -511,6 +530,74 @@ nav {
     height: 4px;
     background: linear-gradient(90deg, #e2e8f0, #cbd5e0);
     transition: all 0.3s ease;
+}
+
+/* Result card color overrides per requirement */
+.total-shares-card,
+.total-investment-card,
+.current-value-card {
+    background: #3c83f6 !important;
+    border-color: #3c83f6 !important;
+}
+.average-price-card,
+.profit-loss-card {
+    background: #16a249 !important;
+    border-color: #16a249 !important;
+}
+.total-shares-card .card-label,
+.total-shares-card .card-value,
+.total-shares-card .card-icon,
+.total-investment-card .card-label,
+.total-investment-card .card-value,
+.total-investment-card .card-icon,
+.current-value-card .card-label,
+.current-value-card .card-value,
+.current-value-card .card-icon,
+.average-price-card .card-label,
+.average-price-card .card-value,
+.average-price-card .card-icon,
+.profit-loss-card .card-label,
+.profit-loss-card .card-value,
+.profit-loss-card .card-icon,
+.profit-loss-card .card-percentage {
+    color: #ffffff !important;
+}
+
+/* Ensure header/nav dropdown behavior mirrors daily page */
+div.container header nav .mega-menu .mega-menu-content {
+    display: none !important;
+    position: absolute !important;
+    background: white !important;
+    min-width: 780px !important;
+    max-width: 900px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
+    z-index: 1000 !important;
+    border-radius: 8px !important;
+    padding: 0 !important;
+    top: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    margin-top: 6px !important;
+    border: 1px solid #e2e8f0 !important;
+    backdrop-filter: blur(10px) !important;
+}
+div.container header nav .mega-menu.open .mega-menu-content {
+    display: block !important;
+    animation: slideDownSA 0.3s ease-out !important;
+}
+@keyframes slideDownSA {
+    from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+div.container header nav .mega-menu .mega-menu-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0 !important;
+    padding: 16px !important;
+}
+@media (max-width: 767px) {
+    div.container header nav .mega-menu .mega-menu-content { min-width: 95vw !important; max-width: 95vw !important; }
+    div.container header nav .mega-menu .mega-menu-container { grid-template-columns: repeat(1, 1fr) !important; gap: 15px !important; padding: 12px !important; }
 }
 
 .result-card:hover {
@@ -818,32 +905,38 @@ nav {
 }
 
 .pdf-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
+    background: transparent;
+    color: #3c83f6;
+    border: 2px solid #3c83f6;
 }
 
 .pdf-btn:hover {
-    background: linear-gradient(135deg, #5a67d8, #553c9a);
+    background: #3c83f6;
+    color: #ffffff;
     transform: translateY(-2px);
 }
 
 .excel-btn {
-    background: linear-gradient(135deg, #48bb78, #38a169);
-    color: white;
+    background: transparent;
+    color: #16a249;
+    border: 2px solid #16a249;
 }
 
 .excel-btn:hover {
-    background: linear-gradient(135deg, #38a169, #2f855a);
+    background: #16a249;
+    color: #ffffff;
     transform: translateY(-2px);
 }
 
 .share-btn {
-    background: linear-gradient(135deg, #4299e1, #3182ce);
-    color: white;
+    background: transparent;
+    color: #164ab3;
+    border: 2px solid #164ab3;
 }
 
 .share-btn:hover {
-    background: linear-gradient(135deg, #3182ce, #2c5282);
+    background: #164ab3;
+    color: #ffffff;
     transform: translateY(-2px);
 }
 

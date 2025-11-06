@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
+    // Initialize slider filled track UI (UI-only)
+    initRangeFills();
 });
 
 function setupSliders() {
@@ -176,7 +178,7 @@ function updateChart(result) {
             labels: ['Your Contribution', 'Investment Growth'],
             datasets: [{
                 data: [result.total_contribution, result.investment_growth],
-                backgroundColor: ['#3B82F6', '#F59E0B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',
@@ -229,6 +231,24 @@ function updateChart(result) {
 
 function formatCurrency(amount) {
     return '₹' + Math.round(amount).toLocaleString('en-IN');
+}
+
+// Range fill helpers (UI-only) to color the slider track like the daily page
+function initRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateRangeFill(r);
+        r.addEventListener('input', function() { updateRangeFill(this); });
+    });
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function setupMegaMenu() {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,15 +36,15 @@
                                 <label class="input-label">Monthly SIP Amount</label>
                                 <div class="input-field-container">
                                     <input type="number" id="sipAmount" value="0" min="0" max="500000" step="500">
-                                    <span class="input-suffix">₹</span>
+                                    <span class="input-suffix">&#8377;</span>
                                 </div>
                             </div>
                             <div class="slider-container">
                                 <input type="range" id="sipAmountSlider" min="0" max="500000" value="0" step="500" class="custom-slider">
                                 <div class="slider-track"></div>
                                 <div class="slider-labels">
-                                    <span>₹0</span>
-                                    <span>₹5L</span>
+                                    <span>&#8377;0</span>
+                                    <span>&#8377;5L</span>
                                 </div>
                             </div>
                         </div>
@@ -55,15 +55,15 @@
                                 <label class="input-label">Lumpsum Investment</label>
                                 <div class="input-field-container">
                                     <input type="number" id="lumpsumAmount" value="0" min="0" max="50000000" step="10000">
-                                    <span class="input-suffix">₹</span>
+                                    <span class="input-suffix">&#8377;</span>
                                 </div>
                             </div>
                             <div class="slider-container">
                                 <input type="range" id="lumpsumAmountSlider" min="0" max="50000000" value="0" step="10000" class="custom-slider">
                                 <div class="slider-track"></div>
                                 <div class="slider-labels">
-                                    <span>₹0</span>
-                                    <span>₹5Cr</span>
+                                    <span>&#8377;0</span>
+                                    <span>&#8377;5Cr</span>
                                 </div>
                             </div>
                         </div>
@@ -115,25 +115,23 @@
                     <div class="result-card final-amount-card">
                         <div class="card-content">
                             <div class="card-label bold-title">Final Corpus</div>
-                            <div class="card-value" id="finalCorpusResult">₹0</div>
+                            <div class="card-value" id="finalCorpusResult">&#8377;0</div>
                         </div>
                     </div>
 
                     <div class="result-card total-invested-card">
                         <div class="card-content">
                             <div class="card-label" id="totalInvestedLabel">Total Invested</div>
-                            <div class="card-value" id="totalInvestedResult">₹0</div>
+                            <div class="card-value" id="totalInvestedResult">&#8377;0</div>
                         </div>
                     </div>
 
                     <div class="result-card wealth-gained-card">
                         <div class="card-content">
                             <div class="card-label bold-title">Wealth Gained</div>
-                            <div class="card-value" id="wealthGainedResult">₹0</div>
+                            <div class="card-value" id="wealthGainedResult">&#8377;0</div>
                         </div>
                     </div>
-
-
                 </div>
 
                 <!-- Chart Section -->
@@ -146,12 +144,12 @@
                         <div class="summary-item">
                             <div class="color-indicator total-invested"></div>
                             <div class="summary-label">Total Invested</div>
-                            <div class="summary-amount" id="totalInvestedDisplay">₹0</div>
+                            <div class="summary-amount" id="totalInvestedDisplay">&#8377;0</div>
                         </div>
                         <div class="summary-item">
                             <div class="color-indicator wealth-gained"></div>
                             <div class="summary-label">Wealth Gained</div>
-                            <div class="summary-amount" id="wealthGainedDisplay">₹0</div>
+                            <div class="summary-amount" id="wealthGainedDisplay">&#8377;0</div>
                         </div>
                     </div>
                 </div>
@@ -195,3 +193,7 @@
     <script src="{{ url_for('static', filename='js/elss_sip_calculator_script.js') }}"></script>
 </body>
 </html> 
+
+
+
+

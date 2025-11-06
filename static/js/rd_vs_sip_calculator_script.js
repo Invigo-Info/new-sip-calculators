@@ -36,6 +36,8 @@ const betterOptionBadgeElement = document.getElementById('betterOptionBadge');
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     setupMegaMenu();
+    // Initialize slider filled track UI for WebKit and keep Firefox in sync
+    initRdSipRangeFills();
     calculateRdVsSip();
 });
 
@@ -66,6 +68,13 @@ function syncSliderAndInput(event) {
     
     if (partner) {
         partner.value = input.value;
+    }
+    // Update range fill for both elements if they are sliders
+    if (isSlider) {
+        updateRdSipRangeFill(input);
+    }
+    if (partner && partner.type === 'range') {
+        updateRdSipRangeFill(partner);
     }
     
     // Debounce calculation
@@ -254,8 +263,8 @@ function updateComparisonChart(data) {
                     data.rd.maturity_value,
                     data.rd.interest_earned
                 ],
-                backgroundColor: 'rgba(245, 158, 11, 0.8)',
-                borderColor: 'rgba(245, 158, 11, 1)',
+                backgroundColor: ['#3c83f6', '#16a249', '#16a249'],
+                borderColor: ['#3c83f6', '#16a249', '#16a249'],
                 borderWidth: 2,
                 borderRadius: 8,
                 borderSkipped: false,
@@ -267,8 +276,8 @@ function updateComparisonChart(data) {
                     data.sip.maturity_value,
                     data.sip.gains_earned
                 ],
-                backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                borderColor: 'rgba(16, 185, 129, 1)',
+                backgroundColor: ['#3c83f6', '#16a249', '#16a249'],
+                borderColor: ['#3c83f6', '#16a249', '#16a249'],
                 borderWidth: 2,
                 borderRadius: 8,
                 borderSkipped: false,
@@ -635,4 +644,22 @@ function generatePrintableContent() {
             </div>
         </div>
     `;
+}
+
+// Range fill helpers (UI-only) to color the slider track like Daily Compound page
+function initRdSipRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRdSipRangeFill(r);
+    r.addEventListener('input', function() { updateRdSipRangeFill(this); });
+    r.addEventListener('change', function() { updateRdSipRangeFill(this); });
+  });
+}
+function updateRdSipRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }

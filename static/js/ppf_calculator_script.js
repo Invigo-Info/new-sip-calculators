@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdatePPFResults();
     setupPPFMegaMenu();
     setupPPFTableToggle();
+    // Initialize slider filled track UI (UI-only)
+    initRangeFills();
 });
 
 function setupPPFSliders() {
@@ -327,8 +329,8 @@ function updatePPFChart(result) {
                 result.total_interest
             ],
             backgroundColor: [
-                '#3498db',
-                '#27ae60'
+                '#3c83f6',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -550,4 +552,22 @@ function formatFrequency(frequency) {
         'annually': 'Annually'
     };
     return frequencies[frequency] || 'Monthly';
+}
+
+// Range fill helpers (UI-only) to color the slider track similar to daily page
+function initRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateRangeFill(r);
+        r.addEventListener('input', function() { updateRangeFill(this); });
+    });
+}
+
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }

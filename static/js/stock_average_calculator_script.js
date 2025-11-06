@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     addInitialPurchases();
     loadFromUrlParameters();
     calculateAndUpdate();
+    // Initialize slider filled track UI (UI-only)
+    initRangeFills();
 });
 
 function setupEventListeners() {
@@ -180,6 +182,23 @@ function calculateAndUpdate() {
     .catch(error => {
         console.error('Network error:', error);
     });
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateRangeFill(r);
+        r.addEventListener('input', function() { updateRangeFill(this); });
+    });
+}
+function updateRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function updateResults(data) {

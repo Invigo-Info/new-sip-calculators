@@ -1,4 +1,4 @@
-// Index Fund Calculator JavaScript
+﻿// Index Fund Calculator JavaScript
 
 // Global variables
 let currentInvestmentType = 'sip';
@@ -352,7 +352,7 @@ function updateGrowthChart(data) {
                     display: true,
                     title: {
                         display: true,
-                        text: 'Amount (₹)',
+                        text: 'Amount (\u20B9)',
                         font: {
                             size: 12,
                             weight: '600'
@@ -402,13 +402,13 @@ function formatCurrency(amount) {
     const num = parseFloat(amount);
     
     if (num >= 10000000) { // 1 Crore
-        return `₹${(num / 10000000).toFixed(2)} Cr`;
+        return '\u20B9' + (num / 10000000).toFixed(2) + ' Cr';
     } else if (num >= 100000) { // 1 Lakh
-        return `₹${(num / 100000).toFixed(2)} L`;
+        return '\u20B9' + (num / 100000).toFixed(2) + ' L';
     } else if (num >= 1000) { // 1 Thousand
-        return `₹${(num / 1000).toFixed(2)} K`;
+        return '\u20B9' + (num / 1000).toFixed(2) + ' K';
     } else {
-        return `₹${num.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
+        return '\u20B9' + num.toLocaleString('en-IN', { maximumFractionDigits: 0 });
     }
 }
 
@@ -416,13 +416,13 @@ function formatCurrencyShort(amount) {
     const num = parseFloat(amount);
     
     if (num >= 10000000) {
-        return `₹${(num / 10000000).toFixed(1)}Cr`;
+        return '\u20B9' + (num / 10000000).toFixed(1) + 'Cr';
     } else if (num >= 100000) {
-        return `₹${(num / 100000).toFixed(1)}L`;
+        return '\u20B9' + (num / 100000).toFixed(1) + 'L';
     } else if (num >= 1000) {
-        return `₹${(num / 1000).toFixed(1)}K`;
+        return '\u20B9' + (num / 1000).toFixed(1) + 'K';
     } else {
-        return `₹${num.toFixed(0)}`;
+        return '\u20B9' + num.toFixed(0);
     }
 }
 

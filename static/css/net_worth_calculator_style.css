@@ -39,6 +39,50 @@ nav {
     margin-top: 15px;
 }
 
+/* === UI overrides to match Daily Compound Interest header/nav === */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  border: 1px solid rgba(60,131,246,0.20);
+  box-shadow: 0 8px 24px rgba(60,131,246,0.08);
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+nav { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; }
+.home-btn {
+  background: #3c83f6; color: #ffffff; padding: 12px 20px; font-size: 14px; font-weight: 600; border: none; border-radius: 6px; text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; box-sizing: border-box;
+}
+.home-btn:hover { background: #3c83f6; color: #ffffff; }
+.mega-menu { position: relative; display: inline-block; }
+.mega-menu-btn {
+  background: transparent; color: #3c83f6; padding: 12px 20px; font-size: 14px; font-weight: 600; border: 2px solid #3c83f6; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; letter-spacing: 0.5px; min-height: 44px; box-sizing: border-box;
+}
+.mega-menu-btn:hover { background: #3c83f6; color: #ffffff; border-color: #3c83f6; }
+.dropdown-arrow { font-size: 12px; transition: transform 0.2s ease; }
+.mega-menu.open .dropdown-arrow { transform: rotate(180deg); }
+.mega-menu .mega-menu-content { display: none !important; position: absolute; background: #ffffff; min-width: 780px; max-width: 900px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 1000; border-radius: 8px; padding: 0; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 6px; border: 1px solid #e2e8f0; backdrop-filter: blur(10px); }
+.mega-menu.open .mega-menu-content { display: block !important; animation: sleekSlideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes sleekSlideDown { from { opacity: 0; transform: translateX(-50%) translateY(-12px) scale(0.98);} to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1);} }
+.mega-menu-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; padding: 18px; }
+.mega-menu-section { padding: 0 14px; border-right: 1px solid #f1f5f9; }
+.mega-menu-section:last-child { border-right: none; }
+.mega-section-title { font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.mega-link { display: block; padding: 10px 12px; color: #1f2937; text-decoration: none; border-radius: 6px; transition: all .2s ease; font-weight: 500; }
+.mega-link:hover { background: #f8fafc; color: #111827; transform: translateX(2px); }
+.mega-link.active { background: #eff6ff; color: #1d4ed8; box-shadow: inset 0 0 0 1px #bfdbfe; }
+@media (max-width: 1024px) { nav { flex-direction: column; gap: 10px; } .home-btn { width: auto !important; align-self: center; } .mega-menu-btn { width: 100%; } }
+@media (max-width: 767px) { .mega-menu .mega-menu-content { min-width: 95vw !important; max-width: 95vw !important; } .mega-menu-container { grid-template-columns: 1fr; gap: 15px; padding: 12px; } .home-btn, .mega-menu-btn { width: 100%; } }
+
 /* Mega Menu Styles */
 .mega-menu {
     position: relative;
@@ -47,8 +91,8 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
-    color: white;
+    background: #3c83f6;
+    color: #ffffff;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
@@ -65,17 +109,17 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
-    color: white;
+    background: #3c83f6;
+    color: #ffffff;
 }
 
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +132,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -395,6 +441,15 @@ nav {
     background: linear-gradient(90deg, #f59e0b, #d97706);
 }
 
+/* Total Liabilities and Net Worth card color overrides */
+.total-liabilities-card { background: #ef4444 !important; color: #ffffff !important; }
+.total-liabilities-card .card-label, .total-liabilities-card .card-value { color: #ffffff !important; }
+.total-liabilities-card::before { background: #ef4444 !important; }
+
+.net-worth-card { background: #16a249 !important; color: #ffffff !important; }
+.net-worth-card .card-label, .net-worth-card .card-value { color: #ffffff !important; }
+.net-worth-card::before { background: #16a249 !important; }
+
 .card-content {
     display: flex;
     flex-direction: column;
@@ -498,7 +553,7 @@ nav {
 }
 
 .color-indicator.total-assets {
-    background: #10b981;
+    background: #16a249;
 }
 
 .color-indicator.total-liabilities {
@@ -518,6 +573,12 @@ nav {
     color: #1f2937;
 }
 
+/* === UI overrides per request === */
+/* Total Assets card -> green with white text */
+.total-assets-card { background: #16a249 !important; color: #ffffff !important; }
+.total-assets-card .card-label, .total-assets-card .card-value { color: #ffffff !important; }
+.total-assets-card::before { background: #16a249 !important; }
+
 .action-buttons {
     display: flex;
     gap: 12px;
@@ -529,7 +590,8 @@ nav {
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border: none;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
@@ -537,22 +599,26 @@ nav {
 }
 
 .download-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
+    border-color: #3c83f6;
 }
 
 .download-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
 .save-btn {
-    background: #10b981;
-    color: white;
+    background: transparent;
+    color: #16a249;
+    border-color: #16a249;
 }
 
 .save-btn:hover {
-    background: #059669;
+    background: #16a249;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 

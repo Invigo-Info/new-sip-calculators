@@ -61,6 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupULIPModeToggle();
     calculateAndUpdateULIPResults();
     setupULIPMegaMenu();
+    // Initialize slider filled track UI (UI-only; no logic change)
+    initULIPRangeFills();
 });
 
 function setupULIPSliders() {
@@ -265,13 +267,19 @@ function calculateULIPReturnsClientSide(mode, tenureYears, expectedReturn, exist
         frequencyText = 'one-time';
     }
     
+    // Display-only summary text per requested format (no currency symbol, western grouping, one decimal on rate)
+    const investmentDisplay = (investmentAmount || 0).toLocaleString('en-US');
+    const maturityDisplay = Math.round(projectedMaturityValue).toLocaleString('en-US');
+    const rateDisplay = (typeof expectedReturn === 'number' ? expectedReturn : parseFloat(expectedReturn) || 0).toFixed(1);
+    const summaryMessageDisplay = `If you invest ${investmentDisplay} ${frequencyText} for ${tenureYears} years at ${rateDisplay}% p.a., you may get ${maturityDisplay}.`;
+
     const summaryMessage = `If you invest ₹${investmentAmount.toLocaleString('en-IN')} ${frequencyText} for ${tenureYears} years at ${expectedReturn}% p.a., you may get ₹${Math.round(projectedMaturityValue).toLocaleString('en-IN')}.`;
     
     return {
         projected_maturity_value: Math.round(projectedMaturityValue),
         total_invested: Math.round(totalInvested),
         absolute_return_pct: Math.round(absoluteReturnPct * 100) / 100,
-        summary_message: summaryMessage,
+        summary_message: summaryMessageDisplay,
         mode: mode,
         tenure_years: tenureYears,
         expected_return: expectedReturn,
@@ -311,8 +319,8 @@ function updateULIPChart(result) {
                 estimatedReturns
             ],
             backgroundColor: [
-                '#3498db',
-                '#e67e22'
+                '#3c83f6',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -469,4 +477,21 @@ function formatULIPFrequency(mode) {
 // Helper function to get current investment mode
 function getCurrentULIPMode() {
     return ulipRegularModeRadio.checked ? 'Regular Investment' : 'One-time Investment';
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initULIPRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].ulip-custom-slider');
+    ranges.forEach(r => {
+        updateULIPRangeFill(r);
+        r.addEventListener('input', function() { updateULIPRangeFill(this); });
+    });
+}
+function updateULIPRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }

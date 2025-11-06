@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateSgbResults();
     setupSgbMegaMenu();
     setupSgbTableToggle();
+    // UI-only: initialize slider track fill to match daily page styling
+    initSgbRangeFills();
 });
 
 function setupSgbSliders() {
@@ -269,9 +271,9 @@ function updateSgbChart(result) {
                 result.capital_gain
             ],
             backgroundColor: [
-                '#3498db',
-                '#27ae60',
-                '#f39c12'
+                '#3c83f6',
+                '#16a249',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -456,4 +458,23 @@ function downloadSgbPDF() {
     
     // Save the PDF
     doc.save('sgb-calculator-report.pdf');
+}
+
+// ===== UI helpers: range fill coloring (no functional impact) =====
+function initSgbRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateSgbRangeFill(r);
+        r.addEventListener('input', function () { updateSgbRangeFill(this); });
+        r.addEventListener('change', function () { updateSgbRangeFill(this); });
+    });
+}
+
+function updateSgbRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }

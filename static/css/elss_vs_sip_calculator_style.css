@@ -22,15 +22,24 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
+/* Header/Nav align with daily-compound design (match nav-component.css) */
 nav {
     display: flex;
     justify-content: center;
@@ -45,9 +54,9 @@ nav {
     display: inline-block;
 }
 
-/* Home Button */
+/* Home Button (match shared nav-component) */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
     padding: 12px 20px;
     font-size: 14px;
@@ -65,17 +74,18 @@ nav {
 }
 
 .home-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
     color: white;
 }
 
+/* Mega Menu Button (outlined like daily-compound) */
 .mega-menu-btn {
-    background: #3182ce;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #3c83f6;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -88,7 +98,9 @@ nav {
 }
 
 .mega-menu-btn:hover {
-    background: #2c5282;
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
@@ -136,7 +148,7 @@ nav {
 
 .mega-menu-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 0;
     padding: 18px;
 }
@@ -182,15 +194,9 @@ nav {
 }
 
 .mega-link.active {
-    background: linear-gradient(135deg, #3182ce, #2563eb);
-    color: white;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
-}
-
-.mega-link.active:hover {
-    transform: translateX(2px);
-    box-shadow: 0 3px 12px rgba(59, 130, 246, 0.35);
+    background: #eff6ff;
+    color: #1d4ed8;
+    box-shadow: inset 0 0 0 1px #bfdbfe;
 }
 
 .calculator-container {
@@ -235,6 +241,23 @@ nav {
         margin-top: 20px;
         gap: 20px;
     }
+}
+
+/* Responsive header/nav alignment */
+@media (max-width: 767px) {
+    .mega-menu .mega-menu-content {
+        min-width: 95vw !important;
+        max-width: 95vw !important;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .mega-menu-container {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        padding: 12px !important;
+    }
+    .home-btn { width: auto !important; align-self: center; }
+    .mega-menu-btn { width: auto !important; }
 }
 
 .section {
@@ -332,21 +355,26 @@ nav {
     margin-top: 8px;
 }
 
+/* Slider styling with gradient fill + Firefox progress (match daily-compound) */
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
+    border: none;
 }
 
 .custom-slider::-webkit-slider-track {
+    width: 100%;
     height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 9999px;
+    border: none;
 }
 
 .custom-slider::-webkit-slider-thumb {
@@ -354,38 +382,40 @@ nav {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #3182ce;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
 .custom-slider::-moz-range-track {
+    width: 100%;
     height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
+    cursor: pointer;
+    background: #e6edf5;
+    border-radius: 9999px;
     border: none;
+}
+
+.custom-slider::-moz-range-progress {
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    height: 6px;
+    border-radius: 9999px;
 }
 
 .custom-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #3182ce;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.custom-slider::-moz-range-thumb:hover {
-    background: #2c5282;
-    transform: scale(1.1);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .slider-labels {
@@ -420,6 +450,8 @@ nav {
     overflow: hidden;
 }
 
+/* (restored) keep default neutral card backgrounds */
+
 .result-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -440,15 +472,15 @@ nav {
 }
 
 .elss-value-card::before {
-    background: linear-gradient(90deg, #27ae60, #229954);
+    background: #16a249;
 }
 
 .tax-saved-card::before {
-    background: linear-gradient(90deg, #6c757d, #495057);
+    background: #16a249;
 }
 
 .net-benefit-card::before {
-    background: linear-gradient(90deg, #f39c12, #e67e22);
+    background: #16a249;
 }
 
 .card-content {
@@ -475,6 +507,25 @@ nav {
     font-weight: 700;
     color: #1f2937;
     line-height: 1.2;
+}
+
+/* Make SIP/ELSS result cards green with white text */
+.sip-value-card,
+.elss-value-card,
+.tax-saved-card,
+.net-benefit-card {
+    background: #16a249 !important;
+    color: #ffffff !important;
+}
+.sip-value-card .card-label,
+.sip-value-card .card-value,
+.elss-value-card .card-label,
+.elss-value-card .card-value,
+.tax-saved-card .card-label,
+.tax-saved-card .card-value,
+.net-benefit-card .card-label,
+.net-benefit-card .card-value {
+    color: #ffffff !important;
 }
 
 .chart-section {
@@ -529,17 +580,11 @@ nav {
     flex-shrink: 0;
 }
 
-.color-indicator.sip-color {
-    background: #3498db;
-}
+.color-indicator.sip-color { background: #3c83f6; }
 
-.color-indicator.elss-color {
-    background: #27ae60;
-}
+.color-indicator.elss-color { background: #16a249; }
 
-.color-indicator.tax-color {
-    background: #6c757d;
-}
+.color-indicator.tax-color { background: #25d967; }
 
 .summary-label {
     flex: 1;
@@ -908,8 +953,23 @@ nav {
         padding: 6px 8px;
     }
     
-    .info-section {
-        margin-top: 20px;
-        padding: 16px;
-    }
+.info-section {
+    margin-top: 20px;
+    padding: 16px;
+}
+}
+
+/* --- Button style overrides per request (ELSS page only) --- */
+.action-btn { border-width: 2px !important; border-style: solid !important; background: transparent !important; }
+.download-btn { color: #3c83f6 !important; border-color: #3c83f6 !important; }
+.download-btn:hover { background: #3c83f6 !important; color: #ffffff !important; }
+.table-btn { color: #16a249 !important; border-color: #16a249 !important; }
+.table-btn:hover { background: #16a249 !important; color: #ffffff !important; }
+/* Keep HOME text uppercase */
+.home-btn { text-transform: uppercase !important; }
+/* Prevent action buttons from stretching full width */
+.action-btn { width: auto !important; }
+@media (max-width: 768px) {
+  .action-buttons { align-items: center !important; }
+  .action-btn { width: auto !important; align-self: center !important; }
 }

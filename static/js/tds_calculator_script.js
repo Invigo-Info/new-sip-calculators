@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateTdsResults();
     setupTdsMegaMenu();
     setupTdsInfoToggle();
+    // Initialize slider filled track UI (Firefox supported)
+    initRangeFills();
 });
 
 function setupTdsSliders() {
@@ -68,12 +70,14 @@ function syncTdsInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateTdsResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateTdsResults();
     });
 
@@ -89,6 +93,7 @@ function syncTdsInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateTdsResults();
     });
 }
@@ -356,8 +361,8 @@ function updateTdsChart(result) {
                 result.tds_amount
             ],
             backgroundColor: [
-                '#16a34a',
-                '#dc2626'
+                '#3c83f6',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -546,3 +551,20 @@ document.addEventListener('keydown', function(e) {
 window.addEventListener('load', function() {
     calculateAndUpdateTdsResults();
 });
+
+// Range fill helpers (UI-only) to color the slider track like the daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

@@ -300,16 +300,16 @@ function updateAnalysisComparisonChart(fdResults, sipResults) {
                 {
                     label: 'FD',
                     data: [fdResults.total_invested, fdResults.interest_earned, fdResults.maturity_value],
-                    backgroundColor: 'rgba(240, 147, 251, 0.8)',
-                    borderColor: 'rgba(240, 147, 251, 1)',
+                    backgroundColor: ['#3c83f6', '#16a249', '#16a249'],
+                    borderColor: ['#3c83f6', '#16a249', '#16a249'],
                     borderWidth: 2,
                     borderRadius: 8
                 },
                 {
                     label: 'SIP',
                     data: [sipResults.total_invested, sipResults.gain_from_sip, sipResults.estimated_value],
-                    backgroundColor: 'rgba(79, 172, 254, 0.8)',
-                    borderColor: 'rgba(79, 172, 254, 1)',
+                    backgroundColor: ['#3c83f6', '#16a249', '#16a249'],
+                    borderColor: ['#3c83f6', '#16a249', '#16a249'],
                     borderWidth: 2,
                     borderRadius: 8
                 }
@@ -371,16 +371,10 @@ function updateBreakdownChart(fdResults, sipResults) {
             datasets: [{
                 data: [fdResults.total_invested, fdResults.interest_earned, sipResults.total_invested, sipResults.gain_from_sip],
                 backgroundColor: [
-                    'rgba(240, 147, 251, 0.8)',
-                    'rgba(245, 87, 108, 0.8)',
-                    'rgba(79, 172, 254, 0.8)',
-                    'rgba(0, 242, 254, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(240, 147, 251, 1)',
-                    'rgba(245, 87, 108, 1)',
-                    'rgba(79, 172, 254, 1)',
-                    'rgba(0, 242, 254, 1)'
+                    '#3c83f6', // FD Investment
+                    '#16a249', // FD Interest
+                    '#3c83f6', // SIP Investment
+                    '#16a249'  // SIP Gain
                 ],
                 borderWidth: 2
             }]
@@ -893,6 +887,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNotification();
     initializeKeyboardShortcuts();
     syncInputs();
+    // Initialize slider filled track UI for WebKit and keep Firefox in sync
+    initFdSipRangeFills();
     
     // Debounced calculation function
     const debouncedCalculation = debounce(calculateFdVsSip, 300);
@@ -962,3 +958,21 @@ window.addEventListener('load', function() {
         console.log(`Page loaded in ${loadTime}ms`);
     }
 });
+
+// Range fill helpers (UI-only) to color the slider track like Daily Compound page
+function initFdSipRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateFdSipRangeFill(r);
+    r.addEventListener('input', function() { updateFdSipRangeFill(this); });
+    r.addEventListener('change', function() { updateFdSipRangeFill(this); });
+  });
+}
+function updateFdSipRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

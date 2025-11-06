@@ -97,7 +97,7 @@ nav {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 20px;
-    border-bottom: 2px solid #e67e22;
+    border-bottom: 2px solid #3182ce; /* align with daily page */
     padding-bottom: 10px;
 }
 
@@ -205,10 +205,10 @@ nav {
 }
 
 .ulip-mode-toggle input[type="radio"]:checked + .ulip-mode-label {
-    background: #e67e22;
+    background: #3c83f6; /* requested active color for both buttons */
     color: white;
     font-weight: 600;
-    box-shadow: 0 2px 4px rgba(230, 126, 34, 0.2);
+    box-shadow: 0 2px 4px rgba(60, 131, 246, 0.25);
 }
 
 .ulip-mode-label:hover {
@@ -216,7 +216,7 @@ nav {
 }
 
 .ulip-mode-toggle input[type="radio"]:checked + .ulip-mode-label:hover {
-    background: #d35400;
+    background: #3c83f6;
 }
 
 /* Conditional Inputs */
@@ -231,18 +231,23 @@ nav {
 .ulip-custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    /* Filled track like daily page; second layer is base track */
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
+    border: none;
 }
 
 .ulip-custom-slider::-webkit-slider-track {
+    width: 100%;
     height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
+    cursor: pointer;
+    background: transparent; /* let input background show through */
+    border-radius: 9999px;
+    border: none;
 }
 
 .ulip-custom-slider::-webkit-slider-thumb {
@@ -250,38 +255,47 @@ nav {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #e67e22;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6; /* blue outline like daily */
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .ulip-custom-slider::-webkit-slider-thumb:hover {
-    background: #d35400;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
+    transform: scale(1.05);
 }
 
 .ulip-custom-slider::-moz-range-track {
+    width: 100%;
     height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
+    cursor: pointer;
+    background: #e6edf5; /* base track */
+    border-radius: 9999px;
     border: none;
+}
+
+/* Firefox filled portion */
+.ulip-custom-slider::-moz-range-progress {
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    height: 6px;
+    border-radius: 9999px;
 }
 
 .ulip-custom-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #e67e22;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .ulip-custom-slider::-moz-range-thumb:hover {
-    background: #d35400;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
+    transform: scale(1.05);
 }
 
 .ulip-slider-labels {
@@ -369,15 +383,15 @@ nav {
 }
 
 .ulip-maturity-card::before {
-    background: linear-gradient(90deg, #e67e22, #d35400);
+    background: linear-gradient(90deg, #16a249, #16a249);
 }
 
 .ulip-invested-card::before {
-    background: linear-gradient(90deg, #3498db, #2980b9);
+    background: linear-gradient(90deg, #3c83f6, #3c83f6);
 }
 
 .ulip-return-card::before {
-    background: linear-gradient(90deg, #27ae60, #229954);
+    background: linear-gradient(90deg, #16a249, #16a249);
 }
 
 .ulip-card-content {
@@ -400,12 +414,31 @@ nav {
     line-height: 1.2;
 }
 
+/* Result card background overrides per requirement */
+.ulip-invested-card {
+    background: #3c83f6 !important;
+    border-color: #3c83f6 !important;
+}
+.ulip-maturity-card,
+.ulip-return-card {
+    background: #16a249 !important;
+    border-color: #16a249 !important;
+}
+.ulip-invested-card .ulip-card-label,
+.ulip-invested-card .ulip-card-value,
+.ulip-maturity-card .ulip-card-label,
+.ulip-maturity-card .ulip-card-value,
+.ulip-return-card .ulip-card-label,
+.ulip-return-card .ulip-card-value {
+    color: #ffffff !important;
+}
+
 /* Summary Section */
 .ulip-summary-section {
-    background: #fef7ed;
+    background: transparent; /* remove background color */
     border-radius: 8px;
     padding: 20px;
-    border: 1px solid #fed7aa;
+    border: 2px solid #16a249; /* requested border color */
 }
 
 .ulip-summary-content {
@@ -415,13 +448,13 @@ nav {
 .ulip-summary-label {
     font-size: 16px;
     font-weight: 600;
-    color: #9a3412;
+    color: #16a249;
     margin-bottom: 8px;
 }
 
 .ulip-summary-text {
     font-size: 15px;
-    color: #7c2d12;
+    color: #16a249;
     line-height: 1.5;
     font-weight: 500;
 }
@@ -479,11 +512,11 @@ nav {
 }
 
 .ulip-color-indicator.ulip-invested-color {
-    background: #3498db;
+    background: #3c83f6;
 }
 
 .ulip-color-indicator.ulip-returns-color {
-    background: #e67e22;
+    background: #16a249;
 }
 
 .ulip-summary-label {
@@ -518,12 +551,14 @@ nav {
 }
 
 .ulip-download-btn {
-    background: #e67e22;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
+    border: 2px solid #3c83f6;
 }
 
 .ulip-download-btn:hover {
-    background: #d35400;
+    background: #3c83f6;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
@@ -672,5 +707,16 @@ nav {
     
     .ulip-summary-text {
         font-size: 14px;
+    }
+}
+
+/* Prevent download button from stretching full-width on tablets/mobiles */
+@media (max-width: 768px) {
+    .ulip-action-buttons {
+        align-items: center; /* avoid stretch in column layout */
+    }
+    .ulip-action-btn {
+        width: auto;
+        align-self: center;
     }
 }

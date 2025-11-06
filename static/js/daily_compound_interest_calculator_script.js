@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateCompoundInterestResults();
     setupCompoundInterestMegaMenu();
     setupCompoundInterestTableToggle();
+    // Initialize slider filled track UI
+    initRangeFills();
 });
 
 function setupCompoundInterestSliders() {
@@ -390,8 +392,8 @@ function updateCompoundInterestChart(result) {
                 result.interest_earned
             ],
             backgroundColor: [
-                '#3182ce',
-                '#10b981'
+                '#3c83f6',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -656,3 +658,20 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Range fill helpers (UI-only) to color the slider track like ROI page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

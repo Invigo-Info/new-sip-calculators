@@ -22,13 +22,20 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    /* Card look with soft gradient border */
+    background: linear-gradient(#ffffff, #ffffff) padding-box,
+                linear-gradient(135deg, rgba(60,131,246,0.25), rgba(22,162,73,0.25)) border-box;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 18px 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
 }
 
 header h1 {
     color: #2d3748;
     font-size: 2rem;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 6px; /* slightly tighter */
 }
 
 nav {
@@ -36,10 +43,10 @@ nav {
     justify-content: center;
     align-items: center;
     gap: 15px;
-    margin-top: 15px;
+    margin-top: 12px; /* slightly tighter */
 }
 
-/* Mega Menu Styles */
+/* Mega Menu Styles (aligned with Daily Compound page) */
 .mega-menu {
     position: relative;
     display: inline-block;
@@ -47,89 +54,103 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
+    background: #3c83f6;
     color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
     border: none;
-    cursor: pointer;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    box-sizing: border-box;
 }
 
 .home-btn:hover {
-    background: #2c5aa0;
-    transform: translateY(-2px);
+    background: #3c83f6;
+    color: white;
 }
 
-/* Mega Menu Button */
+/* Mega Menu Button (bordered variant) */
 .mega-menu-btn {
-    background: #4299e1;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
+    background: transparent;
+    color: #3c83f6;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid #3c83f6;
+    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
+    gap: 10px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+    min-height: 44px;
+    box-sizing: border-box;
 }
 
 .mega-menu-btn:hover {
-    background: #3182ce;
-    transform: translateY(-2px);
+    background: #3c83f6;
+    color: #ffffff;
+    border-color: #3c83f6;
 }
 
 .dropdown-arrow {
     font-size: 12px;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
-.mega-menu:hover .dropdown-arrow {
+.mega-menu.open .dropdown-arrow {
     transform: rotate(180deg);
 }
 
-/* Mega Menu Content */
+/* Click-to-open menu content */
 .mega-menu-content {
     display: none;
     position: absolute;
+    background: white;
+    min-width: 780px;
+    max-width: 900px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    z-index: 1000;
+    border-radius: 8px;
+    padding: 0;
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    margin-top: 10px;
-    min-width: 800px;
-    max-height: 500px;
-    overflow-y: auto;
+    margin-top: 6px;
+    border: 1px solid #e2e8f0;
+    backdrop-filter: blur(10px);
 }
 
-.mega-menu:hover .mega-menu-content {
+.mega-menu.open .mega-menu-content {
     display: block;
-    animation: fadeInUp 0.3s ease;
+    animation: sleekSlideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes fadeInUp {
+@keyframes sleekSlideDown {
     from {
         opacity: 0;
-        transform: translateX(-50%) translateY(10px);
+        transform: translateX(-50%) translateY(-12px) scale(0.98);
     }
     to {
         opacity: 1;
-        transform: translateX(-50%) translateY(0);
+        transform: translateX(-50%) translateY(0) scale(1);
     }
 }
 
 .mega-menu-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding: 25px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    padding: 18px;
 }
 
 .mega-menu-section {
@@ -137,35 +158,38 @@ nav {
 }
 
 .mega-section-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e2e8f0;
+    color: #475569;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .mega-link {
     display: block;
-    color: #4a5568;
+    padding: 6px 8px;
+    margin-bottom: 2px;
     text-decoration: none;
-    padding: 8px 0;
+    color: #64748b;
     font-size: 13px;
-    transition: all 0.2s ease;
+    font-weight: 500;
     border-radius: 4px;
-    padding-left: 8px;
+    transition: all 0.15s ease;
+    line-height: 1.4;
 }
 
 .mega-link:hover {
-    background: #f7fafc;
-    color: #3182ce;
-    padding-left: 12px;
+    background: #f8fafc;
+    color: #334155;
+    transform: translateX(2px);
 }
 
 .mega-link.active {
-    color: #3182ce;
+    background: linear-gradient(135deg, #3182ce, #2563eb);
+    color: white;
     font-weight: 600;
-    background: #ebf8ff;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
 }
 
 /* Calculator Container */
@@ -310,46 +334,68 @@ input:checked + .toggle-slider:before {
 }
 
 /* Slider Styles */
-.slider-container {
-    margin-top: 10px;
-}
+.slider-container { margin-top: 10px; }
 
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: linear-gradient(to right, #4299e1 0%, #4299e1 var(--slider-progress, 50%), #e2e8f0 var(--slider-progress, 50%), #e2e8f0 100%);
+    border-radius: 9999px;
+    background: #e2e8f0; /* base track color */
     outline: none;
+    -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
 }
 
+/* WebKit/Blink track */
+/* WebKit/Blink runnable track with dynamic fill */
+.custom-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 var(--slider-progress, 50%), #e2e8f0 var(--slider-progress, 50%), #e2e8f0 100%);
+    border-radius: 9999px;
+    border: none;
+}
+
+/* WebKit/Blink thumb */
 .custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
     appearance: none;
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #4299e1;
-    border: 3px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
+    transition: box-shadow 0.2s ease;
 }
+.custom-slider::-webkit-slider-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
 
-.custom-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4);
+/* Firefox track and progress */
+.custom-slider::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #e2e8f0;
+    border-radius: 9999px;
+    border: none;
 }
-
+.custom-slider::-moz-range-progress {
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    height: 6px;
+    border-radius: 9999px;
+}
+/* Firefox thumb */
 .custom-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #4299e1;
-    border: 3px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    border: 2px solid #3B82F6;
     cursor: pointer;
-    border: none;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.35);
 }
 
 .slider-labels {
@@ -458,12 +504,68 @@ input:checked + .toggle-slider:before {
 .tax-yearly-card .card-value { color: #F59E0B; }
 .tax-total-card .card-value { color: #059669; }
 
+/* Result cards color redesign */
+/* Blue: Total Invested */
+.result-card.sip-invested-card,
+.result-card.nps-invested-card {
+    background: #3c83f6;
+    border-color: transparent;
+}
+.result-card.sip-invested-card .card-label,
+.result-card.sip-invested-card .card-value,
+.result-card.nps-invested-card .card-label,
+.result-card.nps-invested-card .card-value {
+    color: #ffffff;
+}
+
+/* Green: Key outcomes and tax savings */
+.result-card.sip-maturity-card,
+.result-card.sip-post-tax-card,
+.result-card.nps-maturity-card,
+.result-card.nps-lump-sum-card,
+.result-card.nps-annuity-card,
+.result-card.nps-pension-card,
+.result-card.tax-yearly-card,
+.result-card.tax-total-card {
+    background: #16a249;
+    border-color: transparent;
+}
+.result-card.sip-maturity-card .card-label,
+.result-card.sip-maturity-card .card-value,
+.result-card.sip-post-tax-card .card-label,
+.result-card.sip-post-tax-card .card-value,
+.result-card.nps-maturity-card .card-label,
+.result-card.nps-maturity-card .card-value,
+.result-card.nps-lump-sum-card .card-label,
+.result-card.nps-lump-sum-card .card-value,
+.result-card.nps-annuity-card .card-label,
+.result-card.nps-annuity-card .card-value,
+.result-card.nps-pension-card .card-label,
+.result-card.nps-pension-card .card-value,
+.result-card.tax-yearly-card .card-label,
+.result-card.tax-yearly-card .card-value,
+.result-card.tax-total-card .card-label,
+.result-card.tax-total-card .card-value {
+    color: #ffffff;
+}
+
+/* Estimated LTCG Tax card (SIP) */
+.result-card.sip-ltcg-card {
+    background: #25d967;
+    border-color: transparent;
+}
+.result-card.sip-ltcg-card .card-label,
+.result-card.sip-ltcg-card .card-value {
+    color: #ffffff;
+}
+
 /* Comparison Summary */
 .comparison-summary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: transparent;
+    border: 2px solid #16a249;
     border-radius: 15px;
     padding: 25px;
-    color: white;
+    color: inherit;
     margin-bottom: 30px;
 }
 
@@ -481,11 +583,10 @@ input:checked + .toggle-slider:before {
 }
 
 .summary-card {
-    background: rgba(255, 255, 255, 0.15);
+    background: #16a249;
     border-radius: 12px;
     padding: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid transparent;
 }
 
 .summary-content {
@@ -495,25 +596,28 @@ input:checked + .toggle-slider:before {
 .summary-label {
     font-size: 14px;
     margin-bottom: 8px;
-    opacity: 0.9;
+    opacity: 1;
+    color: #ffffff;
 }
 
 .summary-value {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 5px;
+    color: #ffffff;
 }
 
 .summary-difference {
     font-size: 1.2rem;
     font-weight: 600;
-    color: #68D391;
+    color: #ffffff;
 }
 
 .summary-description {
     font-size: 14px;
     line-height: 1.6;
-    opacity: 0.95;
+    opacity: 1;
+    color: #ffffff;
 }
 
 /* Chart Section */
@@ -578,6 +682,29 @@ input:checked + .toggle-slider:before {
     font-size: 16px;
 }
 
+/* Override styles for specific actions on this page */
+.action-btn.download-btn {
+    background: transparent;
+    color: #3c83f6;
+    border: 2px solid #3c83f6;
+}
+.action-btn.download-btn:hover {
+    background: #3c83f6;
+    color: #ffffff;
+    box-shadow: 0 8px 25px rgba(60, 131, 246, 0.35);
+}
+
+.action-btn.table-btn {
+    background: transparent;
+    color: #16a249;
+    border: 2px solid #16a249;
+}
+.action-btn.table-btn:hover {
+    background: #16a249;
+    color: #ffffff;
+    box-shadow: 0 8px 25px rgba(22, 162, 73, 0.35);
+}
+
 /* Table Section */
 .table-section {
     background: white;
@@ -600,6 +727,36 @@ input:checked + .toggle-slider:before {
 .table-header h2 {
     color: #2d3748;
     font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Year-wise NPS vs SIP Breakdown table header colors */
+#npsSipYearlyTable .amortization-table thead th {
+    color: #ffffff;
+}
+#npsSipYearlyTable .amortization-table thead th:nth-child(1) { /* Year */
+    background: #1E40AF; /* dark blue */
+}
+#npsSipYearlyTable .amortization-table thead th:nth-child(2) { /* Annual Investment */
+    background: #3c83f6; /* invested blue */
+}
+#npsSipYearlyTable .amortization-table thead th:nth-child(3) { /* SIP Value */
+    background: #16a249; /* outcomes green */
+}
+#npsSipYearlyTable .amortization-table thead th:nth-child(4) { /* NPS Value */
+    background: #16a249; /* outcomes green */
+}
+#npsSipYearlyTable .amortization-table thead th:nth-child(5) { /* Tax Saved (NPS) */
+    background: #16a249; /* tax cards green */
+}
+#npsSipYearlyTable .amortization-table thead th:nth-child(6) { /* SIP vs NPS */
+    background: #16a249; /* comparison outcome green */
+}
+
+/* Year column body cells styling */
+#npsSipYearlyTable .amortization-table tbody td:nth-child(1) {
+    background: transparent; /* remove background */
+    color: inherit; /* revert to default text color */
     font-weight: 600;
 }
 
@@ -678,16 +835,83 @@ input:checked + .toggle-slider:before {
         flex-direction: column;
         gap: 10px;
     }
-    
-    .mega-menu-content {
-        min-width: 400px;
-        max-height: 400px;
+
+    .mega-menu-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        min-height: 40px;
     }
-    
+
+    .mega-menu-content {
+        min-width: 320px;
+        max-width: 350px;
+        left: 0;
+        transform: none;
+        right: 0;
+        margin: 6px auto 0;
+    }
+
+    .mega-menu.open .mega-menu-content {
+        animation: mobileSlideDown 0.25s ease;
+    }
+
     .mega-menu-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        grid-template-columns: 1fr;
+        gap: 15px;
         padding: 15px;
+    }
+
+    .mega-menu-section {
+        padding: 0;
+        border-right: none;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 15px;
+    }
+
+    .mega-menu-section:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .mega-section-title {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .chart-summary {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    /* Keep SIP menu full-width but leave Home sized naturally */
+    .mega-menu-btn { width: 100%; }
+    .home-btn { width: auto; }
+
+    .mega-link {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .mega-link:hover {
+        transform: none;
+        background: #f8fafc;
+    }
+
+    .mega-link.active {
+        transform: none;
+    }
+
+    .mega-link.active:hover {
+        transform: none;
+    }
+
+    .nav-link {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
     }
     
     .input-sections,

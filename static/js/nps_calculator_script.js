@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             addEventListeners();
             initialSyncValues();
             calculateAndUpdateResults();
+            initRangeFills();
             setupMegaMenu();
             console.log('NPS Calculator initialized successfully');
         } else {
@@ -93,12 +94,14 @@ function syncInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateResults();
     });
 
@@ -114,6 +117,7 @@ function syncInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 }
@@ -129,6 +133,19 @@ function addEventListeners() {
     [currentAgeSlider, retirementAgeSlider, monthlyContributionSlider, expectedReturnSlider, annuityPercentageSlider, annuityReturnSlider].forEach(slider => {
         slider.addEventListener('input', calculateAndUpdateResults);
     });
+}
+
+// Range fill helpers (UI-only) to mirror ROI slider styling
+function initRangeFills() {
+  document.querySelectorAll('input[type="range"].custom-slider').forEach(updateRangeFill);
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function calculateAndUpdateResults() {
@@ -208,7 +225,7 @@ function updateChart(result) {
             labels: ['Investment Amount', 'Investment Gains'],
             datasets: [{
                 data: [result.investment_amount, result.investment_gains],
-                backgroundColor: ['#10B981', '#F59E0B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',

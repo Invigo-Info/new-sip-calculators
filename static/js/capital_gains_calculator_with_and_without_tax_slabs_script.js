@@ -15,6 +15,8 @@ const costInflationIndex = {
 document.addEventListener('DOMContentLoaded', function() {
     initializeCapitalGainsCalculator();
     calculateCapitalGains();
+    // Initialize slider filled track UI (Firefox supported)
+    initRangeFills();
 });
 
 function initializeCapitalGainsCalculator() {
@@ -70,11 +72,13 @@ function setupSliderSync(inputId, sliderId) {
     if (input && slider) {
         input.addEventListener('input', () => {
             slider.value = input.value;
+            updateRangeFill(slider);
             calculateCapitalGains();
         });
         
         slider.addEventListener('input', () => {
             input.value = slider.value;
+            updateRangeFill(slider);
             calculateCapitalGains();
         });
     }
@@ -139,6 +143,23 @@ function calculateCapitalGains() {
     } catch (error) {
         console.error('Error calculating capital gains:', error);
     }
+}
+
+// Range fill helpers (UI-only) to color the slider track like the daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function getCapitalGainsInputs() {
@@ -466,7 +487,7 @@ function updateCapitalGainsChart(results) {
         labels: ['After-tax Gain', 'Capital Gains Tax'],
         datasets: [{
             data: [results.afterTaxGain, results.taxDetails.totalTax],
-            backgroundColor: ['#43e97b', '#fa709a'],
+            backgroundColor: ['#16a249', '#3c83f6'],
             borderWidth: 0
         }]
     };

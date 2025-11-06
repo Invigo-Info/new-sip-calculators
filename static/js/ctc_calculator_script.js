@@ -90,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateCtcResults();
     setupCtcMegaMenu();
     setupCtcTableToggle();
+    // Initialize slider filled track UI for gradient (Firefox supported)
+    initRangeFills();
     
     // Add demo data for testing
     if (window.location.search.includes('demo=1')) {
@@ -213,12 +215,14 @@ function syncCtcInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateCtcResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateCtcResults();
     });
 
@@ -234,6 +238,7 @@ function syncCtcInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateCtcResults();
     });
 }
@@ -876,4 +881,21 @@ function downloadCtcPDF() {
     
     // Save the PDF
     doc.save('ctc-calculator-report.pdf');
+}
+
+// Range fill helpers (UI-only) to color the slider track like the daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }

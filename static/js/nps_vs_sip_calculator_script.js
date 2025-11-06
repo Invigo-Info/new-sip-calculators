@@ -222,9 +222,9 @@ function createNpsSipChart() {
                 label: 'Amount (₹)',
                 data: [3689267, 1823132, 1215422], // Initial values
                 backgroundColor: [
-                    '#3B82F6', // Blue for SIP
-                    '#10B981', // Green for NPS Lump Sum
-                    '#F59E0B'  // Orange for NPS Annuity
+                    '#16a249', // SIP (Post-tax)
+                    '#16a249', // NPS Lump Sum
+                    '#16a249'  // NPS Annuity Corpus
                 ],
                 borderColor: [
                     '#2563EB',
@@ -443,21 +443,4 @@ function formatCurrencyShort(amount) {
     return '₹' + Math.round(amount).toLocaleString('en-IN');
 }
 
-// Mega menu functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const megaMenuBtn = document.querySelector('.mega-menu-btn');
-    const megaMenuContent = document.querySelector('.mega-menu-content');
-
-    if (megaMenuBtn && megaMenuContent) {
-        megaMenuBtn.addEventListener('click', function() {
-            megaMenuContent.style.display = megaMenuContent.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Close mega menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!megaMenuBtn.contains(event.target) && !megaMenuContent.contains(event.target)) {
-                megaMenuContent.style.display = 'none';
-            }
-        });
-    }
-});
+// Mega menu functionality is handled by nav-component.js (click-to-open with .open class)

@@ -14,6 +14,10 @@ nav {
 .mega-menu {
     position: relative;
     display: inline-block;
+    /* ensure centering when nav stacks vertically */
+    align-self: center;
+    text-align: center;
+    justify-content: center;
 }
 
 /* Home Button */
@@ -23,6 +27,7 @@ nav {
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
+    text-transform: uppercase;
     border: none;
     border-radius: 6px;
     text-decoration: none;
@@ -52,17 +57,29 @@ nav {
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center; /* center label + arrow */
     gap: 10px;
     transition: all 0.2s ease;
     letter-spacing: 0.5px;
     min-height: 44px;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .mega-menu-btn:hover {
     background: #3c83f6;
     color: #ffffff;
     border-color: #3c83f6;
+}
+
+/* Keep button centered and natural width on small screens */
+@media (max-width: 1024px) {
+    .mega-menu-btn { width: auto; margin: 0 auto; }
+    .mega-menu { align-self: center; }
+}
+@media (max-width: 768px) {
+    .mega-menu-btn { width: auto; margin: 0 auto; }
+    .mega-menu { align-self: center; }
 }
 
 .dropdown-arrow {

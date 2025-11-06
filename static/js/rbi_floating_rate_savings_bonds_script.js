@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateRbiBondResults();
     setupRbiBondMegaMenu();
     setupRbiBondTableToggle();
+    // UI-only: initialize slider track fill to match daily page styling
+    initRbiBondRangeFills();
 });
 
 function setupRbiBondSliders() {
@@ -274,8 +276,8 @@ function updateRbiBondChart(result) {
         datasets: [{
             label: 'Annual Interest (₹)',
             data: yearlyInterest,
-            backgroundColor: '#3498db',
-            borderColor: '#2980b9',
+            backgroundColor: '#16a249',
+            borderColor: '#16a249',
             borderWidth: 1,
             borderRadius: 4
         }]
@@ -498,4 +500,23 @@ function formatPercentage(num, decimals = 2) {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals
     }) + '%';
+}
+
+// ===== UI helpers: range fill coloring (no functional impact) =====
+function initRbiBondRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateRbiBondRangeFill(r);
+        r.addEventListener('input', function () { updateRbiBondRangeFill(this); });
+        r.addEventListener('change', function () { updateRbiBondRangeFill(this); });
+    });
+}
+
+function updateRbiBondRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }

@@ -22,13 +22,21 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid rgba(60,131,246,0.20);
+    box-shadow: 0 8px 24px rgba(60,131,246,0.08);
 }
 
 header h1 {
-    color: #2d3748;
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 nav {
@@ -47,8 +55,8 @@ nav {
 
 /* Home Button */
 .home-btn {
-    background: #3182ce;
-    color: white;
+    background: #3c83f6;
+    color: #ffffff;
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
@@ -64,32 +72,10 @@ nav {
     box-sizing: border-box;
 }
 
-.home-btn:hover {
-    background: #2c5282;
-    color: white;
-}
+.home-btn:hover { background: #3c83f6; color: #ffffff; }
 
-.mega-menu-btn {
-    background: #3182ce;
-    color: white;
-    padding: 12px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.2s ease;
-    letter-spacing: 0.5px;
-    min-height: 44px;
-    box-sizing: border-box;
-}
-
-.mega-menu-btn:hover {
-    background: #2c5282;
-}
+.mega-menu-btn { background: transparent; color: #3c83f6; padding: 12px 20px; font-size: 14px; font-weight: 600; border: 2px solid #3c83f6; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; letter-spacing: 0.5px; min-height: 44px; box-sizing: border-box; }
+.mega-menu-btn:hover { background: #3c83f6; color: #ffffff; border-color: #3c83f6; }
 
 .dropdown-arrow {
     font-size: 12px;
@@ -336,65 +322,22 @@ nav {
     font-style: italic;
 }
 
-.slider-container {
-    margin-top: 8px;
-}
+.slider-container { margin-top: 12px; }
 
-.custom-slider {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-}
+.custom-slider { width: 100%; height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; border: none; }
 
-.custom-slider::-webkit-slider-track {
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
-}
+.custom-slider::-webkit-slider-track { width: 100%; height: 6px; cursor: pointer; background: transparent; border-radius: 9999px; border: none; }
 
-.custom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #10b981;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+.custom-slider::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: #ffffff; border: 2px solid #3B82F6; cursor: pointer; -webkit-appearance: none; appearance: none; box-shadow: 0 2px 6px rgba(59,130,246,0.35); }
 
-.custom-slider::-webkit-slider-thumb:hover {
-    background: #059669;
-    transform: scale(1.1);
-}
+.custom-slider::-webkit-slider-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
 
-.custom-slider::-moz-range-track {
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
-    border: none;
-}
+.custom-slider::-moz-range-track { width: 100%; height: 6px; cursor: pointer; background: #e6edf5; border-radius: 9999px; border: none; }
+.custom-slider::-moz-range-progress { background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%); height: 6px; border-radius: 9999px; }
 
-.custom-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #10b981;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+.custom-slider::-moz-range-thumb { height: 20px; width: 20px; border-radius: 50%; background: #ffffff; border: 2px solid #3B82F6; cursor: pointer; box-shadow: 0 2px 6px rgba(59,130,246,0.35); }
 
-.custom-slider::-moz-range-thumb:hover {
-    background: #059669;
-    transform: scale(1.1);
-}
+.custom-slider::-moz-range-thumb:hover { box-shadow: 0 4px 12px rgba(59,130,246,0.45); }
 
 .slider-labels {
     display: flex;
@@ -442,6 +385,20 @@ nav {
     height: 4px;
     background: linear-gradient(90deg, #10b981, #059669);
 }
+
+/* Result card color overrides */
+.monthly-savings-card { background: #3c83f6 !important; color: #ffffff !important; }
+.monthly-savings-card .card-label, .monthly-savings-card .card-value { color: #ffffff !important; }
+.monthly-savings-card::before { background: #3c83f6 !important; }
+.inflation-adjusted-card { background: #16a249 !important; color: #ffffff !important; }
+.inflation-adjusted-card .card-label, .inflation-adjusted-card .card-value { color: #ffffff !important; }
+.inflation-adjusted-card::before { background: #16a249 !important; }
+.remaining-amount-card { background: #16a249 !important; color: #ffffff !important; }
+.remaining-amount-card .card-label, .remaining-amount-card .card-value { color: #ffffff !important; }
+.remaining-amount-card::before { background: #16a249 !important; }
+.accumulated-value-card { background: #16a249 !important; color: #ffffff !important; }
+.accumulated-value-card .card-label, .accumulated-value-card .card-value { color: #ffffff !important; }
+.accumulated-value-card::before { background: #16a249 !important; }
 
 .inflation-adjusted-card::before {
     background: linear-gradient(90deg, #f59e0b, #d97706);
@@ -656,7 +613,8 @@ nav {
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border: none;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
@@ -664,22 +622,26 @@ nav {
 }
 
 .download-btn {
-    background: #10b981;
-    color: white;
+    background: transparent;
+    color: #3c83f6;
+    border-color: #3c83f6;
 }
 
 .download-btn:hover {
-    background: #059669;
+    background: #3c83f6;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
 .table-btn {
-    background: #f3f4f6;
-    color: #374151;
+    background: transparent;
+    color: #16a249;
+    border-color: #16a249;
 }
 
 .table-btn:hover {
-    background: #e5e7eb;
+    background: #16a249;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
@@ -746,6 +708,32 @@ nav {
     border-bottom: 1px solid #e2e8f0;
     font-size: 14px;
     white-space: nowrap;
+}
+
+/* Header cell colors aligned to result cards */
+.amortization-table thead th:nth-child(1) { /* Month */
+    background: #1e3a8a; /* dark blue */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(2) { /* Monthly Savings */
+    background: #3c83f6; /* matches Monthly Savings card */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(3) { /* Cumulative Savings */
+    background: #3c83f6; /* aligns with invested/total theme */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(4) { /* Investment Growth */
+    background: #16a249; /* green */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(5) { /* Total Amount */
+    background: #16a249; /* green */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(6) { /* Progress */
+    background: #3c83f6; /* blue */
+    color: #ffffff;
 }
 
 .amortization-table tbody tr {

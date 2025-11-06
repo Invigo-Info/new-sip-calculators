@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializePpfVsSipCalculator();
     setupEventListeners();
     setupNavigationListeners();
+    // Initialize slider filled track UI and keep Firefox in sync via CSS
+    initPpfSipRangeFills();
     calculatePpfVsSipComparison();
 });
 
@@ -17,19 +19,36 @@ function initializePpfVsSipCalculator() {
 function setupEventListeners() {
     // PPF input listeners
     document.getElementById('ppfMonthlyAmount').addEventListener('input', handlePpfAmountChange);
-    document.getElementById('ppfMonthlyAmountSlider').addEventListener('input', handlePpfAmountSliderChange);
+    document.getElementById('ppfMonthlyAmountSlider').addEventListener('input', function(e){ handlePpfAmountSliderChange(e); updatePpfSipRangeFill(e.target); });
     document.getElementById('ppfDuration').addEventListener('input', handlePpfDurationChange);
-    document.getElementById('ppfDurationSlider').addEventListener('input', handlePpfDurationSliderChange);
+    document.getElementById('ppfDurationSlider').addEventListener('input', function(e){ handlePpfDurationSliderChange(e); updatePpfSipRangeFill(e.target); });
     document.getElementById('ppfInterestRate').addEventListener('input', handlePpfRateChange);
-    document.getElementById('ppfInterestRateSlider').addEventListener('input', handlePpfRateSliderChange);
+    document.getElementById('ppfInterestRateSlider').addEventListener('input', function(e){ handlePpfRateSliderChange(e); updatePpfSipRangeFill(e.target); });
 
     // SIP input listeners
     document.getElementById('sipMonthlyAmount').addEventListener('input', handleSipAmountChange);
-    document.getElementById('sipMonthlyAmountSlider').addEventListener('input', handleSipAmountSliderChange);
+    document.getElementById('sipMonthlyAmountSlider').addEventListener('input', function(e){ handleSipAmountSliderChange(e); updatePpfSipRangeFill(e.target); });
     document.getElementById('sipDuration').addEventListener('input', handleSipDurationChange);
-    document.getElementById('sipDurationSlider').addEventListener('input', handleSipDurationSliderChange);
+    document.getElementById('sipDurationSlider').addEventListener('input', function(e){ handleSipDurationSliderChange(e); updatePpfSipRangeFill(e.target); });
     document.getElementById('sipReturnRate').addEventListener('input', handleSipRateChange);
-    document.getElementById('sipReturnRateSlider').addEventListener('input', handleSipRateSliderChange);
+    document.getElementById('sipReturnRateSlider').addEventListener('input', function(e){ handleSipRateSliderChange(e); updatePpfSipRangeFill(e.target); });
+}
+
+// Range fill helpers (UI-only)
+function initPpfSipRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updatePpfSipRangeFill(r);
+    r.addEventListener('change', function(){ updatePpfSipRangeFill(this); });
+  });
+}
+function updatePpfSipRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function setupNavigationListeners() {
@@ -394,16 +413,16 @@ function updateComparisonChart(ppfResult, sipResult) {
                 {
                     label: 'PPF',
                     data: [ppfResult.totalInvested, ppfResult.maturityValue, ppfResult.netGain],
-                    backgroundColor: 'rgba(240, 147, 251, 0.8)',
-                    borderColor: 'rgba(240, 147, 251, 1)',
+                    backgroundColor: ['#3c83f6', '#16a249', '#16a249'],
+                    borderColor: ['#3c83f6', '#16a249', '#16a249'],
                     borderWidth: 2,
                     borderRadius: 8
                 },
                 {
                     label: 'SIP',
                     data: [sipResult.totalInvested, sipResult.maturityValue, sipResult.netGain],
-                    backgroundColor: 'rgba(79, 172, 254, 0.8)',
-                    borderColor: 'rgba(79, 172, 254, 1)',
+                    backgroundColor: ['#3c83f6', '#16a249', '#16a249'],
+                    borderColor: ['#3c83f6', '#16a249', '#16a249'],
                     borderWidth: 2,
                     borderRadius: 8
                 }
@@ -465,16 +484,10 @@ function updateBreakdownChart(ppfResult, sipResult) {
             datasets: [{
                 data: [ppfResult.totalInvested, ppfResult.netGain, sipResult.totalInvested, sipResult.netGain],
                 backgroundColor: [
-                    'rgba(240, 147, 251, 0.8)',
-                    'rgba(245, 87, 108, 0.8)',
-                    'rgba(79, 172, 254, 0.8)',
-                    'rgba(0, 242, 254, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(240, 147, 251, 1)',
-                    'rgba(245, 87, 108, 1)',
-                    'rgba(79, 172, 254, 1)',
-                    'rgba(0, 242, 254, 1)'
+                    '#3c83f6', // PPF Investment
+                    '#16a249', // PPF Gain
+                    '#3c83f6', // SIP Investment
+                    '#16a249'  // SIP Gain
                 ],
                 borderWidth: 2
             }]

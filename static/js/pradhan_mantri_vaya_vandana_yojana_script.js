@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSliders();
     addEventListeners();
     initialSyncValues();
+    // Initialize slider filled track UI to match daily compound design
+    initPmvvyRangeFills();
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
@@ -43,6 +45,7 @@ function syncInputs(input, slider) {
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updatePmvvyRangeFill(this);
         calculateAndUpdateResults();
     });
 
@@ -58,8 +61,27 @@ function syncInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updatePmvvyRangeFill(slider);
         calculateAndUpdateResults();
     });
+}
+
+// Range fill helpers to color the slider track (WebKit) and complement Firefox progress
+function initPmvvyRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updatePmvvyRangeFill(r);
+        r.addEventListener('input', function () { updatePmvvyRangeFill(this); });
+        r.addEventListener('change', function () { updatePmvvyRangeFill(this); });
+    });
+}
+function updatePmvvyRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function addEventListeners() {
@@ -202,8 +224,8 @@ function updateChart(result) {
             datasets: [{
                 data: [investmentAmount, pensionEarned],
                 backgroundColor: [
-                    '#3182ce',
-                    '#38a169'
+                    '#3c83f6',
+                    '#16a249'
                 ],
                 borderColor: [
                     '#2c5282',

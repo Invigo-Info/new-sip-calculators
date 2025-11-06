@@ -49,6 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdatePostOfficeRdResults();
     setupPostOfficeRdMegaMenu();
     setupPostOfficeRdTableToggle();
+    // UI-only: initialize range slider fill styling (matches daily page behavior)
+    initPostOfficeRdRangeFills();
 });
 
 function setupPostOfficeRdSliders() {
@@ -94,6 +96,26 @@ function syncPostOfficeRdInputs(input, slider) {
         }
         calculateAndUpdatePostOfficeRdResults();
     });
+}
+
+// ===== UI helpers: range fill coloring (no functional impact) =====
+function initPostOfficeRdRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updatePostOfficeRdRangeFill(r);
+        r.addEventListener('input', function () { updatePostOfficeRdRangeFill(this); });
+        // Also update on change to ensure fill sync after direct input field edits
+        r.addEventListener('change', function () { updatePostOfficeRdRangeFill(this); });
+    });
+}
+
+function updatePostOfficeRdRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function addPostOfficeRdEventListeners() {
@@ -279,8 +301,8 @@ function updatePostOfficeRdChart(result) {
                 result.total_interest
             ],
             backgroundColor: [
-                '#3498db',
-                '#27ae60'
+                '#3c83f6',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'

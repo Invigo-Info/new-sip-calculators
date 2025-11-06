@@ -39,6 +39,50 @@ nav {
     margin-top: 15px;
 }
 
+/* === UI overrides to match Daily Compound header/nav === */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  border: 1px solid rgba(60,131,246,0.20);
+  box-shadow: 0 8px 24px rgba(60,131,246,0.08);
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #3c83f6 0%, #16a249 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+nav { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; }
+.home-btn {
+  background: #3c83f6; color: #ffffff; padding: 12px 20px; font-size: 14px; font-weight: 600; border: none; border-radius: 6px; text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; box-sizing: border-box;
+}
+.home-btn:hover { background: #3c83f6; color: #ffffff; }
+.mega-menu { position: relative; display: inline-block; }
+.mega-menu-btn {
+  background: transparent; color: #3c83f6; padding: 12px 20px; font-size: 14px; font-weight: 600; border: 2px solid #3c83f6; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; letter-spacing: 0.5px; min-height: 44px; box-sizing: border-box;
+}
+.mega-menu-btn:hover { background: #3c83f6; color: #ffffff; border-color: #3c83f6; }
+.dropdown-arrow { font-size: 12px; transition: transform 0.2s ease; }
+.mega-menu.open .dropdown-arrow { transform: rotate(180deg); }
+.mega-menu .mega-menu-content { display: none !important; position: absolute; background: #ffffff; min-width: 780px; max-width: 900px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 1000; border-radius: 8px; padding: 0; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 6px; border: 1px solid #e2e8f0; backdrop-filter: blur(10px); }
+.mega-menu.open .mega-menu-content { display: block !important; animation: sleekSlideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes sleekSlideDown { from { opacity: 0; transform: translateX(-50%) translateY(-12px) scale(0.98);} to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1);} }
+.mega-menu-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; padding: 18px; }
+.mega-menu-section { padding: 0 14px; border-right: 1px solid #f1f5f9; }
+.mega-menu-section:last-child { border-right: none; }
+.mega-section-title { font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.mega-link { display: block; padding: 10px 12px; color: #1f2937; text-decoration: none; border-radius: 6px; transition: all .2s ease; font-weight: 500; }
+.mega-link:hover { background: #f8fafc; color: #111827; transform: translateX(2px); }
+.mega-link.active { background: #eff6ff; color: #1d4ed8; box-shadow: inset 0 0 0 1px #bfdbfe; }
+@media (max-width: 1024px) { nav { flex-direction: column; gap: 10px; } .home-btn { width: auto !important; align-self: center; } .mega-menu-btn { width: 100%; } }
+@media (max-width: 767px) { .mega-menu .mega-menu-content { min-width: 95vw !important; max-width: 95vw !important; } .mega-menu-container { grid-template-columns: 1fr; gap: 15px; padding: 12px; } .home-btn, .mega-menu-btn { width: 100%; } }
+
 /* Mega Menu Styles */
 .mega-menu {
     position: relative;
@@ -344,18 +388,20 @@ nav {
 .custom-slider {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%) 0 0 / var(--fill, 0%) 100% no-repeat, #e6edf5;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
+    border: none;
 }
 
 .custom-slider::-webkit-slider-track {
     height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: transparent;
+    border-radius: 9999px;
+    border: none;
 }
 
 .custom-slider::-webkit-slider-thumb {
@@ -363,38 +409,42 @@ nav {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #f39c12;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.35);
 }
 
 .custom-slider::-webkit-slider-thumb:hover {
-    background: #e67e22;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.45);
 }
 
 .custom-slider::-moz-range-track {
     height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: #e6edf5;
+    border-radius: 9999px;
     border: none;
 }
 
 .custom-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #f39c12;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid #3B82F6;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.35);
 }
 
 .custom-slider::-moz-range-thumb:hover {
-    background: #e67e22;
-    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.45);
+}
+
+.custom-slider::-moz-range-progress {
+    background: linear-gradient(90deg, #2F80ED 0%, #56CCF2 100%);
+    height: 6px;
+    border-radius: 9999px;
 }
 
 .slider-labels {
@@ -434,39 +484,35 @@ nav {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.result-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #f39c12, #e67e22);
-}
+.result-card::before { display: none; }
 
-.total-investment-card::before {
-    background: linear-gradient(90deg, #3498db, #2980b9);
+/* Result cards color overrides per requirement */
+.total-investment-card {
+    background: #3c83f6 !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.25) !important;
 }
-
-.interest-earned-card::before {
-    background: linear-gradient(90deg, #27ae60, #229954);
+.interest-earned-card,
+.maturity-value-card,
+.capital-gain-card,
+.total-return-card,
+.annualized-return-card {
+    background: #16a249 !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.25) !important;
 }
-
-.maturity-value-card::before {
-    background: linear-gradient(90deg, #9b59b6, #8e44ad);
-}
-
-.capital-gain-card::before {
-    background: linear-gradient(90deg, #f39c12, #e67e22);
-}
-
-.total-return-card::before {
-    background: linear-gradient(90deg, #e74c3c, #c0392b);
-}
-
-.annualized-return-card::before {
-    background: linear-gradient(90deg, #1abc9c, #16a085);
-}
+.total-investment-card .card-label,
+.total-investment-card .card-value,
+.interest-earned-card .card-label,
+.interest-earned-card .card-value,
+.maturity-value-card .card-label,
+.maturity-value-card .card-value,
+.capital-gain-card .card-label,
+.capital-gain-card .card-value,
+.total-return-card .card-label,
+.total-return-card .card-value,
+.annualized-return-card .card-label,
+.annualized-return-card .card-value { color: #ffffff !important; }
 
 .card-content {
     display: flex;
@@ -546,17 +592,9 @@ nav {
     flex-shrink: 0;
 }
 
-.color-indicator.total-investment {
-    background: #3498db;
-}
-
-.color-indicator.interest-earned {
-    background: #27ae60;
-}
-
-.color-indicator.capital-gain {
-    background: #f39c12;
-}
+.color-indicator.total-investment { background: #3c83f6; }
+.color-indicator.interest-earned { background: #16a249; }
+.color-indicator.capital-gain { background: #16a249; }
 
 .summary-label {
     flex: 1;
@@ -672,6 +710,32 @@ nav {
     border-bottom: 1px solid #e2e8f0;
     font-size: 14px;
     white-space: nowrap;
+}
+
+/* Header cell color mapping to match result cards */
+.amortization-table thead th:nth-child(1) { /* Year */
+    background: #1e40af; /* dark blue */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(2) { /* Annual Interest */
+    background: #16a249; /* green like interest cards */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(3) { /* Cumulative Interest */
+    background: #16a249; /* green like interest cards */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(4) { /* Investment Value */
+    background: #3c83f6; /* blue like Total Investment card */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(5) { /* Est. Gold Value */
+    background: #16a249; /* green to align with growth/returns */
+    color: #ffffff;
+}
+.amortization-table thead th:nth-child(6) { /* Total Value */
+    background: #16a249; /* green like total/returns cards */
+    color: #ffffff;
 }
 
 .amortization-table tbody tr {
@@ -862,4 +926,47 @@ nav {
     .amortization-table tbody td {
         padding: 6px 8px;
     }
+}
+
+/* Final nav overrides to ensure Home/SIP buttons match design */
+header nav .home-btn {
+  background: #3c83f6 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+header nav .home-btn:hover {
+  background: #3c83f6 !important;
+  color: #ffffff !important;
+}
+header nav .mega-menu-btn {
+  background: transparent !important;
+  color: #3c83f6 !important;
+  border: 2px solid #3c83f6 !important;
+}
+header nav .mega-menu-btn:hover {
+  background: #3c83f6 !important;
+  color: #ffffff !important;
+  border-color: #3c83f6 !important;
+}
+
+/* Buttons: transparent outline + filled on hover */
+.download-btn {
+    background: transparent;
+    color: #3c83f6;
+    border: 2px solid #3c83f6;
+}
+.download-btn:hover {
+    background: #3c83f6;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+.table-btn {
+    background: transparent;
+    color: #16a249;
+    border: 2px solid #16a249;
+}
+.table-btn:hover {
+    background: #16a249;
+    color: #ffffff;
+    transform: translateY(-1px);
 }

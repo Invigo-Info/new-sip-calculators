@@ -49,6 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
+    // Initialize slider filled track UI
+    initRangeFills();
 });
 
 function setupSliders() {
@@ -62,6 +64,10 @@ function initialSyncValues() {
     currentAmountSlider.value = currentAmountInput.value;
     inflationRateSlider.value = inflationRateInput.value;
     timePeriodSlider.value = timePeriodInput.value;
+    // Prime range fills
+    updateRangeFill(currentAmountSlider);
+    updateRangeFill(inflationRateSlider);
+    updateRangeFill(timePeriodSlider);
 }
 
 function syncInputs(input, slider) {
@@ -71,12 +77,14 @@ function syncInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateResults();
     });
 
@@ -92,6 +100,7 @@ function syncInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateResults();
     });
 }
@@ -237,8 +246,8 @@ function updateChart(result) {
                 result.purchasing_power_lost
             ],
             backgroundColor: [
-                '#3b82f6',
-                '#f59e0b'
+                '#3c83f6',
+                '#16a249'
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -413,4 +422,21 @@ function downloadPDF() {
     
     // Save the PDF
     doc.save('inflation-calculator-report.pdf');
-} 
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

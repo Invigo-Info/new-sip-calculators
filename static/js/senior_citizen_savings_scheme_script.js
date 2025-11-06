@@ -49,12 +49,33 @@ document.addEventListener('DOMContentLoaded', function() {
     initialSyncValues();
     calculateAndUpdateResults();
     setupMegaMenu();
+    // UI-only: initialize slider track fill so it matches daily page styling
+    initScssRangeFills();
 });
 
 function setupSliders() {
     syncInputs(investmentAmountInput, investmentAmountSlider);
     syncInputs(interestRateInput, interestRateSlider);
     syncInputs(tenureYearsInput, tenureYearsSlider);
+}
+
+// ===== UI helpers: range fill coloring (no functional impact) =====
+function initScssRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateScssRangeFill(r);
+        r.addEventListener('input', function() { updateScssRangeFill(this); });
+        r.addEventListener('change', function() { updateScssRangeFill(this); });
+    });
+}
+
+function updateScssRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function initialSyncValues() {
@@ -167,7 +188,7 @@ function updateChart(result) {
             labels: ['Principal Amount', 'Interest Earned'],
             datasets: [{
                 data: [result.investment_amount, result.total_interest],
-                backgroundColor: ['#10B981', '#F59E0B'],
+                backgroundColor: ['#3c83f6', '#16a249'],
                 borderWidth: 3,
                 borderColor: '#ffffff',
                 cutout: '75%',

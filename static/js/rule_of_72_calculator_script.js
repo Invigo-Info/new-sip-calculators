@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateRule72Results();
     setupRule72MegaMenu();
     setupCalculationMode();
+    // Initialize slider filled track UI
+    initRangeFills();
 });
 
 function setupRule72Sliders() {
@@ -34,6 +36,9 @@ function initialSyncRule72Values() {
     // Ensure initial values are properly synchronized
     annualInterestRateSlider.value = annualInterestRateInput.value;
     yearsToDoubleSlider.value = yearsToDoubleInput.value;
+    // Prime range fills
+    updateRangeFill(annualInterestRateSlider);
+    updateRangeFill(yearsToDoubleSlider);
 }
 
 function syncRule72Inputs(input, slider) {
@@ -43,12 +48,14 @@ function syncRule72Inputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateRule72Results();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateRule72Results();
     });
 
@@ -67,8 +74,26 @@ function syncRule72Inputs(input, slider) {
         } else {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateRule72Results();
     });
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function addRule72EventListeners() {
@@ -275,12 +300,12 @@ function updateRule72Chart(result) {
                         result.years_to_double_exact
                     ],
                     backgroundColor: [
-                        'rgba(52, 130, 206, 0.8)',
-                        'rgba(39, 174, 96, 0.8)'
+                        '#3c83f6',
+                        '#16a249'
                     ],
                     borderColor: [
-                        'rgba(52, 130, 206, 1)',
-                        'rgba(39, 174, 96, 1)'
+                        '#3c83f6',
+                        '#16a249'
                     ],
                     borderWidth: 2,
                     borderRadius: 4
@@ -292,8 +317,8 @@ function updateRule72Chart(result) {
                 datasets: [{
                     label: 'Years',
                     data: [result.years_to_double_rule_72],
-                    backgroundColor: ['rgba(52, 130, 206, 0.8)'],
-                    borderColor: ['rgba(52, 130, 206, 1)'],
+                    backgroundColor: ['#3c83f6'],
+                    borderColor: ['#3c83f6'],
                     borderWidth: 2,
                     borderRadius: 4
                 }]
@@ -313,12 +338,12 @@ function updateRule72Chart(result) {
                         result.required_rate_exact
                     ],
                     backgroundColor: [
-                        'rgba(52, 130, 206, 0.8)',
-                        'rgba(39, 174, 96, 0.8)'
+                        '#3c83f6',
+                        '#16a249'
                     ],
                     borderColor: [
-                        'rgba(52, 130, 206, 1)',
-                        'rgba(39, 174, 96, 1)'
+                        '#3c83f6',
+                        '#16a249'
                     ],
                     borderWidth: 2,
                     borderRadius: 4
@@ -330,8 +355,8 @@ function updateRule72Chart(result) {
                 datasets: [{
                     label: 'Rate (%)',
                     data: [result.required_rate_rule_72],
-                    backgroundColor: ['rgba(52, 130, 206, 0.8)'],
-                    borderColor: ['rgba(52, 130, 206, 1)'],
+                    backgroundColor: ['#3c83f6'],
+                    borderColor: ['#3c83f6'],
                     borderWidth: 2,
                     borderRadius: 4
                 }]

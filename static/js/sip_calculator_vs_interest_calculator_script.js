@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndDisplay();
 });
 
+// UI-only: Initialize slider gradient fills like daily-compound page
+document.addEventListener('DOMContentLoaded', function() {
+    initRangeFills();
+});
+
 function initializeSipVsInterestCalculator() {
     // Setup mega menu functionality
     setupMegaMenu();
@@ -129,6 +134,8 @@ function handleSliderChange(event) {
     if (inputElement) {
         inputElement.value = event.target.value;
     }
+    // Update visual slider fill (UI-only)
+    updateRangeFill(event.target);
     
     // Immediate calculation for sliders
     calculateAndDisplay();
@@ -298,8 +305,8 @@ function updateGrowthComparisonChart(data) {
                 {
                     label: 'SIP Value',
                     data: sipValues,
-                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                    borderColor: 'rgba(16, 185, 129, 1)',
+                    backgroundColor: '#3c83f6',
+                    borderColor: '#3c83f6',
                     borderWidth: 2,
                     borderRadius: 4,
                     borderSkipped: false,
@@ -307,8 +314,8 @@ function updateGrowthComparisonChart(data) {
                 {
                     label: 'Interest Value',
                     data: interestValues,
-                    backgroundColor: 'rgba(245, 158, 11, 0.8)',
-                    borderColor: 'rgba(245, 158, 11, 1)',
+                    backgroundColor: '#16a249',
+                    borderColor: '#16a249',
                     borderWidth: 2,
                     borderRadius: 4,
                     borderSkipped: false,
@@ -414,12 +421,12 @@ function updatePieChart(data) {
             datasets: [{
                 data: [sipInvested, sipGains],
                 backgroundColor: [
-                    'rgba(59, 130, 246, 0.8)',
-                    'rgba(16, 185, 129, 0.8)'
+                    '#3c83f6',
+                    '#16a249'
                 ],
                 borderColor: [
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(16, 185, 129, 1)'
+                    '#3c83f6',
+                    '#16a249'
                 ],
                 borderWidth: 2,
                 hoverOffset: 8
@@ -705,9 +712,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const throttledCalculation = throttle(calculateAndDisplay, 200);
     
     sliders.forEach(slider => {
+        slider.classList.add('custom-slider');
+        updateRangeFill(slider);
+        slider.addEventListener('input', function(e){ updateRangeFill(e.target); });
         slider.addEventListener('input', throttledCalculation);
     });
 });
+
+// Range fill helpers (UI-only)
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function(){ updateRangeFill(this); });
+  });
+}
+
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}
 
 // Table update function
 function updateComparisonTable(data) {
@@ -1046,3 +1074,4 @@ window.SipVsInterestCalculator = {
     showError: showErrorMessage,
     clearError: clearErrorMessage
 };
+

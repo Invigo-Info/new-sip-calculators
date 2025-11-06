@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
     rdfdsipcalcSetupSliders();
     rdfdsipcalcAddEventListeners();
     rdfdsipcalcInitialSyncValues();
+    // UI-only: initialize slider track fill like daily-compound
+    rdfdsipcalcInitRangeFills();
     rdfdsipcalcCalculateAndUpdate();
     rdfdsipcalcSetupMegaMenu();
     rdfdsipcalcSetupTableToggle();
@@ -75,6 +77,8 @@ function rdfdsipcalcSyncInputs(input, slider) {
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        // Update visual fill only
+        rdfdsipcalcUpdateRangeFill(this);
         rdfdsipcalcCalculateAndUpdate();
     });
 
@@ -90,8 +94,27 @@ function rdfdsipcalcSyncInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        rdfdsipcalcUpdateRangeFill(slider);
         rdfdsipcalcCalculateAndUpdate();
     });
+}
+
+// UI-only range fill helpers
+function rdfdsipcalcInitRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].rdfdsipcalc-custom-slider');
+  ranges.forEach(r => {
+    rdfdsipcalcUpdateRangeFill(r);
+    r.addEventListener('input', function(){ rdfdsipcalcUpdateRangeFill(this); });
+  });
+}
+
+function rdfdsipcalcUpdateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function rdfdsipcalcAddEventListeners() {
@@ -330,14 +353,14 @@ function rdfdsipcalcUpdateChart(results) {
                 results[2].maturityValue
             ],
             backgroundColor: [
-                '#10b981',
-                '#f59e0b',
-                '#8b5cf6'
+                '#16a249',
+                '#16a249',
+                '#16a249'
             ],
             borderColor: [
-                '#059669',
-                '#d97706',
-                '#7c3aed'
+                '#16a249',
+                '#16a249',
+                '#16a249'
             ],
             borderWidth: 2
         }]
@@ -547,3 +570,4 @@ function rdfdsipcalcDownloadPDF() {
 document.addEventListener('DOMContentLoaded', function() {
     rdfdsipcalcUpdateFdInputVisibility();
 });
+

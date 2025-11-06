@@ -1,0 +1,18 @@
+*** Begin Patch
+*** Update File: static/js/ulip_vs_sip_calculator_script.js
+@@
+     // Sync slider to input
+     slider.addEventListener('input', function() {
+         input.value = this.value;
++        updateRangeFill(this); // UI-only
+         calculateAndUpdateUlipSipResults();
+     });
+@@
+         } else if (value > parseFloat(slider.max)) {
+             this.value = slider.max;
+             slider.value = slider.max;
+         }
++        updateRangeFill(slider); // UI-only
+         calculateAndUpdateUlipSipResults();
+     });
+*** End Patch

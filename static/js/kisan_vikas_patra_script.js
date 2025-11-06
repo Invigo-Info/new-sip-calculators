@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateAndUpdateResults();
     setupMegaMenu();
     setupTableToggle();
+    // Initialize slider filled track UI (UI-only)
+    initRangeFills();
 });
 
 function setupSliders() {
@@ -294,13 +296,10 @@ function updateChart(result) {
         datasets: [{
             data: [result.investment_amount, result.total_interest],
             backgroundColor: [
-                '#3182ce',
-                '#f59e0b'
+                '#3c83f6',
+                '#16a249'
             ],
-            borderColor: [
-                '#2c5282',
-                '#d97706'
-            ],
+            borderColor: '#ffffff',
             borderWidth: 2,
             hoverOffset: 10
         }]
@@ -517,4 +516,22 @@ function downloadPDF() {
     
     // Save the PDF
     doc.save('kisan-vikas-patra-calculation.pdf');
-} 
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
+}

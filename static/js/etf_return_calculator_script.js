@@ -121,6 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setDefaultETF();
     calculateAndUpdateETFResults();
     setupETFMegaMenu();
+    // Initialize slider filled track UI (UI-only; no logic change)
+    initETFRangeFills();
 });
 
 function setupETFSliders() {
@@ -384,8 +386,8 @@ function updateETFChart(result, timePeriod) {
 
     // Create gradient for the line
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(49, 130, 206, 0.8)');
-    gradient.addColorStop(1, 'rgba(49, 130, 206, 0.1)');
+    gradient.addColorStop(0, 'rgba(22, 162, 73, 0.8)');
+    gradient.addColorStop(1, 'rgba(22, 162, 73, 0.1)');
 
     etfChart = new Chart(ctx, {
         type: 'line',
@@ -394,12 +396,12 @@ function updateETFChart(result, timePeriod) {
             datasets: [{
                 label: 'Investment Value (₹)',
                 data: values,
-                borderColor: '#3182ce',
+                borderColor: '#16a249',
                 backgroundColor: gradient,
                 borderWidth: 3,
                 fill: true,
                 tension: 0.4,
-                pointBackgroundColor: '#3182ce',
+                pointBackgroundColor: '#16a249',
                 pointBorderColor: '#ffffff',
                 pointBorderWidth: 2,
                 pointRadius: 4,
@@ -421,7 +423,7 @@ function updateETFChart(result, timePeriod) {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     titleColor: '#ffffff',
                     bodyColor: '#ffffff',
-                    borderColor: '#3182ce',
+                    borderColor: '#16a249',
                     borderWidth: 1,
                     cornerRadius: 8,
                     displayColors: false,
@@ -519,6 +521,23 @@ function setupETFMegaMenu() {
             });
         });
     }
+}
+
+// Range fill helpers (UI-only) to color the slider track like daily page
+function initETFRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateETFRangeFill(r);
+        r.addEventListener('input', function() { updateETFRangeFill(this); });
+    });
+}
+function updateETFRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 // Export function for the calculate button

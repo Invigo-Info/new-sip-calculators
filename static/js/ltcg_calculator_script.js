@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initialSyncLTCGValues();
     calculateAndUpdateLTCGResults();
     setupLTCGMegaMenu();
+    // Initialize slider filled track UI (Firefox supported)
+    initRangeFills();
 });
 
 function setupLTCGSliders() {
@@ -36,12 +38,14 @@ function syncLTCGInputs(input, slider) {
         if (value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
             slider.value = value;
         }
+        updateRangeFill(slider);
         calculateAndUpdateLTCGResults();
     });
 
     // Sync slider to input
     slider.addEventListener('input', function() {
         input.value = this.value;
+        updateRangeFill(this);
         calculateAndUpdateLTCGResults();
     });
 
@@ -57,6 +61,7 @@ function syncLTCGInputs(input, slider) {
             this.value = slider.max;
             slider.value = slider.max;
         }
+        updateRangeFill(slider);
         calculateAndUpdateLTCGResults();
     });
 }
@@ -370,4 +375,21 @@ if (typeof module !== 'undefined' && module.exports) {
         formatLTCGCurrency,
         formatLTCGDate
     };
+}
+
+// Range fill helpers (UI-only) to color the slider track like the daily page
+function initRangeFills() {
+  const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+  ranges.forEach(r => {
+    updateRangeFill(r);
+    r.addEventListener('input', function() { updateRangeFill(this); });
+  });
+}
+function updateRangeFill(rangeEl) {
+  if (!rangeEl) return;
+  const min = parseFloat(rangeEl.min) || 0;
+  const max = parseFloat(rangeEl.max) || 100;
+  const val = parseFloat(rangeEl.value) || 0;
+  const percent = ((val - min) * 100) / (max - min);
+  rangeEl.style.setProperty('--fill', `${percent}%`);
 }

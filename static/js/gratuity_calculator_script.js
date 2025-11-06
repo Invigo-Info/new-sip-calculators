@@ -46,11 +46,32 @@ document.addEventListener('DOMContentLoaded', function() {
     initialSyncValues();
     calculateAndUpdateResults();
     setupMegaMenu();
+    // UI-only: initialize range slider fill styling (no functional impact)
+    initGratuityRangeFills();
 });
 
 function setupSliders() {
     syncInputs(lastSalaryInput, lastSalarySlider);
     syncInputs(yearsOfServiceInput, yearsOfServiceSlider);
+}
+
+// ===== UI helpers: range fill coloring (no functional impact) =====
+function initGratuityRangeFills() {
+    const ranges = document.querySelectorAll('input[type="range"].custom-slider');
+    ranges.forEach(r => {
+        updateGratuityRangeFill(r);
+        r.addEventListener('input', function() { updateGratuityRangeFill(this); });
+        r.addEventListener('change', function() { updateGratuityRangeFill(this); });
+    });
+}
+
+function updateGratuityRangeFill(rangeEl) {
+    if (!rangeEl) return;
+    const min = parseFloat(rangeEl.min) || 0;
+    const max = parseFloat(rangeEl.max) || 100;
+    const val = parseFloat(rangeEl.value) || 0;
+    const percent = ((val - min) * 100) / (max - min);
+    rangeEl.style.setProperty('--fill', `${percent}%`);
 }
 
 function initialSyncValues() {
@@ -148,9 +169,10 @@ function updateChart(result) {
         chart.destroy();
     }
 
-    const chartData = [result.gratuity_amount];
-    const chartLabels = ['Total Gratuity'];
-    const chartColors = ['#10B981'];
+    // Display both Annual Salary and Total Gratuity in chart (UI-only)
+    const chartData = [result.annual_salary, result.gratuity_amount];
+    const chartLabels = ['Annual Salary', 'Total Gratuity'];
+    const chartColors = ['#3c83f6', '#16a249'];
 
     chart = new Chart(ctx, {
         type: 'doughnut',
