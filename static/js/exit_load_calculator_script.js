@@ -240,7 +240,7 @@ function updateTimeComparisonChart(result) {
       },
       scales: {
         x: { title: { display: true, text: 'Redemption Amount' } },
-        y: { title: { display: true, text: 'Amount (?)' }, ticks: { callback: (v)=>formatCurrency(v) } }
+        y: { title: { display: true, text: 'Amount (\u20B9)' }, ticks: { callback: (v)=>formatCurrency(v) } }
       }
     }
   });
@@ -251,8 +251,8 @@ function updateBreakdownTable(result) {
   tableBody.innerHTML = '';
   const breakdown = [
     { parameter: 'Investment Amount', value: formatCurrency(result.investment_amount), description: 'Original amount invested' },
-    { parameter: 'Purchase NAV', value: '?' + result.purchase_nav, description: 'NAV when units were purchased' },
-    { parameter: 'Current NAV', value: '?' + result.current_nav, description: 'Current NAV of the fund' },
+    { parameter: 'Purchase NAV', value: '\u20B9' + (result.purchase_nav||0), description: 'NAV when units were purchased' },
+    { parameter: 'Current NAV', value: '\u20B9' + (result.current_nav||0), description: 'Current NAV of the fund' },
     { parameter: 'Units Held', value: (result.units_held||0).toFixed(4), description: 'Number of units owned' },
     { parameter: 'Current Value', value: formatCurrency(result.current_value), description: 'Current market value of investment' },
     { parameter: 'Gains/Loss', value: formatCurrency(result.total_gain_loss), description: 'Profit or loss on investment' },
@@ -278,7 +278,7 @@ function formatCurrency(amount) {
   const absAmount = Math.abs(amount||0);
   const sign = (amount||0) < 0 ? '-' : '';
   const numStr = Math.round(absAmount).toString();
-  if (numStr.length <= 3) return sign + '?' + numStr;
+  if (numStr.length <= 3) return sign + '\u20B9' + numStr;
   let result = '';
   let count = 0;
   for (let i = numStr.length - 1; i >= 0; i--) {
@@ -290,7 +290,7 @@ function formatCurrency(amount) {
       result = ',' + result;
     }
   }
-  return sign + '?' + result;
+  return sign + '\u20B9' + result;
 }
 
 
