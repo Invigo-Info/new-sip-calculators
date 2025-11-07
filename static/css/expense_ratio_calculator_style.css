@@ -73,13 +73,19 @@ nav {
 /* Layout to match SWP responsiveness */
 .calculator-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* Prevent grid children from forcing overflow */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 30px;
     margin-bottom: 40px;
+    width: 100%;
+    max-width: 100%;
 }
 
+/* Ensure grid children can shrink within the container */
+.calculator-container > * { min-width: 0; }
+
 @media (max-width: 1199px) {
-    .calculator-container { grid-template-columns: 1fr; gap: 20px; }
+    .calculator-container { grid-template-columns: minmax(0, 1fr); gap: 20px; }
     .input-sections { order: 1; }
     .results-section { order: 2; }
 }
@@ -93,13 +99,15 @@ nav {
     padding: 25px;
     height: fit-content;
     overflow: visible;
+    /* Allow shrinking inside parent grid without overflow */
+    min-width: 0;
 }
 
 .results-card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
 
 @media (max-width: 768px) {
     .container { padding: 15px; }
-    .calculator-container { grid-template-columns: 1fr; gap: 20px; }
+    .calculator-container { grid-template-columns: minmax(0, 1fr); gap: 20px; }
     .results-section { position: static; }
     .results-card-grid { grid-template-columns: 1fr; gap: 12px; }
 }
@@ -361,14 +369,16 @@ nav {
 
 .calculator-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 30px;
     margin-bottom: 40px;
+    width: 100%;
+    max-width: 100%;
 }
 
 @media (max-width: 1199px) {
     .calculator-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 20px;
     }
 
