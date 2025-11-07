@@ -7015,12 +7015,16 @@ def calculate_epf_returns(basic_salary, employee_contribution, employer_contribu
     # Calculate total interest earned
     total_interest = total_balance - total_employee_contribution - total_employer_contribution
     
+    # Return with correct keys (and include legacy misspelled keys for compatibility)
     return {
         'total_corpus': round(total_balance, 2),
+        'total_employee_contribution': round(total_employee_contribution, 2),
+        'total_employer_contribution': round(total_employer_contribution, 2),
+        'total_interest': round(total_interest, 2),
+        'yearly_breakdown': yearly_breakdown,
+        # legacy keys retained to avoid breaking any existing client code
         'total_employee_contributation': round(total_employee_contribution, 2),
         'total_employer_contributation': round(total_employer_contribution, 2),
-        'total_interest': round(total_interest, 2),
-        'yearly_breakdown': yearly_breakdown
     }
 
 @app.route('/calculate-epf', methods=['POST'])
