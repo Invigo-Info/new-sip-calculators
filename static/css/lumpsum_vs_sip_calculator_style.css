@@ -209,10 +209,16 @@ nav {
 
 .calculator-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* Prevent grid children from causing horizontal overflow */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 30px;
     margin-bottom: 40px;
+    width: 100%;
+    max-width: 100%;
 }
+
+/* Ensure grid children can shrink within container */
+.calculator-container > * { min-width: 0; }
 
 @media (max-width: 1199px) {
     .calculator-container { grid-template-columns: 1fr; gap: 20px; }
@@ -399,6 +405,8 @@ nav {
     display: flex;
     flex-direction: column;
     gap: 25px;
+    /* Allow shrinking inside parent grid without overflow */
+    min-width: 0;
 }
 
 .results-comparison-grid {

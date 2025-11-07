@@ -226,6 +226,9 @@ nav {
     border: 0;
 }
 
+/* Prevent child panels from enforcing intrinsic widths */
+.calculator-container > * { min-width: 0; }
+
 /* Increase spacing on medium screens */
 @media (min-width: 768px) {
     .calculator-container {
@@ -236,7 +239,7 @@ nav {
 /* Two columns on large screens */
 @media (min-width: 1200px) {
     .calculator-container {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 30px;
     }
 }
@@ -525,6 +528,8 @@ nav {
     gap: 25px;
     width: 100%;
     box-sizing: border-box;
+    /* Allow shrinking inside parent grid without overflow */
+    min-width: 0;
 }
 
 .results-card-grid {
@@ -1242,7 +1247,7 @@ nav {
 /* Large Mobile in Landscape */
 @media (min-width: 481px) and (max-width: 768px) and (orientation: landscape) {
     .calculator-container {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 20px;
     }
 

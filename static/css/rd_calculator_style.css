@@ -195,14 +195,19 @@ nav {
 
 .calculator-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 30px;
     margin-bottom: 40px;
+    width: 100%;
+    max-width: 100%;
 }
+
+/* Allow grid children to shrink and avoid overflow */
+.calculator-container > * { min-width: 0; }
 
 @media (max-width: 1199px) {
     .calculator-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 20px;
     }
 
@@ -419,6 +424,8 @@ nav {
     position: sticky;
     top: 20px;
     height: fit-content;
+    /* Shrink within grid without causing overflow */
+    min-width: 0;
 }
 
 .results-card-grid {
@@ -525,15 +532,23 @@ nav {
 
 .pie-chart-container {
     position: relative;
-    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .pie-chart-container canvas {
-    max-height: 300px;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    display: block;
 }
 
 .chart-summary {
@@ -576,10 +591,7 @@ nav {
         padding: 15px;
     }
 
-    .calculator-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
+    .calculator-container { grid-template-columns: minmax(0, 1fr); gap: 20px; }
 
     .input-sections {
         order: 1;
@@ -695,9 +707,7 @@ nav {
         font-size: 14px;
     }
 
-    .pie-chart-container {
-        height: 250px;
-    }
+    .pie-chart-container { max-width: 320px; aspect-ratio: 1 / 1; height: auto; }
 
     .frequency-container {
         min-width: 90px;
@@ -769,7 +779,7 @@ nav { display: flex; justify-content: center; align-items: center; gap: 15px; ma
 .total-return-card .card-label, .total-return-card .card-value, .total-return-card .card-icon { color: #ffffff !important; }
 /* Responsive polish for RD calculator container */
 @media (max-width: 1024px) {
-  .calculator-container { grid-template-columns: 1fr; gap: 24px; }
+  .calculator-container { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .results-section { position: static; top: auto; }
 }
 @media (max-width: 768px) {
@@ -782,18 +792,18 @@ nav { display: flex; justify-content: center; align-items: center; gap: 15px; ma
   nav { flex-direction: column; gap: 8px; }
   .home-btn { width: auto !important; align-self: center; padding: 10px 16px; font-size: 13px; min-height: 40px; }
   .mega-menu-btn { width: 100%; padding: 10px 16px; font-size: 13px; min-height: 40px; }
-  .pie-chart-container { width: 100% !important; height: 260px !important; }
-  .pie-chart-container canvas { width: 100% !important; height: 100% !important; }
+  .pie-chart-container { width: 100% !important; max-width: 320px; aspect-ratio: 1 / 1; height: auto !important; }
+  .pie-chart-container canvas { width: 100% !important; height: auto !important; }
 }
 /* Calculator container responsive refinements (RD) */
 @media (min-width: 769px) and (max-width: 1024px) {
   /* Keep single column flow for comfort, but show two-up cards */
   .calculator-container { grid-template-columns: 1fr; gap: 24px; }
   .results-card-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .pie-chart-container { height: 300px; }
+  .pie-chart-container { max-width: 340px; aspect-ratio: 1 / 1; height: auto; }
 }
 @media (max-width: 768px) {
-  .calculator-container { grid-template-columns: 1fr; gap: 20px; }
+  .calculator-container { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .input-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
   .results-card-grid { grid-template-columns: 1fr; gap: 12px; }
   .input-row { flex-direction: column; align-items: stretch; gap: 8px; }
@@ -802,6 +812,6 @@ nav { display: flex; justify-content: center; align-items: center; gap: 15px; ma
 @media (max-width: 480px) {
   .section { padding: 18px; }
   .chart-section { padding: 18px; }
-  .pie-chart-container { width: 100% !important; height: 260px !important; }
-  .pie-chart-container canvas { width: 100% !important; height: 100% !important; }
+  .pie-chart-container { width: 100% !important; max-width: 300px; aspect-ratio: 1 / 1; height: auto !important; }
+  .pie-chart-container canvas { width: 100% !important; height: auto !important; }
 }
