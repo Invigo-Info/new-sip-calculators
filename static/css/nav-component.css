@@ -110,6 +110,16 @@ nav {
     backdrop-filter: blur(10px);
 }
 
+/* Tablet and below: constrain dropdown width to viewport */
+@media (max-width: 1024px) {
+  .mega-menu .mega-menu-content {
+    min-width: 95vw !important;
+    max-width: 95vw !important;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .mega-menu.open .mega-menu-content {
     display: block !important;
     animation: sleekSlideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -327,6 +337,16 @@ document.addEventListener('DOMContentLoaded', function() {
         padding: 12px !important;
     }
 }
+
+/* High-specificity tablet rule to avoid overflow on pages with strict selectors */
+@media (max-width: 1024px) {
+    div.container header nav .mega-menu .mega-menu-content {
+        min-width: 95vw !important;
+        max-width: 95vw !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+}
         @media (max-width: 480px) {
             .home-btn,
             .mega-menu-btn {
@@ -340,3 +360,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 padding: 12px;
             }
         }
+/* Global safeguard to prevent horizontal scroll on narrow viewports */
+html, body { max-width: 100%; overflow-x: hidden; }
